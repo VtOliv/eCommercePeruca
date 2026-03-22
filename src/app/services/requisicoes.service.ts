@@ -44,21 +44,21 @@ export class RequisicoesService {
   }
 
   getProdutos() {
-    let url = this.http.get<Produto[]>("http://localhost:8080/ecommerce/buscar-produto");
+    let url = this.http.get<Produto[]>("http://localhost:8097/ecommerce/buscar-produto");
     return url.pipe(map(
       valores => valores
     ));
   }
 
   getProdutosMaisVendidos() {
-    let url = this.http.get<Produto[]>("http://localhost:8080/ecommerce/buscar-produtos/mais-vendidos");
+    let url = this.http.get<Produto[]>("http://localhost:8097/ecommerce/buscar-produtos/mais-vendidos");
     return url.pipe(map(
       valores => valores
     ));
   }
 
   public realizarLogin(login: Login) {
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/login-cliente", [login.email, login.senha]);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/login-cliente", [login.email, login.senha]);
     return url.pipe(map(
       dados => {
         return dados
@@ -67,7 +67,7 @@ export class RequisicoesService {
   }
 
   public loginFunc(funcionario: Funcionario) {
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/login-funcionario", [funcionario.matricula,funcionario.senha]);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/login-funcionario", [funcionario.matricula,funcionario.senha]);
     return url.pipe(map(
       dados => {
         return dados
@@ -76,21 +76,21 @@ export class RequisicoesService {
   }
 
   public buscarProduto(id) {
-    let url = this.http.get<Produto>("http://localhost:8080/ecommerce/buscar-produto/" + id)
+    let url = this.http.get<Produto>("http://localhost:8097/ecommerce/buscar-produto/" + id)
     return url.pipe(map(
       produto => produto
     ))
   }
 
   public buscarEndereco(id) {
-    let url = this.http.get<any>("http://localhost:8080/ecommerce/enderecos/" + id)
+    let url = this.http.get<any>("http://localhost:8097/ecommerce/enderecos/" + id)
     return url.pipe(map(
       enderecos => enderecos
     ))
   }
 
   getCategoria() {
-    let url = this.http.get<Categoria[]>(`http://localhost:8080/ecommerce/buscar-categorias`);
+    let url = this.http.get<Categoria[]>(`http://localhost:8097/ecommerce/buscar-categorias`);
     return url.pipe(
       map(
         data => data
@@ -99,7 +99,7 @@ export class RequisicoesService {
   }
 
   public todosCupons(){
-    let url = this.http.get<Cupom[]>(`http://localhost:8080/ecommerce/buscar-todos-cupons`);
+    let url = this.http.get<Cupom[]>(`http://localhost:8097/ecommerce/buscar-todos-cupons`);
     return url.pipe(
       map(
         data => data
@@ -109,7 +109,7 @@ export class RequisicoesService {
 
   public getCupons() {
     let idCliente = storage.recuperarUsuario().codCliente;
-    let url = this.http.get<Cupom[]>(`http://localhost:8080/ecommerce/filtrar-cupons/${idCliente}`);
+    let url = this.http.get<Cupom[]>(`http://localhost:8097/ecommerce/filtrar-cupons/${idCliente}`);
     return url.pipe(
       map(
         data => data
@@ -118,7 +118,7 @@ export class RequisicoesService {
   }
 
   public atualizarCupom(codigoCupom: number, cupom: Cupom) {
-    let url = this.http.patch<Cupom>(`http://localhost:8080/ecommerce/atualizar-cupom/${codigoCupom}`, cupom);
+    let url = this.http.patch<Cupom>(`http://localhost:8097/ecommerce/atualizar-cupom/${codigoCupom}`, cupom);
     return url.pipe(
       map(
         data => data
@@ -129,7 +129,7 @@ export class RequisicoesService {
 
   public getPedidos() {
     let idCliente = storage.recuperarUsuario().codCliente;
-    let url = this.http.get<Compra[]>(`http://localhost:8080/ecommerce/buscar-pedidos/${idCliente}`);
+    let url = this.http.get<Compra[]>(`http://localhost:8097/ecommerce/buscar-pedidos/${idCliente}`);
     return url.pipe(
       map(
         data => data
@@ -138,7 +138,7 @@ export class RequisicoesService {
   }
 
   public cancelarPedido(codigoPedido: number) {
-    let url = this.http.patch<Compra>(`http://localhost:8080/ecommerce/cancelar-pedido/${codigoPedido}`, null);
+    let url = this.http.patch<Compra>(`http://localhost:8097/ecommerce/cancelar-pedido/${codigoPedido}`, null);
     return url.pipe(
       map(
         data => data
@@ -147,7 +147,7 @@ export class RequisicoesService {
   }
 
   public endereco(codigoEndereco: number) {
-    let url = this.http.get<any>("http://localhost:8080/ecommerce/endereco/" + codigoEndereco)
+    let url = this.http.get<any>("http://localhost:8097/ecommerce/endereco/" + codigoEndereco)
     return url.pipe(
       map(
         data => data
@@ -156,7 +156,7 @@ export class RequisicoesService {
   }
 
   public enviarCodigoRedefinicao(email: String) {
-    let url = this.http.patch<any>("http://localhost:8080/ecommerce/enviar-codigo/", [email])
+    let url = this.http.patch<any>("http://localhost:8097/ecommerce/enviar-codigo/", [email])
     return url.pipe(
       map(
         dados => dados
@@ -165,7 +165,7 @@ export class RequisicoesService {
   }
 
   public redefinirSenha(email: string, codigo: string, senha: string) {
-    let url = this.http.patch<Cliente>("http://localhost:8080/ecommerce/redefinir-senha", [email, codigo, senha])
+    let url = this.http.patch<Cliente>("http://localhost:8097/ecommerce/redefinir-senha", [email, codigo, senha])
     return url.pipe(
       map(
         dados => dados
@@ -173,7 +173,7 @@ export class RequisicoesService {
     )
   }
   public deletarProduto(produto: Produto){
-    let url = this.http.delete<Produto>(`http://localhost:8080/ecommerce/deletar-produto/${produto.codProduto}`);
+    let url = this.http.delete<Produto>(`http://localhost:8097/ecommerce/deletar-produto/${produto.codProduto}`);
     return url.pipe(
       map(
         data => data
@@ -182,7 +182,7 @@ export class RequisicoesService {
     }
 
   public produtosRecomendados(codProduto: number) {
-    let url = this.http.get<Produto[]>("http://localhost:8080/ecommerce/buscar-produtos/recomendados/" + codProduto)
+    let url = this.http.get<Produto[]>("http://localhost:8097/ecommerce/buscar-produtos/recomendados/" + codProduto)
     return url.pipe(
       map(
         dados => dados
@@ -191,7 +191,7 @@ export class RequisicoesService {
   }
 
   public produtosCategoria(codProduto:number){
-    let url = this.http.get<Produto[]>(`http://localhost:8080/ecommerce/buscar-produtos/categoria/${codProduto}`)
+    let url = this.http.get<Produto[]>(`http://localhost:8097/ecommerce/buscar-produtos/categoria/${codProduto}`)
     return url.pipe(
       map(
         dados => dados
@@ -200,7 +200,7 @@ export class RequisicoesService {
   }
 
   public statusFL(){
-    let url = this.http.get<StatusFaleConosco[]>(`http://localhost:8080/ecommerce/buscar-statusFL/`)
+    let url = this.http.get<StatusFaleConosco[]>(`http://localhost:8097/ecommerce/buscar-statusFL/`)
     return url.pipe(
       map(
         dados => dados
@@ -209,7 +209,7 @@ export class RequisicoesService {
   }
 
   public buscarMensagens(){
-    let url = this.http.get<FaleConosco[]>(`http://localhost:8080/ecommerce/buscar-fale-conosco/`)
+    let url = this.http.get<FaleConosco[]>(`http://localhost:8097/ecommerce/buscar-fale-conosco/`)
     return url.pipe(
       map(
         dados => dados
@@ -217,7 +217,7 @@ export class RequisicoesService {
     )
   }
   public alterarProduto(produto: ProdutoApi){
-    let url = this.http.patch<ProdutoApi>(`http://localhost:8080/ecommerce/atualizar-produto/`, produto)
+    let url = this.http.patch<ProdutoApi>(`http://localhost:8097/ecommerce/atualizar-produto/`, produto)
     return url.pipe(
       map(
         data => data

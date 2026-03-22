@@ -76,7 +76,7 @@ export class CadastrosService {
       compra.itensPedido.push(item);
     })
 
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/cadastrar-pedido", compra);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/cadastrar-pedido", compra);
     return url.pipe(map(
       dados => dados
     ))
@@ -88,35 +88,35 @@ export class CadastrosService {
     doacao.dsFormaPagto = "credito";
     doacao.vlDoacao = 49,90;
     doacao.localDoacao = "local Escolhido"
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/cadastrar-doacao", doacao);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/cadastrar-doacao", doacao);
     return url.pipe(map(
       dados => dados
     ))
   }
 
   public cadastrarEndereco(endereco: Endereco, codCliente){
-    let url = this.http.post("http://localhost:8080/ecommerce/cadastrar-endereco", enderecoBanco(endereco, codCliente));
+    let url = this.http.post("http://localhost:8097/ecommerce/cadastrar-endereco", enderecoBanco(endereco, codCliente));
     return url.pipe(map(
       dados => dados
     ))
   }
 
   public cadastrarUsuario(cliente: Cliente) {
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/cadastrar-cliente", cliente);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/cadastrar-cliente", cliente);
     return url.pipe(map(
       dados => dados
     ));
   }
   public faleConosco(faleConosco: FaleConosco) {
     faleConosco.codCliente = storage.recuperarUsuario().codCliente
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/cadastrar-fale-conosco", faleConosco);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/cadastrar-fale-conosco", faleConosco);
     return url.pipe(map(
       dados => dados
     ));
   }
 
   public addCupom(cupom: Cupom) {
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/cadastrar-cupom", cupom);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/cadastrar-cupom", cupom);
     return url.pipe(
       map(
         dados => dados
@@ -127,7 +127,7 @@ export class CadastrosService {
   public cadastrarProduto(produto: ProdutoApi, imagens: Imagem[]){
     produto.imagens = imagens
     console.log(produto);
-    let url = this.http.post<any>("http://localhost:8080/ecommerce/cadastrar-produto", produto);
+    let url = this.http.post<any>("http://localhost:8097/ecommerce/cadastrar-produto", produto);
     return url.pipe(map(
       dados => dados
     ));
