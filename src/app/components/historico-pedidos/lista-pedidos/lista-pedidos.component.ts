@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Compra } from 'src/app/model/compra';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal/';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Endereco } from 'src/app/model/endereco';
 import { Carrinho } from 'src/app/model/carrinho';
 import { StorageService } from 'src/app/services/storage.service';
