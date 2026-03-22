@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder, } from '@angular/forms';
 import { DadosPagamento } from 'src/app/model/dados-pagamento';
 import { Validacoes } from 'src/app/model/validacoes';
 
@@ -15,23 +15,23 @@ export class DadosPagamentoComponent implements OnChanges {
 
   dataAtual: Date = new Date();
   data: string;
-  formPagamento: FormGroup;
+  formPagamento: UntypedFormGroup;
   validacoes: Validacoes;
 
-  private createForm(dadosPagamento: DadosPagamento): FormGroup {
-    return new FormGroup({
-      numeroCartao: new FormControl(dadosPagamento.numeroCartao),
-      mesValidade: new FormControl(dadosPagamento.mesValidade),
-      anoValidade: new FormControl(dadosPagamento.anoValidade),
-      cvv: new FormControl(dadosPagamento.cvv),
-      nomeTitular: new FormControl(dadosPagamento.nomeTitular),
-      cpf: new FormControl(dadosPagamento.cpf)
+  private createForm(dadosPagamento: DadosPagamento): UntypedFormGroup {
+    return new UntypedFormGroup({
+      numeroCartao: new UntypedFormControl(dadosPagamento.numeroCartao),
+      mesValidade: new UntypedFormControl(dadosPagamento.mesValidade),
+      anoValidade: new UntypedFormControl(dadosPagamento.anoValidade),
+      cvv: new UntypedFormControl(dadosPagamento.cvv),
+      nomeTitular: new UntypedFormControl(dadosPagamento.nomeTitular),
+      cpf: new UntypedFormControl(dadosPagamento.cpf)
     })
   }
 
   dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   anos = this.anoValidade();
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.validacoes = new Validacoes();
     this.data = `${this.dataAtual.getFullYear()}-`;
     this.data += this.dataAtual.getMonth() < 9 ? `0${(this.dataAtual.getMonth() + 1)}` : `${(this.dataAtual.getMonth() + 1)}`

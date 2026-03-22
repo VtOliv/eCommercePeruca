@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Endereco } from 'src/app/model/endereco';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Uf } from 'src/app/model/uf';
 import { Validacoes } from 'src/app/model/validacoes';
@@ -13,20 +13,20 @@ import { Validacoes } from 'src/app/model/validacoes';
 export class CadastroEnderecoComponent implements OnInit {
 
   @Output() novoEndereco = new EventEmitter();
-  formEndereco: FormGroup;
+  formEndereco: UntypedFormGroup;
   estados: Uf[] = [];
   validacoes: Validacoes;
 
-  private createForm(endereco: Endereco): FormGroup {
-    return new FormGroup({
-      destinatario: new FormControl(endereco.destinatario),
-      cep: new FormControl(endereco.cep),
-      logradouro: new FormControl(endereco.logradouro),
-      numero: new FormControl(endereco.numero),
-      bairro: new FormControl(endereco.bairro),
-      localidade: new FormControl(endereco.localidade),
-      uf: new FormControl(endereco.uf),
-      complemento: new FormControl(endereco.complemento)
+  private createForm(endereco: Endereco): UntypedFormGroup {
+    return new UntypedFormGroup({
+      destinatario: new UntypedFormControl(endereco.destinatario),
+      cep: new UntypedFormControl(endereco.cep),
+      logradouro: new UntypedFormControl(endereco.logradouro),
+      numero: new UntypedFormControl(endereco.numero),
+      bairro: new UntypedFormControl(endereco.bairro),
+      localidade: new UntypedFormControl(endereco.localidade),
+      uf: new UntypedFormControl(endereco.uf),
+      complemento: new UntypedFormControl(endereco.complemento)
     })
   }
 

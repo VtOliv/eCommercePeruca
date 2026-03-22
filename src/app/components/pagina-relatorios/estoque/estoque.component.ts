@@ -3,7 +3,7 @@ import { Produto } from 'src/app/model/produto';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Validacoes } from 'src/app/model/validacoes';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Categoria } from 'src/app/model/categoria';
 import { MessageService } from 'primeng/api';
 import { ProdutoApi } from 'src/app/model/produto-api';
@@ -15,7 +15,7 @@ import { ProdutoApi } from 'src/app/model/produto-api';
   providers: [MessageService]
 })
 export class EstoqueComponent implements OnInit {
-  formCadProd: FormGroup;
+  formCadProd: UntypedFormGroup;
   validacoes: Validacoes = new Validacoes();
   produto: Produto;
   categorias: Categoria[];

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
 export class RecuperarSenhaComponent implements OnInit {
 
   botaoRecuperarClicado = false;
-  formRecuperarSenha: FormGroup;
+  formRecuperarSenha: UntypedFormGroup;
   email: string;
   codigoRedefinicao: string;
   senha: string;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     private requisicoes: RequisicoesService,
     private storage: StorageService,
     private route: Router) { }

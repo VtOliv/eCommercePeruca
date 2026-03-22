@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Validacoes } from 'src/app/model/validacoes';
 import { Produto } from 'src/app/model/produto';
 import { Categoria } from 'src/app/model/categoria';
@@ -19,7 +19,7 @@ import { Imagem } from 'src/app/model/Imagem';
 })
 export class CadastroProdutoComponent implements OnInit {
 
-  formCadProd: FormGroup;
+  formCadProd: UntypedFormGroup;
   validacoes: Validacoes = new Validacoes();
   produto: Produto;
   produtos: Produto[];
@@ -31,7 +31,7 @@ export class CadastroProdutoComponent implements OnInit {
   @Output() produtoCadastrado = new EventEmitter;
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     private messageService: MessageService,
     private cadastro: CadastrosService,
     private requisicoes: RequisicoesService,

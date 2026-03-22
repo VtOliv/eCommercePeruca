@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { Validacoes } from 'src/app/model/validacoes';
 import { Funcionario } from 'src/app/model/funcionario';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
@@ -13,12 +13,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./funcionarios.component.css']
 })
 export class FuncionariosComponent implements OnInit {
-  formFunc: FormGroup;
+  formFunc: UntypedFormGroup;
   validacoes: Validacoes = new Validacoes();
   matricula: string;
   senha: string;
 
-  constructor(private route: Router, private formBuilder: FormBuilder, private requisicoes: RequisicoesService, private storage: StorageService) { }
+  constructor(private route: Router, private formBuilder: UntypedFormBuilder, private requisicoes: RequisicoesService, private storage: StorageService) { }
 
 
   ngOnInit(): void {

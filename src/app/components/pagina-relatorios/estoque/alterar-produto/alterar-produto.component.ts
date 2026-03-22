@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { ProdutoApi } from "src/app/model/produto-api";
@@ -11,11 +11,11 @@ import { ProdutoApi } from "src/app/model/produto-api";
   styleUrls: ['./alterar-produto.component.css']
 })
 export class AlterarProdutoComponent implements OnInit, OnChanges {
-  formAltProd: FormGroup;
+  formAltProd: UntypedFormGroup;
   @Input() produto;
   @Output() produtoAlterado = new EventEmitter;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     private requisicoes: RequisicoesService) {
   }
 

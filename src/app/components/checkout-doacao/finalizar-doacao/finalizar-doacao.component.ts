@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, TemplateRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from "@angular/forms";
 import { Locais } from 'src/app/model/locais';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Validacoes } from 'src/app/model/validacoes';
@@ -18,19 +18,19 @@ import { Router } from '@angular/router';
 export class FinalizarDoacaoComponent implements AfterViewInit {
   dataAtual: Date = new Date();
   data: string;
-  formPagamento: FormGroup;
+  formPagamento: UntypedFormGroup;
   validacoes: Validacoes;
   dadosDePagamento: boolean = false;
   vlDoacao: 49.90;
 
-  private createForm(dadosPagamento: DadosPagamento): FormGroup {
-    return new FormGroup({
-      numeroCartao: new FormControl(dadosPagamento.numeroCartao),
-      mesValidade: new FormControl(dadosPagamento.mesValidade),
-      anoValidade: new FormControl(dadosPagamento.anoValidade),
-      cvv: new FormControl(dadosPagamento.cvv),
-      nomeTitular: new FormControl(dadosPagamento.nomeTitular),
-      cpf: new FormControl(dadosPagamento.cpf)
+  private createForm(dadosPagamento: DadosPagamento): UntypedFormGroup {
+    return new UntypedFormGroup({
+      numeroCartao: new UntypedFormControl(dadosPagamento.numeroCartao),
+      mesValidade: new UntypedFormControl(dadosPagamento.mesValidade),
+      anoValidade: new UntypedFormControl(dadosPagamento.anoValidade),
+      cvv: new UntypedFormControl(dadosPagamento.cvv),
+      nomeTitular: new UntypedFormControl(dadosPagamento.nomeTitular),
+      cpf: new UntypedFormControl(dadosPagamento.cpf)
     })
   }
 
@@ -45,7 +45,7 @@ export class FinalizarDoacaoComponent implements AfterViewInit {
 
   dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   anos = this.anoValidade();
-  constructor(sanitizer: DomSanitizer, private fb: FormBuilder,private cadastros: CadastrosService, private storage: StorageService, private route: Router) {
+  constructor(sanitizer: DomSanitizer, private fb: UntypedFormBuilder,private cadastros: CadastrosService, private storage: StorageService, private route: Router) {
     this.localEscolhido = this.locais[this.escolhido];
     this.validacoes = new Validacoes();
     this.data = `${this.dataAtual.getFullYear()}-`;

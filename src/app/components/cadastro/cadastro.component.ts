@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { Cliente } from 'src/app/model/cliente';
 import { Validacoes } from 'src/app/model/validacoes';
 import { Router } from "@angular/router";
@@ -12,12 +12,12 @@ import { CadastrosService } from 'src/app/services/cadastros.service';
   styleUrls: ['./cadastro.component.css']
 })
 export class CadastroComponent implements OnInit {
-  formCliente: FormGroup;
+  formCliente: UntypedFormGroup;
   validacoes: Validacoes = new Validacoes();
   segundaSenha: string = "";
 
 
-  constructor(private formBuilder: FormBuilder, private route: Router, private cadastro: CadastrosService, private storage: StorageService) {
+  constructor(private formBuilder: UntypedFormBuilder, private route: Router, private cadastro: CadastrosService, private storage: StorageService) {
 
   }
 

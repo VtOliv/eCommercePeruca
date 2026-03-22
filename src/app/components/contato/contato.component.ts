@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validacoes } from 'src/app/model/validacoes';
-import  {  FormBuilder,  FormGroup  }  from  '@angular/forms';
+import  {  UntypedFormBuilder,  UntypedFormGroup  }  from  '@angular/forms';
 import { FaleConosco } from 'src/app/model/faleConosco';
 import { CadastrosService } from 'src/app/services/cadastros.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -15,13 +15,13 @@ import { StatusFaleConosco } from 'src/app/model/statusFaleConosco';
 })
 
 export class ContatoComponent implements OnInit {
-  formFaleConosco: FormGroup;
+  formFaleConosco: UntypedFormGroup;
   validacoes: Validacoes = new Validacoes;
   status: StatusFaleConosco[] = []
   
 
 
-  constructor(private formBuilder: FormBuilder, 
+  constructor(private formBuilder: UntypedFormBuilder, 
     private cadastro: CadastrosService, 
     private storage: StorageService,
     private requisicao: RequisicoesService) {}

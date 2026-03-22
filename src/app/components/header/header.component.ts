@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
+import { FormBuilder, UntypedFormGroup, UntypedFormControl } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { RequisicoesService } from "../../services/requisicoes.service";
 import { StorageService } from "../../services/storage.service";
@@ -12,7 +12,7 @@ import { Login } from 'src/app/model/login';
 })
 export class HeaderComponent implements OnChanges {
 
-  formLogin: FormGroup;
+  formLogin: UntypedFormGroup;
   email: string;
   senha: string;
   nome: string;
@@ -33,10 +33,10 @@ export class HeaderComponent implements OnChanges {
     }
   }
 
-  private createForm(login: Login): FormGroup {
-    return new FormGroup({
-      email: new FormControl(login.email),
-      senha: new FormControl(login.senha)
+  private createForm(login: Login): UntypedFormGroup {
+    return new UntypedFormGroup({
+      email: new UntypedFormControl(login.email),
+      senha: new UntypedFormControl(login.senha)
     })
   }
 

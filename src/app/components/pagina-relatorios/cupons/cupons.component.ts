@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cupom } from 'src/app/model/cupom';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { CadastrosService } from 'src/app/services/cadastros.service';
 import { MessageService } from 'primeng/api';
 
@@ -25,10 +25,10 @@ export class CuponsComponent {
   cols: any[];
   cupom: Cupom;
   displayDialog: boolean;
-  formCupom: FormGroup;
+  formCupom: UntypedFormGroup;
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     private requisicoes: RequisicoesService,
     private cadastro: CadastrosService,
     private messageService: MessageService) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
@@ -15,7 +15,7 @@ export class LoginRelatoriosComponent implements OnInit {
   matricula: string;
   senha: string;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     private requisicoes: RequisicoesService,
     private route: Router,
     private storage: StorageService) { }
