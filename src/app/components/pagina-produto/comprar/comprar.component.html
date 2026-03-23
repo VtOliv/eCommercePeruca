@@ -1,37 +1,35 @@
-<div id="card-comprar" class="mt-4 mr-4" *ngIf="produto != null">
+@if (produto != null) {
+  <div id="card-comprar" class="mt-4 mr-4">
     <div id="form-signin">
-        <div id="descricaoProduto" class="row">
-            <h1>{{produto.descricao}}</h1>
-        </div>
-        <hr>
+      <div id="descricaoProduto" class="row">
+        <h1>{{produto.descricao}}</h1>
+      </div>
+      <hr>
         <div id="Produto" class="row text-justify">
-            Na Wig's house você encontra as melhores perucas, qualidade em cabelo, textura.
-            Todos os nossos produtos são devidamente testados e qualificados.
-
-            <p class="font-weight-bold">Categoria: {{produto.categoria.descricao}}</p>
+          Na Wig's house você encontra as melhores perucas, qualidade em cabelo, textura.
+          Todos os nossos produtos são devidamente testados e qualificados.
+          <p class="font-weight-bold">Categoria: {{produto.categoria.descricao}}</p>
         </div>
         <div class="container d-flex flex-row">
-            <div class="row d-block">
-                <div class="texto">
-                    <strong id="precoPor" class="p-4">Preço: {{produto.valorProduto.toLocaleString('pt-BR', formato)}}</strong>
-                </div>
+          <div class="row d-block">
+            <div class="texto">
+              <strong id="precoPor" class="p-4">Preço: {{produto.valorProduto.toLocaleString('pt-BR', formato)}}</strong>
             </div>
+          </div>
         </div>
-
-
         <form class="dadosEntrega pl-2">
-            <div class="container pb-2">
-                <div class="row">
-                    <div class="col-6">
-                        <label for="qnt">Quantidade :</label>
-                        <input #qtdProduto value=1 type="number" class="form-control" min="1" max="6" name="qnt"
-                            id="qnt" placeholder="Quantidade"/>
-                    </div>
+          <div class="container pb-2">
+            <div class="row">
+              <div class="col-6">
+                <label for="qnt">Quantidade :</label>
+                <input #qtdProduto value=1 type="number" class="form-control" min="1" max="6" name="qnt"
+                  id="qnt" placeholder="Quantidade"/>
                 </div>
+              </div>
             </div>
-
             <button class="btn btn-lg btn-success btn-block" type="submit"
-                (click)="adicionarNoCarrinho(qtdProduto.value)">Comprar</button>
-        </form>
-    </div>
-</div>
+            (click)="adicionarNoCarrinho(qtdProduto.value)">Comprar</button>
+          </form>
+        </div>
+      </div>
+    }

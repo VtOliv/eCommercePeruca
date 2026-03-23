@@ -1,53 +1,63 @@
 <div class="border mt-2 p-2 mb-2">
-    <div class="productTable">
-        <table class="table table-striped text-center overflow-auto">
-            <thead>
-                <tr>
-                    <th scope="col">Produto</th>
-                    <th scope="col">Preço</th>
-                    <th scope="col">Qtd Uni.</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of carrinho">
-                    <th scope="row">{{item.produto.descricao}}</th>
-                    <th>{{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</th>
-                    <th>
-                        {{item.quantidade}}
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="d-flex flex-row-reverse">
-        <h5 class="p-2">Subtotal {{subTotal.toLocaleString('pt-BR', formato)}}</h5>
-    </div>
-    <div class="d-flex flex-row-reverse">
-        <h5 class="p-2">Frete {{frete.toLocaleString('pt-BR', formato)}}</h5>
-    </div>
-    <div class="d-flex justify-content-between">
-        <button class="btn btn-primary" (click)="abrirModal(modalCupom)">Ative o cupom</button>
-        <h5 class="p-2" *ngIf="cupomAtivo == null">Cupom {{valorCupom.toLocaleString('pt-BR', formato)}}</h5>
-        <h5 class="p-2" *ngIf="cupomAtivo != null">Cupom {{(subTotal * (cupomAtivo.desconto / -100)).toLocaleString('pt-BR', formato)}}</h5>
-    </div>
+  <div class="productTable">
+    <table class="table table-striped text-center overflow-auto">
+      <thead>
+        <tr>
+          <th scope="col">Produto</th>
+          <th scope="col">Preço</th>
+          <th scope="col">Qtd Uni.</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of carrinho; track item) {
+          <tr>
+            <th scope="row">{{item.produto.descricao}}</th>
+            <th>{{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</th>
+            <th>
+              {{item.quantidade}}
+            </th>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex flex-row-reverse">
+    <h5 class="p-2">Subtotal {{subTotal.toLocaleString('pt-BR', formato)}}</h5>
+  </div>
+  <div class="d-flex flex-row-reverse">
+    <h5 class="p-2">Frete {{frete.toLocaleString('pt-BR', formato)}}</h5>
+  </div>
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-primary" (click)="abrirModal(modalCupom)">Ative o cupom</button>
+    @if (cupomAtivo == null) {
+      <h5 class="p-2">Cupom {{valorCupom.toLocaleString('pt-BR', formato)}}</h5>
+    }
+    @if (cupomAtivo != null) {
+      <h5 class="p-2">Cupom {{(subTotal * (cupomAtivo.desconto / -100)).toLocaleString('pt-BR', formato)}}</h5>
+    }
+  </div>
 </div>
 
 <ng-template #modalCupom>
-    <div class="modal-header">
-        <h5 class="modal-title pull-left">Digite um cupom válido</h5>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-            <span aria-hidden="true">&times;</span>
-        </button>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Digite um cupom válido</h5>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @if (cupons.length == 0) {
+    <div class="alert alert-warning m-2 p-1">
+      <h5 class="text-center">Não há cupons disponíveis !</h5>
     </div>
-    <div *ngIf="cupons.length == 0" class="alert alert-warning m-2 p-1">
-        <h5 class="text-center">Não há cupons disponíveis !</h5>
+  }
+  @for (cupom of cupons; track cupom) {
+    <div (click)="mandarCupom(cupom)"  class="boxCupom alert alert-success mb-3 mt-2 p-1" [class]="cupom.ativo ? 'mostrar' : 'ocultar'" (click)="adicionarCupom(cupom)">
+      <h5>{{cupom.nome}}</h5>
+      <span>Desconto {{cupom.desconto}}%</span><br>
+      <span>Total do desconto {{(subTotal * (cupom.desconto / 100)).toLocaleString('pt-BR', formato)}}</span>
+      <div class="d-flex justify-content-end">
+        <img id="desc" src="../../../../assets/images/desconto.svg" alt="" width="40px">
+      </div>
     </div>
-    <div *ngFor="let cupom of cupons" (click)="mandarCupom(cupom)"  class="boxCupom alert alert-success mb-3 mt-2 p-1" [class]="cupom.ativo ? 'mostrar' : 'ocultar'" (click)="adicionarCupom(cupom)">
-        <h5>{{cupom.nome}}</h5>
-        <span>Desconto {{cupom.desconto}}%</span><br>
-        <span>Total do desconto {{(subTotal * (cupom.desconto / 100)).toLocaleString('pt-BR', formato)}}</span>
-        <div class="d-flex justify-content-end">
-            <img id="desc" src="../../../../assets/images/desconto.svg" alt="" width="40px">
-        </div>
-    </div>
+  }
 </ng-template>

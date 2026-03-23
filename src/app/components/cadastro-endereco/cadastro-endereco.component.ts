@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 
 // Models e Services
@@ -11,9 +11,8 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
 @Component({
     selector: 'app-cadastro-endereco',
     imports: [
-        CommonModule,
-        ReactiveFormsModule
-    ],
+    ReactiveFormsModule
+],
     templateUrl: './cadastro-endereco.component.html',
     styleUrls: ['./cadastro-endereco.component.css']
 })

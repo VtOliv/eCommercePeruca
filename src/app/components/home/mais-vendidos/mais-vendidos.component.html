@@ -1,28 +1,29 @@
 <section id="desc" class="container-fluid">
-    <div class="row justify-content-center mt-2">
-        <em id="textoOfex"> Confira nossos produtos mais vendidos :</em>
-    </div>
+  <div class="row justify-content-center mt-2">
+    <em id="textoOfex"> Confira nossos produtos mais vendidos :</em>
+  </div>
 </section>
 <div id="cardsHolder" class="container-fluid">
-    <div *ngFor="let produto of produtosVisiveis" class="d-inline col-md-3 col-xs-8 mt-3">
-        <div class="card">
-            <div class="text-center">
-                <img [src]="produto.imagens[0].local" class="imagem-produto">
-            </div>
-            <div class="card-body">
-                
-                <h5>{{produto.descricao}}</h5>
-                <p class="card-text"> {{produto.categoria.descricao}} <br>
-                    {{produto.valorProduto.toLocaleString('pt-BR', formato)}} <br>
-                </p>
-                <a (click)="abrirPaginaProduto(produto.codProduto)" class="btn btn-dark btn-block text-white">Comprar</a>
-            </div>
+  @for (produto of produtosVisiveis; track produto) {
+    <div class="d-inline col-md-3 col-xs-8 mt-3">
+      <div class="card">
+        <div class="text-center">
+          <img [src]="produto.imagens[0].local" class="imagem-produto">
         </div>
+        <div class="card-body">
+          <h5>{{produto.descricao}}</h5>
+          <p class="card-text"> {{produto.categoria.descricao}} <br>
+            {{produto.valorProduto.toLocaleString('pt-BR', formato)}} <br>
+          </p>
+          <a (click)="abrirPaginaProduto(produto.codProduto)" class="btn btn-dark btn-block text-white">Comprar</a>
+        </div>
+      </div>
     </div>
+  }
 </div>
 <div id="todos" class="col-12 mt-3 justify-content-center">
-    <button routerLink="/catalogo" class="btn btn-dark btn-block">
-        Ver Todos
-    </button>
+  <button routerLink="/catalogo" class="btn btn-dark btn-block">
+    Ver Todos
+  </button>
 </div>
 

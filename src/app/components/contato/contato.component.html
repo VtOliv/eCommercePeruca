@@ -18,67 +18,69 @@
             <div class="form-group">
               <label for="nomeUsuário">Nome Completo:</label>
               <input id="nome" class="form-control" (keypress)="permitirLetrasCont($event)" type="text" id="validationTextarea" name="nomeUsuario"
-              formControlName="nomeCompleto" placeholder="Nome completo" required>
-            </div>
-
-            <div class="form-group">
-              <label for="telusuario">Seu Telefone</label>
-              <input class="form-control" (keypress)="permitirNumerosCont($event)" type="text" id="validationTextarea" type="text" name="telusuario"
-              formControlName="telefone"  placeholder="(00) 00000-0000" mask="(00) 00000-0000">
-            </div>
-
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Endereço de email</label>
-              <input class="form-control" type="text" id="validationTextarea" formControlName="email" placeholder="Email">
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Escreva sua Mensagem </label>
-              <textarea class="form-control" id="validationTextarea" formControlName="mensagem" placeholder="Escreva aqui sua mensagem"
-                required> Escreva sua Mensagem</textarea>
-            </div>
-            <div class="form-group">
-              <label for="assunto">Assunto da mensagem :</label>
-              <select id="assunto" formControlName="statusFL" class="custom-select" required>
-                <option value="null" selected disabled hidden>Selecione Mensagem</option>
-                <option *ngFor="let s of status" [ngValue]="s">{{s.status}}</option>
-              </select>
-              <div class="invalid-feedback"></div>
-            </div>
-            <div class="custom-control custom-checkbox mb-4">
-              <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-              <label class="custom-control-label" for="customControlValidation1">Receber promoções via
-                e-mail?</label>
-              <div class="invalid-feedback">Receber newsletter semanal.</div>
-            </div>
-              <div id="btn">
-              <button class="btn btn-lg btn-dark btn-block" type="submit">
-                Enviar mensagem
-              </button>
-              <p class="mt-5 mb-3 text-muted"></p>
+                formControlName="nomeCompleto" placeholder="Nome completo" required>
               </div>
+
+              <div class="form-group">
+                <label for="telusuario">Seu Telefone</label>
+                <input class="form-control" (keypress)="permitirNumerosCont($event)" type="text" id="validationTextarea" type="text" name="telusuario"
+                  formControlName="telefone"  placeholder="(00) 00000-0000" mask="(00) 00000-0000">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Endereço de email</label>
+                  <input class="form-control" type="text" id="validationTextarea" formControlName="email" placeholder="Email">
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Escreva sua Mensagem </label>
+                  <textarea class="form-control" id="validationTextarea" formControlName="mensagem" placeholder="Escreva aqui sua mensagem"
+                  required> Escreva sua Mensagem</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="assunto">Assunto da mensagem :</label>
+                  <select id="assunto" formControlName="statusFL" class="custom-select" required>
+                    <option value="null" selected disabled hidden>Selecione Mensagem</option>
+                    @for (s of status; track s) {
+                      <option [ngValue]="s">{{s.status}}</option>
+                    }
+                  </select>
+                  <div class="invalid-feedback"></div>
+                </div>
+                <div class="custom-control custom-checkbox mb-4">
+                  <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
+                  <label class="custom-control-label" for="customControlValidation1">Receber promoções via
+                  e-mail?</label>
+                  <div class="invalid-feedback">Receber newsletter semanal.</div>
+                </div>
+                <div id="btn">
+                  <button class="btn btn-lg btn-dark btn-block" type="submit">
+                    Enviar mensagem
+                  </button>
+                  <p class="mt-5 mb-3 text-muted"></p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <div class="p-2 mb-4 text-light">
+            <div class="enviemsg">
+              <strong>Contato</strong>
+              <img src="../../../assets/images/reclamar.png" alt="reclamar" class="reclamar">
+            </div>
+          </div>
+          <div id="redes" class="jumbotron form-group">
+            <div>
+              <p> E-mail: Wigs-house&#64;gmail.com</p>
+              <p> Televendas (11) 3746-6913</p>
+              <p> SAC (11) 0800 777 700 </p>
+              <p> Endereço Central: </p>
+              <p>R. Minas Gerais, 316 - Higienópolis, São Paulo - SP, 01244-010</p>
+              <iframe class="maps" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.381160458082!2d-46.66689008549178!3d-23.5547502672322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce582c15c3a563%3A0x3b6fcfa8f24b066f!2sR.%20Minas%20Gerais%2C%20316%20-%20Higien%C3%B3polis%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001244-010!5e0!3m2!1spt-BR!2sbr!4v1583954919522!5m2!1spt-BR!2sbr" frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+            </div>
           </div>
         </div>
-      </form>
-    </div>
-    <div class="col-md-6">
-      <div class="p-2 mb-4 text-light">
-        <div class="enviemsg">
-          <strong>Contato</strong>
-          <img src="../../../assets/images/reclamar.png" alt="reclamar" class="reclamar">
-        </div>
-      </div>
-      <div id="redes" class="jumbotron form-group">
-        <div>
-          <p> E-mail: Wigs-house&#64;gmail.com</p>
-          <p> Televendas (11) 3746-6913</p>
-          <p> SAC (11) 0800 777 700 </p>
-          <p> Endereço Central: </p>
-          <p>R. Minas Gerais, 316 - Higienópolis, São Paulo - SP, 01244-010</p>
-          <iframe class="maps" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.381160458082!2d-46.66689008549178!3d-23.5547502672322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce582c15c3a563%3A0x3b6fcfa8f24b066f!2sR.%20Minas%20Gerais%2C%20316%20-%20Higien%C3%B3polis%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001244-010!5e0!3m2!1spt-BR!2sbr!4v1583954919522!5m2!1spt-BR!2sbr" frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<app-footer></app-footer>
+    <app-footer></app-footer>

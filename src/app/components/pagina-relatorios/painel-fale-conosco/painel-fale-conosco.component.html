@@ -1,36 +1,42 @@
 <app-nav-relatorios></app-nav-relatorios>
 
 <div class="container-fluid row">
-<app-menu-relatorios></app-menu-relatorios>
-<div class="card col-9">
+  <app-menu-relatorios></app-menu-relatorios>
+  <div class="card col-9">
     <h3 class="card-header text-center font-weight-bold text-uppercase">Painel Fale Conosco</h3>
-      <div id="table" class="table-editable">
-        <span class="table-add float-right"><a href="#!" class="text-success"><i
-              class="fas fa-plus" aria-hidden="true"></i></a></span>
-        <table class="table table-bordered table-responsive-md table-striped text-center">
-          <thead>
+    <div id="table" class="table-editable">
+      <span class="table-add float-right"><a href="#!" class="text-success"><i
+      class="fas fa-plus" aria-hidden="true"></i></a></span>
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+        <thead>
+          <tr>
+            <th class="text-center">Nome Completo</th>
+            <th class="text-center">Telefone</th>
+            <th class="text-center">E-mail</th>
+            <th class="text-center">Mensagem</th>
+            <th class="text-center">Assunto da Mensagem</th>
+            <th class="text-center">Respondida</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (mensagem of mensagens; track mensagem) {
             <tr>
-              <th class="text-center">Nome Completo</th>
-              <th class="text-center">Telefone</th>
-              <th class="text-center">E-mail</th>
-              <th class="text-center">Mensagem</th>
-              <th class="text-center">Assunto da Mensagem</th>
-              <th class="text-center">Respondida</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let mensagem of mensagens">
               <td class="pt-3-half" contenteditable="true">{{mensagem.nomeCompleto}}</td>
               <td class="pt-3-half" contenteditable="true">{{mensagem.telefone}}</td>
               <td class="pt-3-half" contenteditable="true">{{mensagem.email}}</td>
               <td class="pt-3-half" contenteditable="true">{{mensagem.mensagem}}</td>
               <td class="pt-3-half" contenteditable="true">{{mensagem.statusFL.status}}</td>
-              <td class="pt-3-half" *ngIf="!mensagem.respondido">Não</td>
-              <td class="pt-3-half" *ngIf="mensagem.respondido">Sim</td>
+              @if (!mensagem.respondido) {
+                <td class="pt-3-half">Não</td>
+              }
+              @if (mensagem.respondido) {
+                <td class="pt-3-half">Sim</td>
+              }
             </tr>
-          </tbody>
-        </table>
-      </div>
+          }
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 

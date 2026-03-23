@@ -1,36 +1,44 @@
 <div class="ng-scope mt-2 ">
-    <div class="card">
-        <h5 class="card-header">Produtos do pedido</h5>
-        <table class="table table-striped text-center">
-            <thead>
-                <tr>
-                    <th scope="col">foto</th>
-                    <th scope="col">Produto</th>
-                    <th scope="col">Preço uni.</th>
-                    <th scope="col">Qtd</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of produtos">
-                    <th><img [src]="item.produto.imagens[0].local" width="20px"></th>
-                    <td scope="row">{{item.produto.descricao}}</td>
-                    <td> {{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</td>
-                    <td>
-                        {{item.quantidade}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <div class="card">
+    <h5 class="card-header">Produtos do pedido</h5>
+    <table class="table table-striped text-center">
+      <thead>
+        <tr>
+          <th scope="col">foto</th>
+          <th scope="col">Produto</th>
+          <th scope="col">Preço uni.</th>
+          <th scope="col">Qtd</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of produtos; track item) {
+          <tr>
+            <th><img [src]="item.produto.imagens[0].local" width="20px"></th>
+            <td scope="row">{{item.produto.descricao}}</td>
+            <td> {{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</td>
+            <td>
+              {{item.quantidade}}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h5 class="card-header">Detalhes do pedido</h5>
+    <div class="card-body">
+      <dd class="ng-binding ng-scope">Realizado em: {{pedido.dtPedido | date:"dd/MM/yyyy"}}</dd>
+      @if (pedido.dataEntrega == null && pedido.status.cod_status != 3) {
+        <dd class="ng-binding ng-scope">Entrega prevista: {{dataEntrega | date:"dd/MM/yyyy"}}</dd>
+      }
+      @if (pedido.dataEntrega != null) {
+        <dd class="ng-binding ng-scope">Entregue em: {{pedido.dataEntrega | date:"dd/MM/yyyy"}}</dd>
+      }
+      <dd class="ng-binding ng-scope">Valor do frete: {{pedido.vlFrete.toLocaleString('pt-BR', formato)}}</dd>
+      @if (pedido.cupom != null) {
+        <dd class="ng-binding ng-scope">Cupom de desconto: {{(desconto * (pedido.cupom.desconto / 100)).toLocaleString('pt-BR', formato)}}</dd>
+      }
+      <dd class="ng-binding ng-scope">Valor total: {{pedido.vlPedido.toLocaleString('pt-BR', formato)}}</dd>
     </div>
-    <div class="card">
-        <h5 class="card-header">Detalhes do pedido</h5>
-        <div class="card-body">
-            <dd class="ng-binding ng-scope">Realizado em: {{pedido.dtPedido | date:"dd/MM/yyyy"}}</dd>
-            <dd class="ng-binding ng-scope" *ngIf="pedido.dataEntrega == null && pedido.status.cod_status != 3">Entrega prevista: {{dataEntrega | date:"dd/MM/yyyy"}}</dd>
-            <dd class="ng-binding ng-scope" *ngIf="pedido.dataEntrega != null">Entregue em: {{pedido.dataEntrega | date:"dd/MM/yyyy"}}</dd>
-            <dd class="ng-binding ng-scope">Valor do frete: {{pedido.vlFrete.toLocaleString('pt-BR', formato)}}</dd>
-            <dd class="ng-binding ng-scope" *ngIf="pedido.cupom != null">Cupom de desconto: {{(desconto * (pedido.cupom.desconto / 100)).toLocaleString('pt-BR', formato)}}</dd>
-            <dd class="ng-binding ng-scope">Valor total: {{pedido.vlPedido.toLocaleString('pt-BR', formato)}}</dd>
-        </div>
-    </div>
+  </div>
 </div>

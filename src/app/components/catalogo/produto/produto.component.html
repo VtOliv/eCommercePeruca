@@ -1,32 +1,35 @@
 <div class="container d-flex justify-content-end">
-        <label>Ordenar por:</label>
-        <select (change)="ordenarPor()" [(ngModel)]="ordenacao">
-            <option value="1" disabled selected>Padrão</option>
-            <option value="2">Menor preço</option>
-            <option value="3">Maior preço</option>
-            <option value="4">A - Z</option>
-            <option value="5">Z - A</option>
-        </select>
+  <label>Ordenar por:</label>
+  <select (change)="ordenarPor()" [(ngModel)]="ordenacao">
+    <option value="1" disabled selected>Padrão</option>
+    <option value="2">Menor preço</option>
+    <option value="3">Maior preço</option>
+    <option value="4">A - Z</option>
+    <option value="5">Z - A</option>
+  </select>
 </div>
 <div id="produtos" class="container d-flex justify-content-center">
-    <div *ngFor="let produto of produtosFiltrados" class="d-flex col-md-3 col-xs-12">
-        <div class="card">
-            <div class="text-center">
-                <img [src]="produto.imagens[0].local" class="imagem-produto">
-            </div>
-            <div class="card-body">
-
-                <h5>{{produto.descricao}}</h5>
-                <p class="card-text"> {{produto.categoria.descricao}} <br>
-                    {{produto.valorProduto.toLocaleString('pt-BR', formato)}} <br>
-                </p>
-                <a (click)="abrirPaginaProduto(produto.codProduto)" class="btn btn-dark text-white">Comprar</a>
-            </div>
+  @for (produto of produtosFiltrados; track produto) {
+    <div class="d-flex col-md-3 col-xs-12">
+      <div class="card">
+        <div class="text-center">
+          <img [src]="produto.imagens[0].local" class="imagem-produto">
         </div>
+        <div class="card-body">
+          <h5>{{produto.descricao}}</h5>
+          <p class="card-text"> {{produto.categoria.descricao}} <br>
+            {{produto.valorProduto.toLocaleString('pt-BR', formato)}} <br>
+          </p>
+          <a (click)="abrirPaginaProduto(produto.codProduto)" class="btn btn-dark text-white">Comprar</a>
+        </div>
+      </div>
     </div>
-    <div class="mt-4 alert alert-info" role="alert" *ngIf="produtosFiltrados.length == 0">
-        <span class="sem-produtos">
-            Sua pesquisa não retornou nenhum produto...
-        </span>
+  }
+  @if (produtosFiltrados.length == 0) {
+    <div class="mt-4 alert alert-info" role="alert">
+      <span class="sem-produtos">
+        Sua pesquisa não retornou nenhum produto...
+      </span>
     </div>
+  }
 </div>

@@ -1,55 +1,58 @@
 <div class="container-fluid d-flex row mb-3">
-    <div id="productTable" class="row col-md-8 col-sm-12">
-        <table class="table table-hover text-center p-3 overflow-auto">
-            <thead id="headerTable" class="col-8">
-                <tr>
-                    <th scope="col">Produto</th>
-                    <th scope="col">Qtd</th>
-                    <th scope="col">Preço Uni.</th>
-                    <th scope="col">
-                        <img class="icon-lixeira" src="../../../../assets/images/lixeira_2.png" alt="remover item">
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <div *ngIf="carrinho == null" class="alert alert-success m-2 p-1">
-                    <h5 class="text-center">Você não selecionou nenhum produto até o momento!</h5>
-                </div>
-                <tr *ngFor="let item of carrinho">
-                    <td id="conteudoProduto" class="d-flex">
-                        <img class="peruca" [src]="item.produto.imagens[0].local" width="50px" alt="produto">
-                        <p>{{item.produto.descricao}}</p>
-                    </td>
+  <div id="productTable" class="row col-md-8 col-sm-12">
+    <table class="table table-hover text-center p-3 overflow-auto">
+      <thead id="headerTable" class="col-8">
+        <tr>
+          <th scope="col">Produto</th>
+          <th scope="col">Qtd</th>
+          <th scope="col">Preço Uni.</th>
+          <th scope="col">
+            <img class="icon-lixeira" src="../../../../assets/images/lixeira_2.png" alt="remover item">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (carrinho == null) {
+          <div class="alert alert-success m-2 p-1">
+            <h5 class="text-center">Você não selecionou nenhum produto até o momento!</h5>
+          </div>
+        }
+        @for (item of carrinho; track item) {
+          <tr>
+            <td id="conteudoProduto" class="d-flex">
+              <img class="peruca" [src]="item.produto.imagens[0].local" width="50px" alt="produto">
+              <p>{{item.produto.descricao}}</p>
+            </td>
+            <td>
+              <button id="btnMenosMais" (click)="mudarQuantidade(-1, item)"><img
+              src="../../../../assets/images/menos.png" id="iconBtn" alt="Menos"></button>
+              {{item.quantidade}}
+              <button id="btnMenosMais" (click)="mudarQuantidade(1, item)"><img
+              src="../../../../assets/images/mais.png" id="iconBtn" alt="Mais"></button>
+            </td>
+            <td>
+              <strong>{{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</strong>
+            </td>
+            <td class="remover-produto" (click)="removerProduto(item)">
+              <img class="icon-lixeira" src="../../../../assets/images/remover-x_1.svg">
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 
-                    <td>
-                        <button id="btnMenosMais" (click)="mudarQuantidade(-1, item)"><img
-                                src="../../../../assets/images/menos.png" id="iconBtn" alt="Menos"></button>
-                        {{item.quantidade}}
-                        <button id="btnMenosMais" (click)="mudarQuantidade(1, item)"><img
-                                src="../../../../assets/images/mais.png" id="iconBtn" alt="Mais"></button>
-                    </td>
-                    <td>
-                        <strong>{{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</strong>
-                    </td>
-                    <td class="remover-produto" (click)="removerProduto(item)">
-                        <img class="icon-lixeira" src="../../../../assets/images/remover-x_1.svg">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+  <div class="col-md-4 col-xs-12">
+    <div id="card" class="jumbotron jumbotron-fluid p-3">
+      <h2 id="subtotal">Resumo do Pedido:</h2>
     </div>
+    <div>
 
-
-    <div class="col-md-4 col-xs-12">
-        <div id="card" class="jumbotron jumbotron-fluid p-3">
-            <h2 id="subtotal">Resumo do Pedido:</h2>
-        </div>
-        <div>
-
-            <hr>
-            <strong>TOTAL:</strong>
-            <p>{{total.toLocaleString('pt-BR', formato)}}</p>
-            <button (click)="irCheckout()" class="btn btn-success btn-block">Continuar</button>
-        </div>
+      <hr>
+        <strong>TOTAL:</strong>
+        <p>{{total.toLocaleString('pt-BR', formato)}}</p>
+        <button (click)="irCheckout()" class="btn btn-success btn-block">Continuar</button>
+      </div>
     </div>
-</div>
+  </div>

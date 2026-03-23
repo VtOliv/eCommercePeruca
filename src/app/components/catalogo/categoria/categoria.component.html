@@ -1,14 +1,16 @@
 <div id="navCateg" class="pos-f-t">
-    <nav class="navbar navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            <span class="p-1 ml-1">Categorias</span>
-        </button>
-    
+  <nav class="navbar navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      <span class="p-1 ml-1">Categorias</span>
+    </button>
+
     <div class="collapse" id="navbarToggleExternalContent">
-        <div class="p-1 d-flex">
-            <a *ngFor="let categoria of categoriasVisiveis" (click)="filtrarProds(categoria)" class="btn btn-light ml-4 mr-4">{{categoria.descricao}}</a>
-        </div>
+      <div class="p-1 d-flex">
+        @for (categoria of categoriasVisiveis; track categoria) {
+          <a (click)="filtrarProds(categoria)" class="btn btn-light ml-4 mr-4">{{categoria.descricao}}</a>
+        }
+      </div>
     </div>
-    </nav>
+  </nav>
 </div>

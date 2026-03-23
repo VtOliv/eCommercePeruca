@@ -1,69 +1,71 @@
 <app-nav-relatorios></app-nav-relatorios>
 <div id="estrutura" class="container-fluid row">
-    <app-menu-relatorios></app-menu-relatorios>
-    <div class="col-md-9">
-        <h3 class="card-header text-center font-weight-bold text-uppercase">Cupons</h3>
-        <p-table [value]="cupons" selectionMode="single" (onRowSelect)="onRowSelect($event)" [paginator]="true"
-            [rows]="5">
-            <ng-template pTemplate="caption">
-                Lista de Cupons
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="codCupom">Codigo<p-sortIcon field="codCupom"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="desconto">Desconto<p-sortIcon field="desconto"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="ativo">Ativar/Desativar<p-sortIcon field="ativo"></p-sortIcon>
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-cupons>
-                <tr>
-                    <td class="text-center">{{cupons.codCupom}}</td>
-                    <td class="text-center">{{cupons.nome}}</td>
-                    <td class="text-center">{{cupons.desconto}}%</td>
-                    <td>
-                        <p-inputSwitch [(ngModel)]='cupons.ativo' (click)="ativarCupom(cupons)">
-                        </p-inputSwitch>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary" let-rowData>
-                <div id="divAddCupom">
-                    <button pButton type="button" icon="pi pi-plus" label="Adicionar"
-                        (click)="showDialogToAdd()"></button>
-                </div>
-            </ng-template>
-        </p-table>
-    </div>
+  <app-menu-relatorios></app-menu-relatorios>
+  <div class="col-md-9">
+    <h3 class="card-header text-center font-weight-bold text-uppercase">Cupons</h3>
+    <p-table [value]="cupons" selectionMode="single" (onRowSelect)="onRowSelect($event)" [paginator]="true"
+      [rows]="5">
+      <ng-template pTemplate="caption">
+        Lista de Cupons
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="codCupom">Codigo<p-sortIcon field="codCupom"></p-sortIcon>
+        </th>
+        <th pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon>
+      </th>
+      <th pSortableColumn="desconto">Desconto<p-sortIcon field="desconto"></p-sortIcon>
+    </th>
+    <th pSortableColumn="ativo">Ativar/Desativar<p-sortIcon field="ativo"></p-sortIcon>
+  </th>
+</tr>
+</ng-template>
+<ng-template pTemplate="body" let-cupons>
+  <tr>
+    <td class="text-center">{{cupons.codCupom}}</td>
+    <td class="text-center">{{cupons.nome}}</td>
+    <td class="text-center">{{cupons.desconto}}%</td>
+    <td>
+      <p-inputSwitch [(ngModel)]='cupons.ativo' (click)="ativarCupom(cupons)">
+      </p-inputSwitch>
+    </td>
+  </tr>
+</ng-template>
+<ng-template pTemplate="summary" let-rowData>
+  <div id="divAddCupom">
+    <button pButton type="button" icon="pi pi-plus" label="Adicionar"
+    (click)="showDialogToAdd()"></button>
+  </div>
+</ng-template>
+</p-table>
+</div>
 </div>
 <p-dialog header="Adicionar Cupom" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true"
-    showEffect="fade" [modal]="true" [style]="{width: '300px'}">
-    <div class="ui-g ui-fluid" *ngIf="cupom">
-        <div class="ui-g-12">
-            <div class="ui-g-4">
-                <label for="nome">Nome</label>
-            </div>
-            <div class="ui-g-8">
-                <input pInputText id="nome" [(ngModel)]="cupom.nome" autofocus />
-            </div>
+  showEffect="fade" [modal]="true" [style]="{width: '300px'}">
+  @if (cupom) {
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="nome">Nome</label>
         </div>
-        <div class="ui-g-12">
-            <div class="ui-g-4">
-                <label for="desconto">Desconto</label>
-            </div>
-            <div class="ui-g-8">
-                <input pInputText id="year" [(ngModel)]="cupom.desconto" />
-            </div>
+        <div class="ui-g-8">
+          <input pInputText id="nome" [(ngModel)]="cupom.nome" autofocus />
         </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="desconto">Desconto</label>
+        </div>
+        <div class="ui-g-8">
+          <input pInputText id="year" [(ngModel)]="cupom.desconto" />
+        </div>
+      </div>
     </div>
-    <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" pButton (click)="cadastrarCupom()" label="Cadastrar"></button>
-        </div>
-    </p-footer>
+  }
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton (click)="cadastrarCupom()" label="Cadastrar"></button>
+    </div>
+  </p-footer>
 </p-dialog>
 <p-toast [style]="{marginTop: '80px'}"></p-toast>

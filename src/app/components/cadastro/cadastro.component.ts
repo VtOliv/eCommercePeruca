@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 
@@ -12,9 +12,8 @@ import { CadastrosService } from '../../services/cadastros.service';
 @Component({
     selector: 'app-cadastro',
     imports: [
-        CommonModule,
-        ReactiveFormsModule
-    ],
+    ReactiveFormsModule
+],
     templateUrl: './cadastro.component.html',
     styleUrls: ['./cadastro.component.css']
 })

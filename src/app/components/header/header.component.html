@@ -1,89 +1,95 @@
 <nav class="d-flex justify-content-between row nav-header fixed-top">
-    <div class="d-flex align-items-center col-md-4 col-xs-12" id="div-menu">
-        <div id="mySidebar" class="sidebar">
-            <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-            <a href="#" routerLink="/home">Home</a>
-            <a href="#" routerLink="/catalogo">Produtos</a>
-            <a href="#" routerLink="/quem-somos">Quem Somos</a>
-            <a href="#" routerLink="/contato">Contato</a>
-        </div>
-
-        <div id="main">
-            <button class="openbtn" (click)="openNav()">&#9776;</button>
-        </div>
+  <div class="d-flex align-items-center col-md-4 col-xs-12" id="div-menu">
+    <div id="mySidebar" class="sidebar">
+      <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+      <a href="#" routerLink="/home">Home</a>
+      <a href="#" routerLink="/catalogo">Produtos</a>
+      <a href="#" routerLink="/quem-somos">Quem Somos</a>
+      <a href="#" routerLink="/contato">Contato</a>
     </div>
 
-    <div id="imgLogo" class="d-flex align-items-center justify-content-center col-md-4 col-xs-12">
-        <div class="row imgLogo">
-            <a class="navbar-brand" routerLink="/home">
-                <img src="../../../assets/images/logoWig.png" alt="LogoPrincipal" width="200px">
-            </a>
+    <div id="main">
+      <button class="openbtn" (click)="openNav()">&#9776;</button>
+    </div>
+  </div>
+
+  <div id="imgLogo" class="d-flex align-items-center justify-content-center col-md-4 col-xs-12">
+    <div class="row imgLogo">
+      <a class="navbar-brand" routerLink="/home">
+        <img src="../../../assets/images/logoWig.png" alt="LogoPrincipal" width="200px">
+      </a>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-between col-md-4 col-xs-12 carrinho-login">
+    <div id="buscaResp">
+      <form class="form-inline my-2 my-lg-0">
+        <div id="divBusca" class="col-xs-12">
+          <input type="text" class="txtBusca" placeholder="Pesquisar" [(ngModel)]="filtro" name="filtro" />
+          <button class="btn rounded" (click)="buscar()"><img src="../../../assets/images/find.png"
+          width="20px" id="btnBusca" alt="Buscar" /></button>
         </div>
+      </form>
     </div>
 
-    <div class="d-flex align-items-center justify-content-between col-md-4 col-xs-12 carrinho-login">
-        <div id="buscaResp">
-            <form class="form-inline my-2 my-lg-0">
-                <div id="divBusca" class="col-xs-12">
-                    <input type="text" class="txtBusca" placeholder="Pesquisar" [(ngModel)]="filtro" name="filtro" />
-                    <button class="btn rounded" (click)="buscar()"><img src="../../../assets/images/find.png"
-                            width="20px" id="btnBusca" alt="Buscar" /></button>
-                </div>
-            </form>
-        </div>
-
-        <div class="acessar-carrinho pointer" routerLink="/carrinho" data-display="static" aria-haspopup="true"
-            aria-expanded="false">
-            <div class="quantidade-itens-carrinho rounded-circle alert-dark text-center">
-                <span class="font-weight-bolder">{{quantidade}}</span>
-            </div>
-            <img src="../../../assets/images/carrinho-de-compras.png" width="35px">
-        </div>
-        <div class="acessar dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true"
-            aria-expanded="false">
-            <img src="../../../assets/images/conta.svg" width="35px">
-        </div>
-        <div class="dropdown-menu dropdown-menu-right">
-            <div [ngClass]="logado ? 'aparecer': 'esconder'">
-                <form class="px-4 py-3">
-                    <div class="text-center">
-                        <img *ngIf="sexo == 'Masculino'" src="../../../assets/images/man.png" width="100px">
-                        <img *ngIf="sexo == 'Feminino'" src="../../../assets/images/woman.png" width="100px">
-                        <img *ngIf="sexo == 'Prefiro não informar'" src="../../../assets/images/suspect.png"
-                            width="100px">
-
-                        <p>{{nome}}</p>
-                    </div>
-                </form>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" routerLink="/historico-pedidos">Meus Pedidos</a>
-                <a class="dropdown-item pointer" (click)="deslogarCliente()">Sair</a>
-            </div>
-            <div [ngClass]="!logado ? 'aparecer': 'esconder'">
-                <form class="px-4 py-3 " (ngSubmit)="login()" [formGroup]="formLogin">
-                    <div class="form-group">
-                        <label for="exampleDropdownFormEmail1">Endereço de email:</label>
-                        <input type="email" class="form-control" formControlName="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleDropdownFormPassword1">Senha:</label>
-                        <input type="password" class="form-control" placeholder="Senha" formControlName="senha">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                            <label class="form-check-label" for="dropdownCheck">
-                                Lembre de mim
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-dark">Entrar</button>
-                </form>
-                <div class="dropdown-divider"></div>
-                <div class="pointer">
-                    <a class="dropdown-item" routerLink="/cadastre-se">Não é cadastrado ? Cadastre-se agora</a>
-                </div>
-            </div>
-        </div>
+    <div class="acessar-carrinho pointer" routerLink="/carrinho" data-display="static" aria-haspopup="true"
+      aria-expanded="false">
+      <div class="quantidade-itens-carrinho rounded-circle alert-dark text-center">
+        <span class="font-weight-bolder">{{quantidade}}</span>
+      </div>
+      <img src="../../../assets/images/carrinho-de-compras.png" width="35px">
     </div>
+    <div class="acessar dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true"
+      aria-expanded="false">
+      <img src="../../../assets/images/conta.svg" width="35px">
+    </div>
+    <div class="dropdown-menu dropdown-menu-right">
+      <div [ngClass]="logado ? 'aparecer': 'esconder'">
+        <form class="px-4 py-3">
+          <div class="text-center">
+            @if (sexo == 'Masculino') {
+              <img src="../../../assets/images/man.png" width="100px">
+            }
+            @if (sexo == 'Feminino') {
+              <img src="../../../assets/images/woman.png" width="100px">
+            }
+            @if (sexo == 'Prefiro não informar') {
+              <img src="../../../assets/images/suspect.png"
+                width="100px">
+            }
+
+            <p>{{nome}}</p>
+          </div>
+        </form>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" routerLink="/historico-pedidos">Meus Pedidos</a>
+        <a class="dropdown-item pointer" (click)="deslogarCliente()">Sair</a>
+      </div>
+      <div [ngClass]="!logado ? 'aparecer': 'esconder'">
+        <form class="px-4 py-3 " (ngSubmit)="login()" [formGroup]="formLogin">
+          <div class="form-group">
+            <label for="exampleDropdownFormEmail1">Endereço de email:</label>
+            <input type="email" class="form-control" formControlName="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="exampleDropdownFormPassword1">Senha:</label>
+            <input type="password" class="form-control" placeholder="Senha" formControlName="senha">
+          </div>
+          <div class="form-group">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="dropdownCheck">
+              <label class="form-check-label" for="dropdownCheck">
+                Lembre de mim
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-dark">Entrar</button>
+        </form>
+        <div class="dropdown-divider"></div>
+        <div class="pointer">
+          <a class="dropdown-item" routerLink="/cadastre-se">Não é cadastrado ? Cadastre-se agora</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
