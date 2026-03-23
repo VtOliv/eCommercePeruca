@@ -1,27 +1,42 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxMaskModule } from 'ngx-mask';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { NbThemeModule, NbStepperModule } from "@nebular/theme";
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import {InputTextModule} from 'primeng/inputtext';
-import {CheckboxModule} from 'primeng/checkbox';
-import {ToastModule} from 'primeng/toast';
-import {ChartModule} from 'primeng/chart'
-import { NgxSpinnerModule } from "ngx-spinner";
-import {ButtonModule} from 'primeng/button';
-
-
-import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { AppRoutingModule } from './app-routing.module';
-import { ContatoComponent } from './components/contato/contato.component';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-import {FileUploadModule} from 'primeng/fileupload';
+
+// Routing
+import { AppRoutingModule } from './app-routing.module';
+
+// ngx modules
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { ModalModule } from 'ngx-bootstrap/modal';
+
+// Nebular
+import { NbThemeModule, NbStepperModule } from "@nebular/theme";
+
+// Material
+import { MatSidenavModule } from '@angular/material/sidenav';
+
+// PrimeNG modules
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ToastModule } from 'primeng/toast';
+import { ChartModule } from 'primeng/chart';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ButtonModule } from 'primeng/button';
+import { PaginatorModule } from 'primeng/paginator';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
+
+// App Components
+import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
+import { ContatoComponent } from './components/contato/contato.component';
 
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { DadosPagamentoComponent } from './components/checkout/dados-pagamento/dados-pagamento.component';
@@ -71,7 +86,6 @@ import { FinalizarDoacaoComponent } from './components/checkout-doacao/finalizar
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
 import { CarrinhoDoacaoComponent } from './components/checkout-doacao/carrinho-doacao/carrinho-doacao.component';
 import { ProgressoPedidoComponent } from './components/historico-pedidos/progresso-pedido/progresso-pedido.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProdutosRecomendadosComponent } from './components/pagina-produto/produtos-recomendados/produtos-recomendados.component';
 import { LoginRelatoriosComponent } from './components/pagina-relatorios/login-relatorios/login-relatorios.component';
 import { MenuRelatoriosComponent } from './components/pagina-relatorios/menu-relatorios/menu-relatorios.component';
@@ -139,35 +153,49 @@ import { AlterarProdutoComponent } from './components/pagina-relatorios/estoque/
     CadastroProdutoComponent,
     PainelFaleConoscoComponent,
     AlterarProdutoComponent,
+    NgxMaskDirective,
     ResumoDashboardComponent
 
 
   ],
   imports: [
+    // Angular Core
     BrowserModule,
-    AppRoutingModule,
+    BrowserAnimationsModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ModalModule.forRoot(),
-    NgxMaskModule.forRoot(),
-    BrowserAnimationsModule,
+    
+    // Routing
+    AppRoutingModule,
+    
+    // Nebular & Material
     NbThemeModule.forRoot(),
     NbStepperModule,
     MatSidenavModule,
-    InputSwitchModule,
-    NbStepperModule,
+    
+    // ngx libraries
+    ModalModule.forRoot(),
+    NgxSpinnerModule,
+    
+    // PrimeNG Modules
     TableModule,
     DialogModule,
     InputTextModule,
+    InputSwitchModule,
     CheckboxModule,
     ToastModule,
     ChartModule,
     FileUploadModule,
-    NgxSpinnerModule,
-    ButtonModule
+    ButtonModule,
+    PaginatorModule
   ],
-  providers: [],
+  providers: [
+    MessageService,
+    ConfirmationService,
+    provideNgxMask()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,9 +5,11 @@ import { Validacoes } from 'src/app/model/validacoes';
 import { Router } from "@angular/router";
 import { StorageService } from 'src/app/services/storage.service';
 import { CadastrosService } from 'src/app/services/cadastros.service';
+import { ReactiveFormsModule } from '@angular/forms'; 
 
 @Component({
   selector: 'app-cadastro',
+  imports: [ReactiveFormsModule],
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css']
 })
