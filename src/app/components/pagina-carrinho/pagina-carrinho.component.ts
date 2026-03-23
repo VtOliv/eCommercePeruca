@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-pagina-carrinho',
-  templateUrl: './pagina-carrinho.component.html',
-  styleUrls: ['./pagina-carrinho.component.css']
+    selector: 'app-pagina-carrinho',
+    templateUrl: './pagina-carrinho.component.html',
+    styleUrls: ['./pagina-carrinho.component.css'],
+    standalone: false
 })
 export class PaginaCarrinhoComponent implements OnInit {
 

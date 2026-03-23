@@ -3,9 +3,10 @@ import { Carrinho } from 'src/app/model/carrinho';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
 @Component({
-  selector: 'app-detalhes-pedido',
-  templateUrl: './detalhes-pedido.component.html',
-  styleUrls: ['./detalhes-pedido.component.css']
+    selector: 'app-detalhes-pedido',
+    templateUrl: './detalhes-pedido.component.html',
+    styleUrls: ['./detalhes-pedido.component.css'],
+    standalone: false
 })
 export class DetalhesPedidoComponent implements OnInit {
 

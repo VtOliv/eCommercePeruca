@@ -6,9 +6,10 @@ import { StorageService } from "../../services/storage.service";
 import { Login } from 'src/app/model/login';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css'],
+    standalone: false
 })
 export class HeaderComponent implements OnChanges {
 

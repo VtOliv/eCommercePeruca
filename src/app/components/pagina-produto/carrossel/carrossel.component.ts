@@ -3,9 +3,10 @@ import { Imagem } from 'src/app/model/Imagem';
 import { RequisicoesService } from '../.././../services/requisicoes.service'
 
 @Component({
-  selector: 'app-carrossel',
-  templateUrl: './carrossel.component.html',
-  styleUrls: ['./carrossel.component.css']
+    selector: 'app-carrossel',
+    templateUrl: './carrossel.component.html',
+    styleUrls: ['./carrossel.component.css'],
+    standalone: false
 })
 export class CarrosselComponent implements OnChanges {
 

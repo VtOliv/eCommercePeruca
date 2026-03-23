@@ -4,9 +4,10 @@ import { DadosPagamento } from 'src/app/model/dados-pagamento';
 import { Validacoes } from 'src/app/model/validacoes';
 
 @Component({
-  selector: 'app-dados-pagamento',
-  templateUrl: './dados-pagamento.component.html',
-  styleUrls: ['./dados-pagamento.component.css']
+    selector: 'app-dados-pagamento',
+    templateUrl: './dados-pagamento.component.html',
+    styleUrls: ['./dados-pagamento.component.css'],
+    standalone: false
 })
 export class DadosPagamentoComponent implements OnChanges {
 

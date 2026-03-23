@@ -5,9 +5,10 @@ import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-recuperar-senha',
-  templateUrl: './recuperar-senha.component.html',
-  styleUrls: ['./recuperar-senha.component.css']
+    selector: 'app-recuperar-senha',
+    templateUrl: './recuperar-senha.component.html',
+    styleUrls: ['./recuperar-senha.component.css'],
+    standalone: false
 })
 export class RecuperarSenhaComponent implements OnInit {
 

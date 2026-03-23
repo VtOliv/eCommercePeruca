@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-pagina-produto',
-  templateUrl: './pagina-produto.component.html',
-  styleUrls: ['./pagina-produto.component.css']
+    selector: 'app-pagina-produto',
+    templateUrl: './pagina-produto.component.html',
+    styleUrls: ['./pagina-produto.component.css'],
+    standalone: false
 })
 export class PaginaProdutoComponent implements OnInit {
 

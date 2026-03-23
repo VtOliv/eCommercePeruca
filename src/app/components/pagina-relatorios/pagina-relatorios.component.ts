@@ -3,9 +3,10 @@ import { StorageService } from 'src/app/services/storage.service';
 
 
 @Component({
-  selector: 'app-pagina-relatorios',
-  templateUrl: './pagina-relatorios.component.html',
-  styleUrls: ['./pagina-relatorios.component.css']
+    selector: 'app-pagina-relatorios',
+    templateUrl: './pagina-relatorios.component.html',
+    styleUrls: ['./pagina-relatorios.component.css'],
+    standalone: false
 })
 export class PaginaRelatoriosComponent implements OnInit {
 

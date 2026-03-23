@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-escolha-peruca',
-  templateUrl: './escolha-peruca.component.html',
-  styleUrls: ['./escolha-peruca.component.css']
+    selector: 'app-escolha-peruca',
+    templateUrl: './escolha-peruca.component.html',
+    styleUrls: ['./escolha-peruca.component.css'],
+    standalone: false
 })
 export class EscolhaPerucaComponent implements OnInit {
 

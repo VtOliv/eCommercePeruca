@@ -4,9 +4,10 @@ import { Produto } from 'src/app/model/produto';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-mais-vendidos',
-  templateUrl: './mais-vendidos.component.html',
-  styleUrls: ['./mais-vendidos.component.css']
+    selector: 'app-mais-vendidos',
+    templateUrl: './mais-vendidos.component.html',
+    styleUrls: ['./mais-vendidos.component.css'],
+    standalone: false
 })
 export class MaisVendidosComponent implements OnInit {
 

@@ -3,9 +3,10 @@ import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-nav-relatorios',
-  templateUrl: './nav-relatorios.component.html',
-  styleUrls: ['./nav-relatorios.component.css']
+    selector: 'app-nav-relatorios',
+    templateUrl: './nav-relatorios.component.html',
+    styleUrls: ['./nav-relatorios.component.css'],
+    standalone: false
 })
 export class NavRelatoriosComponent implements OnInit {
 

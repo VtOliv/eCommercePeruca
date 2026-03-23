@@ -6,9 +6,10 @@ import { ProdutoApi } from "src/app/model/produto-api";
 
 
 @Component({
-  selector: 'app-alterar-produto',
-  templateUrl: './alterar-produto.component.html',
-  styleUrls: ['./alterar-produto.component.css']
+    selector: 'app-alterar-produto',
+    templateUrl: './alterar-produto.component.html',
+    styleUrls: ['./alterar-produto.component.css'],
+    standalone: false
 })
 export class AlterarProdutoComponent implements OnInit, OnChanges {
   formAltProd: UntypedFormGroup;

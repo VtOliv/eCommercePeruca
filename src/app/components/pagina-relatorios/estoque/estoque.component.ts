@@ -9,10 +9,11 @@ import { MessageService } from 'primeng/api';
 import { ProdutoApi } from 'src/app/model/produto-api';
 
 @Component({
-  selector: 'app-estoque',
-  templateUrl: './estoque.component.html',
-  styleUrls: ['./estoque.component.css'],
-  providers: [MessageService]
+    selector: 'app-estoque',
+    templateUrl: './estoque.component.html',
+    styleUrls: ['./estoque.component.css'],
+    providers: [MessageService],
+    standalone: false
 })
 export class EstoqueComponent implements OnInit {
   formCadProd: UntypedFormGroup;

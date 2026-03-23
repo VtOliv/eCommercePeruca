@@ -6,9 +6,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
 @Component({
-  selector: 'app-carrinho',
-  templateUrl: './carrinho.component.html',
-  styleUrls: ['./carrinho.component.css']
+    selector: 'app-carrinho',
+    templateUrl: './carrinho.component.html',
+    styleUrls: ['./carrinho.component.css'],
+    standalone: false
 })
 export class CarrinhoComponent implements OnChanges {
 

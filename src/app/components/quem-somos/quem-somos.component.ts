@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-quem-somos',
-  templateUrl: './quem-somos.component.html',
-  styleUrls: ['./quem-somos.component.css']
+    selector: 'app-quem-somos',
+    templateUrl: './quem-somos.component.html',
+    styleUrls: ['./quem-somos.component.css'],
+    standalone: false
 })
 export class QuemSomosComponent implements OnInit {
 

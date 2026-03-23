@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
-  selector: 'app-login-relatorios',
-  templateUrl: './login-relatorios.component.html',
-  styleUrls: ['./login-relatorios.component.css']
+    selector: 'app-login-relatorios',
+    templateUrl: './login-relatorios.component.html',
+    styleUrls: ['./login-relatorios.component.css'],
+    standalone: false
 })
 export class LoginRelatoriosComponent implements OnInit {
 

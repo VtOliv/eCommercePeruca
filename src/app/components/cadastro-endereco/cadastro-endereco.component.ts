@@ -9,14 +9,13 @@ import { Validacoes } from 'src/app/model/validacoes';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
 @Component({
-  selector: 'app-cadastro-endereco',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
-  templateUrl: './cadastro-endereco.component.html',
-  styleUrls: ['./cadastro-endereco.component.css']
+    selector: 'app-cadastro-endereco',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule
+    ],
+    templateUrl: './cadastro-endereco.component.html',
+    styleUrls: ['./cadastro-endereco.component.css']
 })
 export class CadastroEnderecoComponent implements OnInit {
   

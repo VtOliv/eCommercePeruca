@@ -8,10 +8,11 @@ import { MessageService } from 'primeng/api';
 
 
 @Component({
-  selector: 'app-cupons',
-  templateUrl: './cupons.component.html',
-  styleUrls: ['./cupons.component.css'],
-  providers: [MessageService]
+    selector: 'app-cupons',
+    templateUrl: './cupons.component.html',
+    styleUrls: ['./cupons.component.css'],
+    providers: [MessageService],
+    standalone: false
 })
 export class CuponsComponent {
   

@@ -4,9 +4,10 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-produto',
-  templateUrl: './produto.component.html',
-  styleUrls: ['./produto.component.css']
+    selector: 'app-produto',
+    templateUrl: './produto.component.html',
+    styleUrls: ['./produto.component.css'],
+    standalone: false
 })
 export class ProdutoComponent implements OnChanges {
 

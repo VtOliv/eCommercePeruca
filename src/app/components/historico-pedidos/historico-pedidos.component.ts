@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-historico-pedidos',
-  templateUrl: './historico-pedidos.component.html',
-  styleUrls: ['./historico-pedidos.component.css']
+    selector: 'app-historico-pedidos',
+    templateUrl: './historico-pedidos.component.html',
+    styleUrls: ['./historico-pedidos.component.css'],
+    standalone: false
 })
 export class HistoricoPedidosComponent implements OnInit {
 

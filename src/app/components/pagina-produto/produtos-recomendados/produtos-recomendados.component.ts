@@ -4,9 +4,10 @@ import { Produto } from 'src/app/model/produto';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
-  selector: 'app-produtos-recomendados',
-  templateUrl: './produtos-recomendados.component.html',
-  styleUrls: ['./produtos-recomendados.component.css']
+    selector: 'app-produtos-recomendados',
+    templateUrl: './produtos-recomendados.component.html',
+    styleUrls: ['./produtos-recomendados.component.css'],
+    standalone: false
 })
 export class ProdutosRecomendadosComponent implements OnChanges {
 

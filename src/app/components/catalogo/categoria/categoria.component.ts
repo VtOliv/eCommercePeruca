@@ -3,9 +3,10 @@ import { Categoria } from "src/app/model/categoria";
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
 @Component({
-  selector: 'app-categoria',
-  templateUrl: './categoria.component.html',
-  styleUrls: ['./categoria.component.css']
+    selector: 'app-categoria',
+    templateUrl: './categoria.component.html',
+    styleUrls: ['./categoria.component.css'],
+    standalone: false
 })
 export class CategoriaComponent implements OnInit {
   

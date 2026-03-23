@@ -8,9 +8,10 @@ import { Locais } from 'src/app/model/locais';
 
 
 @Component({
-  selector: 'app-carrinho-doacao',
-  templateUrl: './carrinho-doacao.component.html',
-  styleUrls: ['./carrinho-doacao.component.css']
+    selector: 'app-carrinho-doacao',
+    templateUrl: './carrinho-doacao.component.html',
+    styleUrls: ['./carrinho-doacao.component.css'],
+    standalone: false
 })
 export class CarrinhoDoacaoComponent implements OnInit {
 

@@ -3,9 +3,10 @@ import { FaleConosco } from 'src/app/model/faleConosco';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
 @Component({
-  selector: 'app-painel-fale-conosco',
-  templateUrl: './painel-fale-conosco.component.html',
-  styleUrls: ['./painel-fale-conosco.component.css']
+    selector: 'app-painel-fale-conosco',
+    templateUrl: './painel-fale-conosco.component.html',
+    styleUrls: ['./painel-fale-conosco.component.css'],
+    standalone: false
 })
 export class PainelFaleConoscoComponent implements OnInit {
 

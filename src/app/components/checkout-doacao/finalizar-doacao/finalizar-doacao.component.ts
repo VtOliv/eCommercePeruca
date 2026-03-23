@@ -11,9 +11,10 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-finalizar-doacao',
-  templateUrl: './finalizar-doacao.component.html',
-  styleUrls: ['./finalizar-doacao.component.css']
+    selector: 'app-finalizar-doacao',
+    templateUrl: './finalizar-doacao.component.html',
+    styleUrls: ['./finalizar-doacao.component.css'],
+    standalone: false
 })
 export class FinalizarDoacaoComponent implements AfterViewInit {
   dataAtual: Date = new Date();

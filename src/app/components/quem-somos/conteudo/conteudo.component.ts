@@ -3,9 +3,10 @@ import { Contribuidor } from 'src/app/model/contribuidor';
 
 
 @Component({
-  selector: 'app-conteudo',
-  templateUrl: './conteudo.component.html',
-  styleUrls: ['./conteudo.component.css']
+    selector: 'app-conteudo',
+    templateUrl: './conteudo.component.html',
+    styleUrls: ['./conteudo.component.css'],
+    standalone: false
 })
 export class ConteudoComponent implements OnInit {
 

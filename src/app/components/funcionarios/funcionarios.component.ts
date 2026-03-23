@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-funcionarios',
-  templateUrl: './funcionarios.component.html',
-  styleUrls: ['./funcionarios.component.css']
+    selector: 'app-funcionarios',
+    templateUrl: './funcionarios.component.html',
+    styleUrls: ['./funcionarios.component.css'],
+    standalone: false
 })
 export class FuncionariosComponent implements OnInit {
   formFunc: UntypedFormGroup;

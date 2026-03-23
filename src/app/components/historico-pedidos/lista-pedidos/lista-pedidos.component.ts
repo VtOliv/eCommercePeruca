@@ -8,9 +8,10 @@ import { StorageService } from 'src/app/services/storage.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
-  selector: 'app-lista-pedidos',
-  templateUrl: './lista-pedidos.component.html',
-  styleUrls: ['./lista-pedidos.component.css']
+    selector: 'app-lista-pedidos',
+    templateUrl: './lista-pedidos.component.html',
+    styleUrls: ['./lista-pedidos.component.css'],
+    standalone: false
 })
 export class ListaPedidosComponent implements OnInit {
 

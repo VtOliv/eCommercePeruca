@@ -12,10 +12,11 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { Imagem } from 'src/app/model/Imagem';
 
 @Component({
-  selector: 'app-cadastro-produto',
-  templateUrl: './cadastro-produto.component.html',
-  styleUrls: ['./cadastro-produto.component.css'],
-  providers: [MessageService, NgxSpinnerService]
+    selector: 'app-cadastro-produto',
+    templateUrl: './cadastro-produto.component.html',
+    styleUrls: ['./cadastro-produto.component.css'],
+    providers: [MessageService, NgxSpinnerService],
+    standalone: false
 })
 export class CadastroProdutoComponent implements OnInit {
 

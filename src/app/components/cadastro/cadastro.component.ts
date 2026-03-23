@@ -10,14 +10,13 @@ import { StorageService } from '../../services/storage.service';
 import { CadastrosService } from '../../services/cadastros.service';
 
 @Component({
-  selector: 'app-cadastro',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
-  templateUrl: './cadastro.component.html',
-  styleUrls: ['./cadastro.component.css']
+    selector: 'app-cadastro',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule
+    ],
+    templateUrl: './cadastro.component.html',
+    styleUrls: ['./cadastro.component.css']
 })
 export class CadastroComponent implements OnInit {
   formCliente!: FormGroup;

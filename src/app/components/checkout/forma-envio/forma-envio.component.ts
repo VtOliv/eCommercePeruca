@@ -1,9 +1,10 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-forma-envio',
-  templateUrl: './forma-envio.component.html',
-  styleUrls: ['./forma-envio.component.css']
+    selector: 'app-forma-envio',
+    templateUrl: './forma-envio.component.html',
+    styleUrls: ['./forma-envio.component.css'],
+    standalone: false
 })
 export class FormaEnvioComponent implements OnInit {
 
