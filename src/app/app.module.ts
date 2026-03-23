@@ -45,7 +45,6 @@ import { CadastroEnderecoComponent } from './components/cadastro-endereco/cadast
 import { EnderecoComponent } from './components/checkout/endereco/endereco.component';
 import { FormaEnvioComponent } from './components/checkout/forma-envio/forma-envio.component';
 import { CarrinhoComponent } from './components/checkout/carrinho/carrinho.component';
-import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { QuemSomosComponent } from "./components/quem-somos/quem-somos.component";
@@ -117,7 +116,6 @@ import { AlterarProdutoComponent } from './components/pagina-relatorios/estoque/
     EnderecoComponent,
     FormaEnvioComponent,
     CarrinhoComponent,
-    CadastroComponent,
     FooterComponent,
     HeaderComponent,
     QuemSomosComponent,
@@ -153,13 +151,11 @@ import { AlterarProdutoComponent } from './components/pagina-relatorios/estoque/
     CadastroProdutoComponent,
     PainelFaleConoscoComponent,
     AlterarProdutoComponent,
-    NgxMaskDirective,
     ResumoDashboardComponent
 
 
   ],
   imports: [
-    // Angular Core
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
@@ -178,6 +174,7 @@ import { AlterarProdutoComponent } from './components/pagina-relatorios/estoque/
     // ngx libraries
     ModalModule.forRoot(),
     NgxSpinnerModule,
+    NgxMaskDirective,
     
     // PrimeNG Modules
     TableModule,

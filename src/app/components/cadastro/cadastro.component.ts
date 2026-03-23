@@ -1,83 +1,94 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
-import { Cliente } from 'src/app/model/cliente';
-import { Validacoes } from 'src/app/model/validacoes';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-import { StorageService } from 'src/app/services/storage.service';
-import { CadastrosService } from 'src/app/services/cadastros.service';
-import { ReactiveFormsModule } from '@angular/forms'; 
+
+// Models e Services
+import { Cliente } from '../../model/cliente';
+import { Validacoes } from '../../model/validacoes';
+import { StorageService } from '../../services/storage.service';
+import { CadastrosService } from '../../services/cadastros.service';
 
 @Component({
   selector: 'app-cadastro',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css']
 })
 export class CadastroComponent implements OnInit {
-  formCliente: UntypedFormGroup;
+  formCliente!: FormGroup;
   validacoes: Validacoes = new Validacoes();
-  segundaSenha: string = "";
 
+  private fb = inject(FormBuilder);
+  private route = inject(Router);
+  private cadastro = inject(CadastrosService);
+  private storage = inject(StorageService);
 
-  constructor(private formBuilder: UntypedFormBuilder, private route: Router, private cadastro: CadastrosService, private storage: StorageService) {
+  ngOnInit(): void {
+    // Verifica se já está logado antes de inicializar o form
+    if (this.storage.recuperarUsuario() != null) {
+      this.route.navigate(["home"]);
+      return;
+    }
 
+    this.createForm(new Cliente("", "", "", "", "", "", null), "");
   }
 
-  ngOnInit() { this.createForm(new Cliente("", "", "", "", "", "", null), ""); }
-
-  createForm(cliente: Cliente, segundaSenha) {
-    this.formCliente = this.formBuilder.group({
+  createForm(cliente: Cliente, segundaSenha: string) {
+    this.formCliente = this.fb.group({
       nome: [cliente.nome],
       sexo: [cliente.sexo],
       cpf: [cliente.cpf],
       telefone: [cliente.telefone],
       email: [cliente.email],
       senha: [cliente.senha],
-      segundaSenha: segundaSenha
+      segundaSenha: [segundaSenha]
     });
-
-    if (this.storage.recuperarUsuario() != null) {
-      this.route.navigate(["home"]);
-    }
   }
 
   onSubmit() {
-    if (this.verificarSenhasIguais() && this.validacoes.verificarDadosCliente(this.formCliente.value)) {
-      this.cadastro.cadastrarUsuario(this.formCliente.value).subscribe(
-        data => {
-          if (data == 1) {
-            alert("Esse email já está vinculado a um cadastro!")
-          } else if (data == 2) {
-            alert("Esse CPF já está vinculado a um cadastro!")
+    const dadosForm = this.formCliente.value;
+
+    if (this.verificarSenhasIguais() && this.validacoes.verificarDadosCliente(dadosForm)) {
+      this.cadastro.cadastrarUsuario(dadosForm).subscribe({
+        next: (data) => {
+          if (data === 1) {
+            alert("Esse email já está vinculado a um cadastro!");
+          } else if (data === 2) {
+            alert("Esse CPF já está vinculado a um cadastro!");
           } else {
             this.storage.salvarUsuario(data);
             this.route.navigate(['home']);
           }
+        },
+        error: (err) => {
+          console.error("Erro ao cadastrar:", err);
+          alert("Ocorreu um erro no servidor. Tente novamente mais tarde.");
         }
-      )
+      });
     } else {
-      alert("Não foi possivel efetuar o cadastro, verifique os dados e tente novamente.");
+      alert("Não foi possível efetuar o cadastro. Verifique os dados e as senhas.");
     }
   }
 
-  permitirNumeros(evento: any) {
+  permitirNumeros(evento: Event) {
     this.validacoes.cancelarLetras(evento);
   }
 
-  permitirLetras(evento: any) {
+  permitirLetras(evento: Event) {
     this.validacoes.cancelarNumeros(evento);
   }
 
-  verificarSenhasIguais() {
-    if (this.formCliente.value.segundaSenha == this.formCliente.value.senha) {
+  verificarSenhasIguais(): boolean {
+    const { senha, segundaSenha } = this.formCliente.value;
+    if (senha === segundaSenha && senha !== "") {
       return true;
-    } else if (this.formCliente.value.senha) {
-      alert("Confirme a senha, senhas não coincidem");
     }
+    alert("As senhas não coincidem!");
     return false;
   }
 }
-
-
-
-

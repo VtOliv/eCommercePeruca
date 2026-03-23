@@ -1,67 +1,81 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+
+// Models e Services
 import { Endereco } from 'src/app/model/endereco';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
-import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Uf } from 'src/app/model/uf';
 import { Validacoes } from 'src/app/model/validacoes';
+import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
 @Component({
   selector: 'app-cadastro-endereco',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './cadastro-endereco.component.html',
   styleUrls: ['./cadastro-endereco.component.css']
 })
 export class CadastroEnderecoComponent implements OnInit {
+  
+  // Injeção de dependências moderna (Angular 16+)
+  private fb = inject(FormBuilder);
+  private http = inject(RequisicoesService);
 
-  @Output() novoEndereco = new EventEmitter();
-  formEndereco: UntypedFormGroup;
+  @Output() novoEndereco = new EventEmitter<any>();
+  
+  formEndereco!: FormGroup;
   estados: Uf[] = [];
-  validacoes: Validacoes;
+  validacoes: Validacoes = new Validacoes();
 
-  private createForm(endereco: Endereco): UntypedFormGroup {
-    return new UntypedFormGroup({
-      destinatario: new UntypedFormControl(endereco.destinatario),
-      cep: new UntypedFormControl(endereco.cep),
-      logradouro: new UntypedFormControl(endereco.logradouro),
-      numero: new UntypedFormControl(endereco.numero),
-      bairro: new UntypedFormControl(endereco.bairro),
-      localidade: new UntypedFormControl(endereco.localidade),
-      uf: new UntypedFormControl(endereco.uf),
-      complemento: new UntypedFormControl(endereco.complemento)
-    })
-  }
+  ngOnInit(): void {
+    // Inicializa o formulário
+    this.createForm(new Endereco("", "", null, "", "", "", ""));
 
-  constructor(private http: RequisicoesService) {
-    this.formEndereco = this.createForm(new Endereco("", "", null, "", "", "", ""));
+    // Busca os estados
     this.http.getEstados().subscribe(dados => {
       this.estados = dados;
     });
-    this.validacoes = new Validacoes();
   }
 
-  validarCep(evento: any) {
-    this.validacoes.cancelarLetras(evento)
+  private createForm(endereco: Endereco): void {
+    this.formEndereco = this.fb.group({
+      destinatario: [endereco.destinatario],
+      cep: [endereco.cep],
+      logradouro: [endereco.logradouro],
+      numero: [endereco.numero],
+      bairro: [endereco.bairro],
+      localidade: [endereco.localidade],
+      uf: [endereco.uf],
+      complemento: [endereco.complemento]
+    });
   }
 
-  permitirLetras(evento: any) {
-    this.validacoes.cancelarNumeros(evento)
-  }
-
-  preencherEndereco() {
-    if (this.formEndereco.value.cep.length == 8) {
-      this.http.getEnderecoViaCep(this.formEndereco.value.cep).subscribe(
-        dados => {
+  preencherEndereco(): void {
+    const cep = this.formEndereco.get('cep')?.value;
+    
+    if (cep && cep.length === 8) {
+      this.http.getEnderecoViaCep(cep).subscribe({
+        next: (dados) => {
           this.formEndereco.patchValue({
             localidade: dados.localidade,
             bairro: dados.bairro,
             uf: dados.uf,
             logradouro: dados.logradouro
-          })
-        }
-      )
+          });
+        },
+        error: (err) => console.error("Erro ao buscar CEP", err)
+      });
     }
   }
 
-  ngOnInit(): void {
+  validarCep(evento: Event): void {
+    this.validacoes.cancelarLetras(evento);
   }
 
+  permitirLetras(evento: Event): void {
+    this.validacoes.cancelarNumeros(evento);
+  }
 }
