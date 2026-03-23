@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
     selector: 'app-recuperar-senha',
     templateUrl: './recuperar-senha.component.html',
     styleUrls: ['./recuperar-senha.component.css'],
-    standalone: false
+    standalone: true
 })
 export class RecuperarSenhaComponent implements OnInit {
 

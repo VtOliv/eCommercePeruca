@@ -8,8 +8,8 @@ describe('CarrinhoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CarrinhoComponent ]
-    })
+    declarations: [CarrinhoComponent]
+})
     .compileComponents();
   }));
 

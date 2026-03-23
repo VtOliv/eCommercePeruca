@@ -16,7 +16,7 @@ import { Imagem } from 'src/app/model/Imagem';
     templateUrl: './cadastro-produto.component.html',
     styleUrls: ['./cadastro-produto.component.css'],
     providers: [MessageService, NgxSpinnerService],
-    standalone: false
+    standalone: true
 })
 export class CadastroProdutoComponent implements OnInit {
 

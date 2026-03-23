@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-descricao',
     templateUrl: './descricao.component.html',
     styleUrls: ['./descricao.component.css'],
-    standalone: false
+    standalone: true
 })
 export class DescricaoComponent implements OnInit {
 

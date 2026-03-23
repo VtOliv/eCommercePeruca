@@ -8,8 +8,8 @@ describe('RecuperarSenhaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RecuperarSenhaComponent ]
-    })
+    declarations: [RecuperarSenhaComponent]
+})
     .compileComponents();
   }));
 

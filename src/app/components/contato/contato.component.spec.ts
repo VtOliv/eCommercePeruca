@@ -8,8 +8,8 @@ describe('ContatoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContatoComponent ]
-    })
+    declarations: [ContatoComponent]
+})
     .compileComponents();
   }));
 

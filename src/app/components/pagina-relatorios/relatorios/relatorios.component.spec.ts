@@ -8,8 +8,8 @@ describe('RelatoriosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RelatoriosComponent ]
-    })
+    declarations: [RelatoriosComponent]
+})
     .compileComponents();
   }));
 

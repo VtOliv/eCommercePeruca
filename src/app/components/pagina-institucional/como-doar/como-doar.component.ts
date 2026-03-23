@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-como-doar',
     templateUrl: './como-doar.component.html',
     styleUrls: ['./como-doar.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ComoDoarComponent implements OnInit {
 

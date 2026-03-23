@@ -8,8 +8,8 @@ describe('CentroComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CentroComponent ]
-    })
+    declarations: [CentroComponent]
+})
     .compileComponents();
   }));
 

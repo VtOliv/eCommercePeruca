@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-modal',
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ModalComponent implements OnInit {
 

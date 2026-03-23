@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-menu-relatorios',
     templateUrl: './menu-relatorios.component.html',
     styleUrls: ['./menu-relatorios.component.css'],
-    standalone: false
+    standalone: true
 })
 export class MenuRelatoriosComponent implements OnInit {
 

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-historico-pedidos',
     templateUrl: './historico-pedidos.component.html',
     styleUrls: ['./historico-pedidos.component.css'],
-    standalone: false
+    standalone: true
 })
 export class HistoricoPedidosComponent implements OnInit {
 

@@ -6,7 +6,7 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
     selector: 'app-painel-fale-conosco',
     templateUrl: './painel-fale-conosco.component.html',
     styleUrls: ['./painel-fale-conosco.component.css'],
-    standalone: false
+    standalone: true
 })
 export class PainelFaleConoscoComponent implements OnInit {
 

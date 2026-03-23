@@ -8,8 +8,8 @@ describe('EnderecoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EnderecoComponent ]
-    })
+    declarations: [EnderecoComponent]
+})
     .compileComponents();
   }));
 

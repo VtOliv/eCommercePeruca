@@ -8,8 +8,8 @@ describe('DadosPagamentoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DadosPagamentoComponent ]
-    })
+    declarations: [DadosPagamentoComponent]
+})
     .compileComponents();
   }));
 

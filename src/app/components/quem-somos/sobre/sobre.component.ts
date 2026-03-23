@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-sobre',
     templateUrl: './sobre.component.html',
     styleUrls: ['./sobre.component.css'],
-    standalone: false
+    standalone: true
 })
 export class SobreComponent implements OnInit {
 

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-compra-finalizada',
     templateUrl: './compra-finalizada.component.html',
     styleUrls: ['./compra-finalizada.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CompraFinalizadaComponent implements OnInit {
 

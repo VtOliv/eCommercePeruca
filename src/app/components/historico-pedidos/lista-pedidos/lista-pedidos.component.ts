@@ -11,7 +11,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
     selector: 'app-lista-pedidos',
     templateUrl: './lista-pedidos.component.html',
     styleUrls: ['./lista-pedidos.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ListaPedidosComponent implements OnInit {
 

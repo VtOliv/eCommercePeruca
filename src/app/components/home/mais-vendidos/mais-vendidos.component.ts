@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     selector: 'app-mais-vendidos',
     templateUrl: './mais-vendidos.component.html',
     styleUrls: ['./mais-vendidos.component.css'],
-    standalone: false
+    standalone: true
 })
 export class MaisVendidosComponent implements OnInit {
 

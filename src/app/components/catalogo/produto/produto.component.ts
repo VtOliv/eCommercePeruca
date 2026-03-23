@@ -2,12 +2,14 @@ import { Component, OnInit, Output, OnChanges, Input } from '@angular/core';
 import { Produto } from 'src/app/model/produto';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-produto',
     templateUrl: './produto.component.html',
     styleUrls: ['./produto.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule]
 })
 export class ProdutoComponent implements OnChanges {
 

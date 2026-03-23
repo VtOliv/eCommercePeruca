@@ -8,8 +8,8 @@ describe('CompraFinalizadaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompraFinalizadaComponent ]
-    })
+    declarations: [CompraFinalizadaComponent]
+})
     .compileComponents();
   }));
 

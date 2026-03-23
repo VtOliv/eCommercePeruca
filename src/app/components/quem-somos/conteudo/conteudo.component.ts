@@ -6,7 +6,7 @@ import { Contribuidor } from 'src/app/model/contribuidor';
     selector: 'app-conteudo',
     templateUrl: './conteudo.component.html',
     styleUrls: ['./conteudo.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ConteudoComponent implements OnInit {
 

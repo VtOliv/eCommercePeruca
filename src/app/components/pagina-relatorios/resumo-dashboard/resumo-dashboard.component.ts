@@ -9,7 +9,7 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
     selector: 'app-resumo-dashboard',
     templateUrl: './resumo-dashboard.component.html',
     styleUrls: ['./resumo-dashboard.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ResumoDashboardComponent implements OnInit {
 

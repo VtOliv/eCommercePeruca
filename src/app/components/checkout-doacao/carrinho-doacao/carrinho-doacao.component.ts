@@ -11,7 +11,7 @@ import { Locais } from 'src/app/model/locais';
     selector: 'app-carrinho-doacao',
     templateUrl: './carrinho-doacao.component.html',
     styleUrls: ['./carrinho-doacao.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CarrinhoDoacaoComponent implements OnInit {
 

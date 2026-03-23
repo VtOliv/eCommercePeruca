@@ -14,7 +14,7 @@ import { timeInterval } from 'rxjs/operators';
     selector: 'app-checkout',
     templateUrl: './checkout.component.html',
     styleUrls: ['./checkout.component.css'],
-    standalone: false
+    standalone: true
 })
 
 export class CheckoutComponent implements OnInit {

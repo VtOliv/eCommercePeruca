@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
     selector: 'app-checkout-doacao',
     templateUrl: './checkout-doacao.component.html',
     styleUrls: ['./checkout-doacao.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CheckoutDoacaoComponent implements AfterViewInit {
   dataAtual: Date = new Date();

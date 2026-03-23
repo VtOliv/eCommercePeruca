@@ -6,7 +6,7 @@ import { StorageService } from 'src/app/services/storage.service';
     selector: 'app-pagina-relatorios',
     templateUrl: './pagina-relatorios.component.html',
     styleUrls: ['./pagina-relatorios.component.css'],
-    standalone: false
+    standalone: true
 })
 export class PaginaRelatoriosComponent implements OnInit {
 

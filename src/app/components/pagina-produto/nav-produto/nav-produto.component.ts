@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-nav-produto',
     templateUrl: './nav-produto.component.html',
     styleUrls: ['./nav-produto.component.css'],
-    standalone: false
+    standalone: true
 })
 export class NavProdutoComponent implements OnInit {
 

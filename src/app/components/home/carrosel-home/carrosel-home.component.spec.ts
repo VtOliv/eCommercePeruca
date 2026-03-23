@@ -8,8 +8,8 @@ describe('CarroselHomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CarroselHomeComponent ]
-    })
+    declarations: [CarroselHomeComponent]
+})
     .compileComponents();
   }));
 

@@ -6,7 +6,7 @@ import { RequisicoesService } from '../.././../services/requisicoes.service'
     selector: 'app-carrossel',
     templateUrl: './carrossel.component.html',
     styleUrls: ['./carrossel.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CarrosselComponent implements OnChanges {
 

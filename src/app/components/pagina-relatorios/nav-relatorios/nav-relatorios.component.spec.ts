@@ -8,8 +8,8 @@ describe('NavRelatoriosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavRelatoriosComponent ]
-    })
+    declarations: [NavRelatoriosComponent]
+})
     .compileComponents();
   }));
 

@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
     templateUrl: './cupons.component.html',
     styleUrls: ['./cupons.component.css'],
     providers: [MessageService],
-    standalone: false
+    standalone: true
 })
 export class CuponsComponent {
   

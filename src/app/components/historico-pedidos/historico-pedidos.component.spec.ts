@@ -8,8 +8,8 @@ describe('HistoricoPedidosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HistoricoPedidosComponent ]
-    })
+    declarations: [HistoricoPedidosComponent]
+})
     .compileComponents();
   }));
 

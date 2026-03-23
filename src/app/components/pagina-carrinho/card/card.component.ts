@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     selector: 'app-card',
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CardComponent implements OnInit {
 

@@ -8,8 +8,8 @@ describe('NavCheckoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavCheckoutComponent ]
-    })
+    declarations: [NavCheckoutComponent]
+})
     .compileComponents();
   }));
 

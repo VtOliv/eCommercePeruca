@@ -13,7 +13,7 @@ import { ProdutoApi } from 'src/app/model/produto-api';
     templateUrl: './estoque.component.html',
     styleUrls: ['./estoque.component.css'],
     providers: [MessageService],
-    standalone: false
+    standalone: true
 })
 export class EstoqueComponent implements OnInit {
   formCadProd: UntypedFormGroup;

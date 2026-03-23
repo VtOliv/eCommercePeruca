@@ -8,8 +8,8 @@ describe('InstitucionalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InstitucionalComponent ]
-    })
+    declarations: [InstitucionalComponent]
+})
     .compileComponents();
   }));
 

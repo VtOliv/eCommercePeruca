@@ -8,8 +8,8 @@ describe('LoginRelatoriosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginRelatoriosComponent ]
-    })
+    declarations: [LoginRelatoriosComponent]
+})
     .compileComponents();
   }));
 

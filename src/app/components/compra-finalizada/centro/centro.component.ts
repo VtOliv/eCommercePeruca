@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-centro',
     templateUrl: './centro.component.html',
     styleUrls: ['./centro.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CentroComponent implements OnInit {
 

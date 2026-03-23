@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-logo',
     templateUrl: './logo.component.html',
     styleUrls: ['./logo.component.css'],
-    standalone: false
+    standalone: true
 })
 export class LogoComponent implements OnInit {
 

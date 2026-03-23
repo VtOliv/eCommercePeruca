@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-finalizar',
     templateUrl: './finalizar.component.html',
     styleUrls: ['./finalizar.component.css'],
-    standalone: false
+    standalone: true
 })
 export class FinalizarComponent implements OnInit {
 

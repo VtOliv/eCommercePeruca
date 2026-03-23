@@ -8,8 +8,8 @@ describe('ResumoDashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResumoDashboardComponent ]
-    })
+    declarations: [ResumoDashboardComponent]
+})
     .compileComponents();
   }));
 

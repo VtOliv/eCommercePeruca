@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-quem-somos',
     templateUrl: './quem-somos.component.html',
     styleUrls: ['./quem-somos.component.css'],
-    standalone: false
+    standalone: true
 })
 export class QuemSomosComponent implements OnInit {
 

@@ -8,7 +8,7 @@ import { StorageService } from 'src/app/services/storage.service';
     selector: 'app-comprar',
     templateUrl: './comprar.component.html',
     styleUrls: ['./comprar.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ComprarComponent implements OnChanges {
 

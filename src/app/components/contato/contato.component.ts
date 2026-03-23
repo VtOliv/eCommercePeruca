@@ -12,7 +12,7 @@ import { StatusFaleConosco } from 'src/app/model/statusFaleConosco';
     selector: 'app-contato',
     templateUrl: './contato.component.html',
     styleUrls: ['./contato.component.css'],
-    standalone: false
+    standalone: true
 })
 
 export class ContatoComponent implements OnInit {

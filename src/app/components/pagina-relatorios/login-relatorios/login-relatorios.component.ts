@@ -8,7 +8,7 @@ import { StorageService } from 'src/app/services/storage.service';
     selector: 'app-login-relatorios',
     templateUrl: './login-relatorios.component.html',
     styleUrls: ['./login-relatorios.component.css'],
-    standalone: false
+    standalone: true
 })
 export class LoginRelatoriosComponent implements OnInit {
 

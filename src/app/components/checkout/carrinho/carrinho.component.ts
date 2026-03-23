@@ -9,7 +9,7 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
     selector: 'app-carrinho',
     templateUrl: './carrinho.component.html',
     styleUrls: ['./carrinho.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CarrinhoComponent implements OnChanges {
 

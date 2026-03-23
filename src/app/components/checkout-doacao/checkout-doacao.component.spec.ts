@@ -8,8 +8,8 @@ describe('CheckoutDoacaoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckoutDoacaoComponent ]
-    })
+    declarations: [CheckoutDoacaoComponent]
+})
     .compileComponents();
   }));
 

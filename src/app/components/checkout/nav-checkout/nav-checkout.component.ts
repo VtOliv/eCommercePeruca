@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-nav-checkout',
     templateUrl: './nav-checkout.component.html',
     styleUrls: ['./nav-checkout.component.css'],
-    standalone: false
+    standalone: true
 })
 export class NavCheckoutComponent implements OnInit {
 

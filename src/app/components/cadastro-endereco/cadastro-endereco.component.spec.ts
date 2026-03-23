@@ -8,8 +8,8 @@ describe('CadastroEnderecoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CadastroEnderecoComponent ]
-    })
+    imports: [CadastroEnderecoComponent]
+})
     .compileComponents();
   }));
 

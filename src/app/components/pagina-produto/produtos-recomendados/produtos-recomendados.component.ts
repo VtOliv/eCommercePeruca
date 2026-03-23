@@ -7,7 +7,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
     selector: 'app-produtos-recomendados',
     templateUrl: './produtos-recomendados.component.html',
     styleUrls: ['./produtos-recomendados.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ProdutosRecomendadosComponent implements OnChanges {
 

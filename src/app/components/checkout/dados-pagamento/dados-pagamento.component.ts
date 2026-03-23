@@ -7,7 +7,7 @@ import { Validacoes } from 'src/app/model/validacoes';
     selector: 'app-dados-pagamento',
     templateUrl: './dados-pagamento.component.html',
     styleUrls: ['./dados-pagamento.component.css'],
-    standalone: false
+    standalone: true
 })
 export class DadosPagamentoComponent implements OnChanges {
 

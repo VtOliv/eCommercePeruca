@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
     selector: 'app-nav-relatorios',
     templateUrl: './nav-relatorios.component.html',
     styleUrls: ['./nav-relatorios.component.css'],
-    standalone: false
+    standalone: true
 })
 export class NavRelatoriosComponent implements OnInit {
 

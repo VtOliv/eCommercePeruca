@@ -6,7 +6,7 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
     selector: 'app-detalhes-pedido',
     templateUrl: './detalhes-pedido.component.html',
     styleUrls: ['./detalhes-pedido.component.css'],
-    standalone: false
+    standalone: true
 })
 export class DetalhesPedidoComponent implements OnInit {
 

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-carrossel-doacao',
     templateUrl: './carrossel-doacao.component.html',
     styleUrls: ['./carrossel-doacao.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CarrosselDoacaoComponent implements OnInit {
 

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-carrosel-home',
     templateUrl: './carrosel-home.component.html',
     styleUrls: ['./carrosel-home.component.css'],
-    standalone: false
+    standalone: true
 })
 export class CarroselHomeComponent implements OnInit {
 

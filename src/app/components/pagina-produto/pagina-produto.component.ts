@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
     selector: 'app-pagina-produto',
     templateUrl: './pagina-produto.component.html',
     styleUrls: ['./pagina-produto.component.css'],
-    standalone: false
+    standalone: true
 })
 export class PaginaProdutoComponent implements OnInit {
 

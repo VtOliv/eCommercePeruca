@@ -1,14 +1,20 @@
 <div id="navCateg" class="pos-f-t">
   <nav class="navbar navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
       <span class="p-1 ml-1">Categorias</span>
     </button>
 
     <div class="collapse" id="navbarToggleExternalContent">
-      <div class="p-1 d-flex">
-        @for (categoria of categoriasVisiveis; track categoria) {
-          <a (click)="filtrarProds(categoria)" class="btn btn-light ml-4 mr-4">{{categoria.descricao}}</a>
+      <div class="p-1 d-flex flex-wrap">
+        @for (categoria of categoriasVisiveis; track categoria.descricao) {
+          <a (click)="filtrarProds(categoria)" 
+             class="btn btn-light mx-2 my-1" 
+             style="cursor: pointer;">
+            {{ categoria.descricao }}
+          </a>
+        } @empty {
+          <span class="p-2">Carregando categorias...</span>
         }
       </div>
     </div>

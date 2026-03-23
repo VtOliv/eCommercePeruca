@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, UntypedFormGroup, UntypedFormControl } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
+import { FormBuilder, UntypedFormGroup, UntypedFormControl, FormsModule } from "@angular/forms";
+import { Router, ActivatedRoute, RouterModule } from "@angular/router";
 import { RequisicoesService } from "../../services/requisicoes.service";
 import { StorageService } from "../../services/storage.service";
 import { Login } from 'src/app/model/login';
@@ -9,7 +9,8 @@ import { Login } from 'src/app/model/login';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [RouterModule, FormsModule]
 })
 export class HeaderComponent implements OnChanges {
 

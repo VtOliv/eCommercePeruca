@@ -8,8 +8,8 @@ describe('PaginaRelatoriosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaginaRelatoriosComponent ]
-    })
+    declarations: [PaginaRelatoriosComponent]
+})
     .compileComponents();
   }));
 

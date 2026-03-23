@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-relatorios',
     templateUrl: './relatorios.component.html',
     styleUrls: ['./relatorios.component.css'],
-    standalone: false
+    standalone: true
 })
 export class RelatoriosComponent implements OnInit {
 

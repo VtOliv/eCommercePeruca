@@ -8,8 +8,8 @@ describe('PainelFaleConoscoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PainelFaleConoscoComponent ]
-    })
+    declarations: [PainelFaleConoscoComponent]
+})
     .compileComponents();
   }));
 

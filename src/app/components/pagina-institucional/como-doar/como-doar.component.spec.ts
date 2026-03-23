@@ -8,8 +8,8 @@ describe('ComoDoarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ComoDoarComponent ]
-    })
+    declarations: [ComoDoarComponent]
+})
     .compileComponents();
   }));
 

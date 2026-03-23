@@ -8,8 +8,8 @@ describe('MaisVendidosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MaisVendidosComponent ]
-    })
+    declarations: [MaisVendidosComponent]
+})
     .compileComponents();
   }));
 

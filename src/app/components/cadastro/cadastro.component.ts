@@ -11,9 +11,8 @@ import { CadastrosService } from '../../services/cadastros.service';
 
 @Component({
     selector: 'app-cadastro',
-    imports: [
-    ReactiveFormsModule
-],
+    standalone: true,
+    imports: [ReactiveFormsModule, FormsModule],
     templateUrl: './cadastro.component.html',
     styleUrls: ['./cadastro.component.css']
 })
@@ -27,7 +26,6 @@ export class CadastroComponent implements OnInit {
   private storage = inject(StorageService);
 
   ngOnInit(): void {
-    // Verifica se já está logado antes de inicializar o form
     if (this.storage.recuperarUsuario() != null) {
       this.route.navigate(["home"]);
       return;

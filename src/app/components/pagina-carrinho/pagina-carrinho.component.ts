@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-pagina-carrinho',
     templateUrl: './pagina-carrinho.component.html',
     styleUrls: ['./pagina-carrinho.component.css'],
-    standalone: false
+    standalone: true
 })
 export class PaginaCarrinhoComponent implements OnInit {
 

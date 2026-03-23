@@ -8,8 +8,8 @@ describe('FormaEnvioComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormaEnvioComponent ]
-    })
+    declarations: [FormaEnvioComponent]
+})
     .compileComponents();
   }));
 

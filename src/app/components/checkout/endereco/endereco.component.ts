@@ -7,7 +7,7 @@ import { EventEmitter } from 'protractor';
     selector: 'app-endereco',
     templateUrl: './endereco.component.html',
     styleUrls: ['./endereco.component.css'],
-    standalone: false
+    standalone: true
 })
 export class EnderecoComponent implements OnInit {
 

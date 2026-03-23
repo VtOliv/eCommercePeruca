@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     selector: 'app-funcionarios',
     templateUrl: './funcionarios.component.html',
     styleUrls: ['./funcionarios.component.css'],
-    standalone: false
+    standalone: true
 })
 export class FuncionariosComponent implements OnInit {
   formFunc: UntypedFormGroup;

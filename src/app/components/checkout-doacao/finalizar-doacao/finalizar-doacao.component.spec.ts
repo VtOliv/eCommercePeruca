@@ -8,8 +8,8 @@ describe('FinalizarDoacaoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FinalizarDoacaoComponent ]
-    })
+    declarations: [FinalizarDoacaoComponent]
+})
     .compileComponents();
   }));
 

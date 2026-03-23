@@ -4,7 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
     selector: 'app-progresso-pedido',
     templateUrl: './progresso-pedido.component.html',
     styleUrls: ['./progresso-pedido.component.css'],
-    standalone: false
+    standalone: true
 })
 export class ProgressoPedidoComponent implements OnInit {
 
