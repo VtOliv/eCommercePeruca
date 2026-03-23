@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
@@ -93,106 +93,94 @@ import { CadastroProdutoComponent } from './components/pagina-relatorios/estoque
 import { PainelFaleConoscoComponent } from './components/pagina-relatorios/painel-fale-conosco/painel-fale-conosco.component';
 import { AlterarProdutoComponent } from './components/pagina-relatorios/estoque/alterar-produto/alterar-produto.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    CarroselHomeComponent,
-    InstitucionalComponent,
-    MaisVendidosComponent,
-    PaginaProdutoComponent,
-    CarrosselComponent,
-    ComprarComponent,
-    DescricaoComponent,
-    ModalComponent,
-    NavbarComponent,
-    SobreComponent,
-    LoginComponent,
-    ContatoComponent,
-    CheckoutComponent,
-    DadosPagamentoComponent,
-    NavCheckoutComponent,
-    CadastroEnderecoComponent,
-    EnderecoComponent,
-    FormaEnvioComponent,
-    CarrinhoComponent,
-    FooterComponent,
-    HeaderComponent,
-    QuemSomosComponent,
-    ConteudoComponent,
-    PaginaCarrinhoComponent,
-    CardComponent,
-    CompraFinalizadaComponent,
-    CentroComponent,
-    CatalogoComponent,
-    ProdutoComponent,
-    CategoriaComponent,
-    FuncionariosComponent,
-    PaginaInstitucionalComponent,
-    ComoDoarComponent,
-    EscolhaPerucaComponent,
-    CarrosselDoacaoComponent,
-    HistoricoPedidosComponent,
-    ListaPedidosComponent,
-    CheckoutDoacaoComponent,
-    PaginaRelatoriosComponent,
-    CuponsComponent,
-    EstoqueComponent,
-    RelatoriosComponent,
-    NavRelatoriosComponent,
-    DetalhesPedidoComponent,
-    FinalizarDoacaoComponent,
-    RecuperarSenhaComponent,
-    CarrinhoDoacaoComponent,
-    ProgressoPedidoComponent,
-    ProdutosRecomendadosComponent,
-    LoginRelatoriosComponent,
-    MenuRelatoriosComponent,
-    CadastroProdutoComponent,
-    PainelFaleConoscoComponent,
-    AlterarProdutoComponent,
-    ResumoDashboardComponent
-
-
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    
-    // Routing
-    AppRoutingModule,
-    
-    // Nebular & Material
-    NbThemeModule.forRoot(),
-    NbStepperModule,
-    MatSidenavModule,
-    
-    // ngx libraries
-    ModalModule.forRoot(),
-    NgxSpinnerModule,
-    NgxMaskDirective,
-    
-    // PrimeNG Modules
-    TableModule,
-    DialogModule,
-    InputTextModule,
-    InputSwitchModule,
-    CheckboxModule,
-    ToastModule,
-    ChartModule,
-    FileUploadModule,
-    ButtonModule,
-    PaginatorModule
-  ],
-  providers: [
-    MessageService,
-    ConfirmationService,
-    provideNgxMask()
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HomeComponent,
+        CarroselHomeComponent,
+        InstitucionalComponent,
+        MaisVendidosComponent,
+        PaginaProdutoComponent,
+        CarrosselComponent,
+        ComprarComponent,
+        DescricaoComponent,
+        ModalComponent,
+        NavbarComponent,
+        SobreComponent,
+        LoginComponent,
+        ContatoComponent,
+        CheckoutComponent,
+        DadosPagamentoComponent,
+        NavCheckoutComponent,
+        CadastroEnderecoComponent,
+        EnderecoComponent,
+        FormaEnvioComponent,
+        CarrinhoComponent,
+        FooterComponent,
+        HeaderComponent,
+        QuemSomosComponent,
+        ConteudoComponent,
+        PaginaCarrinhoComponent,
+        CardComponent,
+        CompraFinalizadaComponent,
+        CentroComponent,
+        CatalogoComponent,
+        ProdutoComponent,
+        CategoriaComponent,
+        FuncionariosComponent,
+        PaginaInstitucionalComponent,
+        ComoDoarComponent,
+        EscolhaPerucaComponent,
+        CarrosselDoacaoComponent,
+        HistoricoPedidosComponent,
+        ListaPedidosComponent,
+        CheckoutDoacaoComponent,
+        PaginaRelatoriosComponent,
+        CuponsComponent,
+        EstoqueComponent,
+        RelatoriosComponent,
+        NavRelatoriosComponent,
+        DetalhesPedidoComponent,
+        FinalizarDoacaoComponent,
+        RecuperarSenhaComponent,
+        CarrinhoDoacaoComponent,
+        ProgressoPedidoComponent,
+        ProdutosRecomendadosComponent,
+        LoginRelatoriosComponent,
+        MenuRelatoriosComponent,
+        CadastroProdutoComponent,
+        PainelFaleConoscoComponent,
+        AlterarProdutoComponent,
+        ResumoDashboardComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        // Routing
+        AppRoutingModule,
+        // Nebular & Material
+        NbThemeModule.forRoot(),
+        NbStepperModule,
+        MatSidenavModule,
+        // ngx libraries
+        ModalModule.forRoot(),
+        NgxSpinnerModule,
+        NgxMaskDirective,
+        // PrimeNG Modules
+        TableModule,
+        DialogModule,
+        InputTextModule,
+        InputSwitchModule,
+        CheckboxModule,
+        ToastModule,
+        ChartModule,
+        FileUploadModule,
+        ButtonModule,
+        PaginatorModule], providers: [
+        MessageService,
+        ConfirmationService,
+        provideNgxMask(),
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
