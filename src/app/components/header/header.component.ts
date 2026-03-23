@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, inject } from '@angular/core';
 import { FormBuilder, UntypedFormGroup, UntypedFormControl, FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute, RouterModule } from "@angular/router";
 import { RequisicoesService } from "../../services/requisicoes.service";
@@ -10,9 +10,13 @@ import { Login } from 'src/app/model/login';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css'],
     standalone: true,
-    imports: [RouterModule, FormsModule]
+    imports: [RouterModule, FormsModule, RouterModule]
 })
 export class HeaderComponent implements OnChanges {
+  private requisicoes = inject(RequisicoesService);
+  private route = inject(Router);
+  private storage = inject(StorageService);
+
 
   formLogin: UntypedFormGroup;
   email: string;
@@ -25,7 +29,7 @@ export class HeaderComponent implements OnChanges {
   @Input() atualizarQuantidade: boolean;
   @Output() atualizarCarrinho: EventEmitter<any> = new EventEmitter();
 
-  constructor(private requisicoes: RequisicoesService, private route: Router, private storage: StorageService) {
+  constructor() {
     this.formLogin = this.createForm(new Login("", ""));
     this.verificar();
     if (this.storage.recuperarCarrinho() != null) {

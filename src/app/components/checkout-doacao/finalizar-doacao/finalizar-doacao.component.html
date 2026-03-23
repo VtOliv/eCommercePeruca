@@ -1,85 +1,91 @@
-<form id="formulario-checkout" class="row">
+<div id="formulario-checkout" class="row">
+  
   <div class="col-md-7">
-    <header class="p-3 mb-2 bg-info text-light">
-      <select class="form-control formgroup" placeholder="local" name="local-doacao" required
-        [(ngModel)]="escolhido" (ngModelChange)="mudarLocal()">
-        <option selected disabled>Local</option>
-        <option value=0>{{locais[0].nome}}</option>
-        <option value=1>{{locais[1].nome}}</option>
-        <option value=2>{{locais[2].nome}}</option>
+    <header class="p-3 mb-2 bg-info text-light rounded shadow-sm">
+      <select class="form-control" name="local-doacao" required
+              [(ngModel)]="escolhido" (ngModelChange)="mudarLocal()">
+        <option [ngValue]="null" selected disabled>Selecione o Local</option>
+        @for (local of locais; track local; let i = $index) {
+          <option [value]="i">{{ local.nome }}</option>
+        }
       </select>
     </header>
-    <div>
 
-      <iframe #iframe width="100%" height="350" frameborder="0" style="border:0;" allowfullscreen=""
-      aria-hidden="false" tabindex="0"></iframe>
+    <div class="map-container border rounded overflow-hidden shadow-sm">
+      <iframe #iframe width="100%" height="350" frameborder="0" style="border:0;" 
+              allowfullscreen="" aria-hidden="false" tabindex="0"
+              [src]="mapaUrl">
+      </iframe>
     </div>
   </div>
 
   <div class="col-md-5">
     <app-carrinho-doacao></app-carrinho-doacao>
-    <header class="p-3 mb-2 bg-info text-light">
-      Pagamento
 
+    <header class="p-3 mb-2 bg-info text-light rounded shadow-sm mt-3">
+      Pagamento
     </header>
 
-    <form class="form-group" [formGroup]="formPagamento">
-      <div class="col-12">
-        <label for="cartaousuario">Número do Cartão</label>
-        <input id="cartaoVali" class="form-control" (keypress)="permitirNumeros($event)" type="text"
-          name="cartaousuarioo" formControlName="numeroCartao" placeholder="0000 0000 0000 0000"
-          mask="0000 0000 0000 0000">
+    <form class="form-group bg-light p-3 rounded border shadow-sm" [formGroup]="formPagamento" (ngSubmit)="finalizarDoacao()">
+      
+      <div class="col-12 mb-2">
+        <label for="cartaoVali" class="font-weight-bold">Número do Cartão</label>
+        <input id="cartaoVali" class="form-control" (keypress)="permitirNumeros($event)" 
+               type="text" formControlName="numeroCartao" 
+               placeholder="0000 0000 0000 0000" mask="0000 0000 0000 0000">
+      </div>
+
+      <div class="form-row p-0 m-0">
+        <div class="col-md-9 px-1 mb-2">
+          <label class="font-weight-bold">Data validade:</label>
+          <div class="row no-gutters">
+            <div class="col-6 pr-1">
+              <select class="custom-select" formControlName="mesValidade" (change)="verificarValidade()">
+                <option value="" selected disabled>Mês</option>
+                @for (dia of dias; track dia) {
+                  <option [value]="dia">{{ dia | number: '2.0' }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-6 pl-1">
+              <select class="custom-select" formControlName="anoValidade" (change)="verificarValidade()">
+                <option value="" selected disabled>Ano</option>
+                @for (ano of anos; track ano) {
+                  <option [value]="ano">{{ ano }}</option>
+                }
+              </select>
+            </div>
+          </div>
         </div>
-        <div class="form-row p-3">
-          <div class="col-9">
-            <label>Data validade:</label>
-            <div class="row">
-              <div class="col-6 pr-1">
-                <select class="custom-select" formControlName="mesValidade" (change)="verificarValidade()">
-                  <option value="" selected disabled hidden>Mês</option>
-                  @for (dia of dias; track dia) {
-                    <option [value]="dia">{{dia}}</option>
-                  }
-                </select>
-              </div>
-              <div class="col-6 pl-1">
-                <select class="custom-select" formControlName="anoValidade" (change)="verificarValidade()">
-                  <option value="" selected disabled hidden>Ano</option>
-                  @for (ano of anos; track ano) {
-                    <option [value]="ano">{{ano}}</option>
-                  }
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <label>CVV:</label>
-            <input class="form-control" type="text" placeholder="000" (keypress)="permitirNumeros($event)"
-              maxlength="3" formControlName="cvv">
-            </div>
-          </div>
+        
+        <div class="col-md-3 px-1 mb-2">
+          <label class="font-weight-bold">CVV:</label>
+          <input class="form-control" type="text" placeholder="000" 
+                 (keypress)="permitirNumeros($event)" maxlength="3" formControlName="cvv">
+        </div>
+      </div>
 
-          <div class="col-12">
-            <label for="nomeTitular">Nome do Titular</label>
-            <input class="form-control" type="text" name="nomeUsuario" (keypress)="permitirLetras($event)"
-              placeholder="Nome do Titular" formControlName="nomeTitular">
-            </div>
+      <div class="col-12 mb-2">
+        <label for="nomeTitular" class="font-weight-bold">Nome do Titular</label>
+        <input id="nomeTitular" class="form-control" type="text" 
+               (keypress)="permitirLetras($event)" placeholder="Como no cartão" 
+               formControlName="nomeTitular">
+      </div>
 
-            <div class="col-12">
-              <label for="cpfCliente">CPF do Titular</label>
-              <input id="cpfCliente" class="form-control" (keypress)="permitirNumeros($event)" type="text"
-                name="cpfCliente" placeholder="CPF do Titular" mask="000.000.000-00">
-              </div>
+      <div class="col-12 mb-3">
+        <label for="cpfCliente" class="font-weight-bold">CPF do Titular</label>
+        <input id="cpfCliente" class="form-control" (keypress)="permitirNumeros($event)" 
+               type="text" formControlName="cpfTitular" 
+               placeholder="000.000.000-00" mask="000.000.000-00">
+      </div>
 
-              <div class="pt-3 d-flex flex-row-reverse">
-                <a class="btn">
-                  <button type="button"  class="btn btn-success">
-                  Finalizar Doação</button>
-                </a>
-              </div>
+      <div class="col-12 text-right">
+        <button type="submit" class="btn btn-success btn-block py-2 font-weight-bold" 
+                [disabled]="formPagamento.invalid">
+          Finalizar Doação
+        </button>
+      </div>
 
-            </form>
-          </div>
-
-
-        </form>
+    </form>
+  </div>
+</div>

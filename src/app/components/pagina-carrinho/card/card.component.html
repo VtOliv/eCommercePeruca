@@ -31,7 +31,7 @@
               src="../../../../assets/images/mais.png" id="iconBtn" alt="Mais"></button>
             </td>
             <td>
-              <strong>{{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</strong>
+              <strong>{{ item.produto.valorProduto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</strong>
             </td>
             <td class="remover-produto" (click)="removerProduto(item)">
               <img class="icon-lixeira" src="../../../../assets/images/remover-x_1.svg">
@@ -44,12 +44,9 @@
 
 
   <div class="col-md-4 col-xs-12">
-    <div id="card" class="jumbotron jumbotron-fluid p-3">
-      <h2 id="subtotal">Resumo do Pedido:</h2>
-    </div>
-    <div>
-
-      <hr>
+      <div id="card" class="jumbotron jumbotron-fluid p-3">
+        <h2 id="subtotal">Resumo do Pedido:</h2>
+        <hr>
         <strong>TOTAL:</strong>
         <p>{{total.toLocaleString('pt-BR', formato)}}</p>
         <button (click)="irCheckout()" class="btn btn-success btn-block">Continuar</button>

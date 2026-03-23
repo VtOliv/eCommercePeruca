@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Produto } from 'src/app/model/produto';
 import { Compra } from 'src/app/model/compra';
 import { Cupom } from 'src/app/model/cupom';
@@ -20,7 +20,9 @@ export class ResumoDashboardComponent implements OnInit {
   pedido : Compra[] = [];
   cupons : Cupom[] = [];
 
-  constructor(requisicoes: RequisicoesService) {
+  constructor() {
+    const requisicoes = inject(RequisicoesService);
+
     requisicoes.todosCupons().subscribe(
       data => {
         this.cupons = data;  

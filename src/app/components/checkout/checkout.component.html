@@ -1,88 +1,100 @@
 <app-nav-checkout></app-nav-checkout>
-<main class="container">
-  <form class="row dados center" id="checkout" method="POST">
+
+<main class="container mt-4">
+  <form class="row" id="checkout">
+    
     <div class="col-md-4">
-      <div class="card-header bg-info text-light">
-        <img src="../../../../assets/images/caixa-de-correio.png" alt="" srcset="" width="25" height="25">
-        <b class="p-4 font-weight-bolder">Dados de Entrega</b>
+      <div class="card-header bg-info text-light d-flex align-items-center">
+        <img src="assets/images/caixa-de-correio.png" width="25" height="25" alt="ícone entrega">
+        <b class="ml-3">Dados de Entrega</b>
       </div>
-      @if (enderecos.length != 0) {
-        <app-endereco [endereco]="enderecoPrincipal"></app-endereco>
-      }
-      @if (enderecos.length == 0) {
-        <div class="text-center mt-2 mb-3">
-          <div class="alert alert-warning m-2 p-1">
-            <h5 class="text-center">Cadastre um endereço para prosseguir com as compras...</h5>
-          </div>
-          <button class="btn btn-success" (click)="abrirModal(novoEndereco)">Cadastrar novo endereço</button>
+
+      @if (enderecos.length > 0) {
+        <app-endereco [endereco]="enderecoPrincipal!"></app-endereco>
+        <button type="button" class="btn btn-primary btn-block mt-2" (click)="abrirModal(listaEnderecos)">
+          Alterar endereço
+        </button>
+      } @else {
+        <div class="alert alert-warning mt-2 text-center">
+          <h5>Cadastre um endereço para prosseguir...</h5>
+          <button type="button" class="btn btn-success btn-sm mt-2" (click)="abrirModal(novoEndereco)">
+            Cadastrar novo endereço
+          </button>
         </div>
       }
-      @if (enderecos.length != 0) {
-        <a class="btn btn-primary text-light mt-2" (click)="abrirModal(listaEnderecos)">Alterar endereço</a>
-      }
+
       <app-forma-envio (enviarFormaDeEnvio)="receberFormaDeEnvio($event)"></app-forma-envio>
     </div>
+
     <div class="col-md-4">
-      <div class="card-header bg-info text-light">
-        <img src="../../../../assets/images/doacao.svg" alt="" srcset="" width="25" height="25">
-        <b class="p-4 font-weight-bolder">Dados de Pagamento</b>
+      <div class="card-header bg-info text-light d-flex align-items-center">
+        <img src="assets/images/doacao.svg" width="25" height="25" alt="ícone pagamento">
+        <b class="ml-3">Dados de Pagamento</b>
       </div>
-      <app-dados-pagamento [validarDadosPagamento]="dadosDePagamento"
-      (botaoFinalizarClicado)="finalizarCompra($event, modalDadosIncorretos)"></app-dados-pagamento>
+      
+      <app-dados-pagamento 
+        [validarDadosPagamento]="dadosDePagamento"
+        (botaoFinalizarClicado)="finalizarCompra($event, modalDadosIncorretos)">
+      </app-dados-pagamento>
     </div>
+
     <div class="col-md-4">
-      <div class="card-header bg-info text-light">
-        <img src="../../../../assets/images/varejo.svg" alt="" srcset="" width="25" height="25">
-        <b class="p-4 font-weight-bolder">Resumo da compra</b>
+      <div class="card-header bg-info text-light d-flex align-items-center">
+        <img src="assets/images/varejo.svg" width="25" height="25" alt="ícone resumo">
+        <b class="ml-3">Resumo da compra</b>
       </div>
-      <app-carrinho [frete]="formaEnvio"
-      (enviarCupom)="receberCupom($event)"></app-carrinho>
+
+      <app-carrinho [frete]="formaEnvio" (enviarCupom)="receberCupom($event)"></app-carrinho>
+      
       <hr>
-        <div class="totalCheckout">
-          Total {{total.toLocaleString('pt-BR', formato)}}
-        </div>
-
-        <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-success btn-block" id="btn-finalizar"
-          (click)="validarCampos(modalDadosIncorretos)">Finalizar compra</button>
-        </div>
+      <div class="h4 text-right mb-3">
+        Total: <span class="text-success font-weight-bold">{{ total | currency:'BRL' }}</span>
       </div>
-    </form>
-  </main>
 
-  <ng-template #novoEndereco>
-    <app-cadastro-endereco (novoEndereco)="cadastrarEndereco($event)"></app-cadastro-endereco>
-  </ng-template>
-
-  <ng-template #listaEnderecos>
-    <div class="lista-enderecos d-flex flex-column">
-      <div class="card ng-scope text-center sticky-top">
-        <h5 class="card-header">Escolha o endereço</h5>
-      </div>
-      @for (item of enderecos; track item) {
-        <a (click)="mudarEndereco(item)">
-          <app-endereco [endereco]="item"></app-endereco>
-        </a>
-      }
-      <div class="text-center mt-2 mb-3">
-        <button class="btn btn-success" (click)="abrirModal(novoEndereco)">Cadastrar novo endereço</button>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #modalDadosIncorretos>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Dados não preenchidos corretamente</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
+      <button type="button" class="btn btn-success btn-lg btn-block" (click)="validarCampos(modalDadosIncorretos)">
+        Finalizar compra
       </button>
     </div>
-    <div class="modal-body">
-      <p>Verifique se todos os campos estão corretos.</p>
-      <p>Preenha todos os dados corretamente para finalizar a compra.</p>
-    </div>
-  </ng-template>
 
-  <div class="footer mt-4">
-    <app-footer></app-footer>
+  </form>
+</main>
+
+<ng-template #novoEndereco>
+  <div class="modal-body">
+    <app-cadastro-endereco (novoEndereco)="cadastrarEndereco($event)"></app-cadastro-endereco>
   </div>
+</ng-template>
+
+<ng-template #listaEnderecos>
+  <div class="modal-header">
+    <h5 class="modal-title">Escolha o endereço</h5>
+    <button type="button" class="close" (click)="modalRef?.hide()">&times;</button>
+  </div>
+  <div class="modal-body overflow-auto" style="max-height: 400px;">
+    @for (item of enderecos; track item.id) {
+      <div class="cursor-pointer mb-2 border rounded p-1" (click)="mudarEndereco(item)" style="cursor: pointer">
+        <app-endereco [endereco]="item"></app-endereco>
+      </div>
+    }
+    <button class="btn btn-success btn-block mt-3" (click)="abrirModal(novoEndereco)">
+      + Cadastrar novo endereço
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #modalDadosIncorretos>
+  <div class="modal-header bg-danger text-white">
+    <h4 class="modal-title">Atenção!</h4>
+    <button type="button" class="close text-white" (click)="modalRef?.hide()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <p><b>Verifique os seguintes itens:</b></p>
+    <ul>
+      <li>Endereço de entrega selecionado.</li>
+      <li>Forma de envio escolhida.</li>
+      <li>Dados do cartão de pagamento.</li>
+    </ul>
+  </div>
+</ng-template>
+
+<app-footer></app-footer>

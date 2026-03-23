@@ -1,116 +1,140 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, TemplateRef } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from "@angular/forms";
-import { Locais } from 'src/app/model/locais';
+import { Component, ViewChild, ElementRef, inject, OnInit, SafeResourceUrl } from '@angular/core';
+import { CommonModule, DecimalPipe } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from "@angular/forms";
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+
+// Services & Models
+import { Locais } from 'src/app/model/locais';
 import { Validacoes } from 'src/app/model/validacoes';
 import { DadosPagamento } from 'src/app/model/dados-pagamento';
 import { CadastrosService } from 'src/app/services/cadastros.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Router } from '@angular/router';
 
+// Sub-componentes
+import { CarrinhoDoacaoComponent } from '../carrinho-doacao/carrinho-doacao.component';
 
+// Diretivas de Máscara (Ngx-Mask)
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @Component({
-    selector: 'app-finalizar-doacao',
-    templateUrl: './finalizar-doacao.component.html',
-    styleUrls: ['./finalizar-doacao.component.css'],
-    standalone: true
+  selector: 'app-finalizar-doacao',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
+    CarrinhoDoacaoComponent
+  ],
+  providers: [provideNgxMask()],
+  templateUrl: './finalizar-doacao.component.html',
+  styleUrls: ['./finalizar-doacao.component.css']
 })
-export class FinalizarDoacaoComponent implements AfterViewInit {
-  dataAtual: Date = new Date();
-  data: string;
-  formPagamento: UntypedFormGroup;
-  validacoes: Validacoes;
-  dadosDePagamento: boolean = false;
-  vlDoacao: 49.90;
+export class FinalizarDoacaoComponent implements OnInit {
+  // Injeções Modernas
+  private fb = inject(FormBuilder);
+  private cadastros = inject(CadastrosService);
+  private storage = inject(StorageService);
+  private route = inject(Router);
+  private sanitizer = inject(DomSanitizer);
 
-  private createForm(dadosPagamento: DadosPagamento): UntypedFormGroup {
-    return new UntypedFormGroup({
-      numeroCartao: new UntypedFormControl(dadosPagamento.numeroCartao),
-      mesValidade: new UntypedFormControl(dadosPagamento.mesValidade),
-      anoValidade: new UntypedFormControl(dadosPagamento.anoValidade),
-      cvv: new UntypedFormControl(dadosPagamento.cvv),
-      nomeTitular: new UntypedFormControl(dadosPagamento.nomeTitular),
-      cpf: new UntypedFormControl(dadosPagamento.cpf)
-    })
-  }
+  // Propriedades do Componente
+  public formPagamento!: FormGroup;
+  public validacoes = new Validacoes();
+  public vlDoacao = 49.90;
+  
+  public locais: Locais[] = [
+    new Locais("Instituto do Câncer SP", "https://www.google.com/maps/embed?pb=!1m18..."),
+    new Locais("AACD", "https://www.google.com/maps/embed?pb=!1m18..."),
+    new Locais("GRAAC", "https://www.google.com/maps/embed?pb=!1m18...")
+  ];
+  
+  public escolhido: number = 0;
+  public localEscolhido: Locais;
+  public mapaUrl!: SafeResourceUrl; // URL segura para o iframe
 
-  @ViewChild('iframe') iframe: ElementRef;
+  public dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  public anos: number[] = [];
 
-  locais: Locais[] = [new Locais("Instituto do Câncer SP", "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58510.38820676956!2d-46.730180115298296!3d-23.57206121657443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce582a2caf4ef9%3A0x4a60c9bac394fb6b!2sInstituto%20do%20C%C3%A2ncer%20do%20Estado%20de%20S%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1585329515376!5m2!1spt-BR!2sbr"),
-  new Locais("AACD", "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58499.30397043733!2d-46.68674973666297!3d-23.59692605580908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5a1f56f181d9%3A0x87896620d3d38475!2sHospital%20AACD!5e0!3m2!1spt-BR!2sbr!4v1585329134212!5m2!1spt-BR!2sbr"),
-  new Locais("GRAAC", "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.1752128990793!2d-46.64445698554201!3d-23.59804836883202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5a25488482bb%3A0xd7abb48c53783ee1!2sGRAACC!5e0!3m2!1spt-BR!2sbr!4v1585167738599!5m2!1spt-BR!2sb")];
-  escolhido: number = 0;
-  localEscolhido;
-
-
-  dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  anos = this.anoValidade();
-  constructor(sanitizer: DomSanitizer, private fb: UntypedFormBuilder,private cadastros: CadastrosService, private storage: StorageService, private route: Router) {
+  constructor() {
     this.localEscolhido = this.locais[this.escolhido];
-    this.validacoes = new Validacoes();
-    this.data = `${this.dataAtual.getFullYear()}-`;
-    this.data += this.dataAtual.getMonth() < 9 ? `0${(this.dataAtual.getMonth() + 1)}` : `${(this.dataAtual.getMonth() + 1)}`
-    this.formPagamento = this.createForm(new DadosPagamento("", "", "", "", "", ""))
-
+    this.anos = this.gerarAnosValidade();
   }
 
-  ngAfterViewInit(): void {
-    this.iframe.nativeElement.setAttribute('src', this.localEscolhido.link);
+  ngOnInit(): void {
+    this.initForm();
+    this.atualizarMapa();
   }
 
-  mudarLocal() {
+  private initForm() {
+    this.formPagamento = this.fb.group({
+      numeroCartao: ['', [Validators.required]],
+      mesValidade: ['', [Validators.required]],
+      anoValidade: ['', [Validators.required]],
+      cvv: ['', [Validators.required, Validators.maxLength(3)]],
+      nomeTitular: ['', [Validators.required]],
+      cpfTitular: ['', [Validators.required]] // Campo adicionado para bater com o HTML
+    });
+  }
+
+  public mudarLocal(): void {
     this.localEscolhido = this.locais[this.escolhido];
-    this.iframe.nativeElement.setAttribute('src', this.localEscolhido.link);
+    this.atualizarMapa();
   }
 
-  permitirNumeros(evento: any) {
+  private atualizarMapa(): void {
+    // Transforma a string em uma URL confiável para o Angular
+    this.mapaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.localEscolhido.link);
+  }
+
+  public finalizarDoacao(): void {
+    if (this.formPagamento.valid) {
+      this.cadastros.cadastrarDoacao(this.localEscolhido, this.vlDoacao).subscribe({
+        next: (dados) => {
+          if (dados) {
+            const cliente = this.storage.recuperarUsuario();
+            if (!cliente.doacao) cliente.doacao = [];
+            
+            cliente.doacao.push(dados);
+            this.storage.salvarUsuario(cliente);
+            this.route.navigate(['/finalizar-compra']);
+          }
+        },
+        error: (err) => console.error("Erro na doação", err)
+      });
+    } else {
+      alert("Por favor, preencha os dados de pagamento corretamente.");
+    }
+  }
+
+  // Métodos de utilidade
+  public permitirNumeros(evento: Event): void {
     this.validacoes.cancelarLetras(evento);
   }
 
-  permitirLetras(evento: any) {
+  public permitirLetras(evento: Event): void {
     this.validacoes.cancelarNumeros(evento);
   }
 
-  anoValidade() {
-
-    let anos: Array<number> = [];
-    let anoAtual: Date = new Date();
+  private gerarAnosValidade(): number[] {
+    const anos: number[] = [];
+    const anoAtual = new Date().getFullYear();
     for (let i = 0; i <= 20; i++) {
-      anos.push(anoAtual.getFullYear() + i);
-    } return anos;
+      anos.push(anoAtual + i);
+    }
+    return anos;
   }
-  verificarValidade() {
-    let data = new Date();
-    if (this.formPagamento.value.anoValidade == data.getFullYear() &&
-      this.formPagamento.value.mesValidade <= (data.getMonth() + 1) &&
-      this.formPagamento.value.anoValidade != "" &&
-      this.formPagamento.value.mesValidade != "") {
+
+  public verificarValidade(): void {
+    const data = new Date();
+    const { anoValidade, mesValidade } = this.formPagamento.value;
+
+    if (anoValidade == data.getFullYear() && mesValidade <= (data.getMonth() + 1)) {
       this.formPagamento.patchValue({
         mesValidade: data.getMonth() + 2
-      })
+      });
     }
   }
-
-  finalizarDoacao(valido) {
-    if (valido) {
-      this.cadastros.cadastrarDoacao(this.localEscolhido, this.vlDoacao).subscribe(
-        dados => {
-          if(dados != null){
-            let cliente = this.storage.recuperarUsuario();
-            if(cliente.doacao == null){
-              cliente.doacao = []
-            }
-            cliente.doacao.push(dados)
-            this.storage.salvarUsuario
-            this.route.navigate(['/finalizar-compra'])
-          }
-          console.log(dados)
-        }
-      )
-    } else {
-      console.log("erro na requisição")
-    }
-  }
-  
 }

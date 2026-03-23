@@ -55,12 +55,12 @@
     </div>
 </div>
 
-<p-dialog header="Adicionar produto" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true"
+<p-dialog header="Adicionar produto" [(visible)]="displayDialog" [focusOnShow]="false" 
     showEffect="fade" [modal]="true" [style]="{width: '500px'}">
     <app-cadastro-produto (produtoCadastrado)="receberProduto($event)"></app-cadastro-produto>
 </p-dialog>
 
-<p-dialog header="Alterar produto" [(visible)]="displayDialogAlt" [focusOnShow]="false" [responsive]="true"
+<p-dialog header="Alterar produto" [(visible)]="displayDialogAlt" [focusOnShow]="false" 
     showEffect="fade" [modal]="true" [style]="{width: '500px'}">
     <app-alterar-produto [produto]="produtoAlt" (produtoAlterado)="receberProdutoAlterado($event)"></app-alterar-produto>
 </p-dialog>

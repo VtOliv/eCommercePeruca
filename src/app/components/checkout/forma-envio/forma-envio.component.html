@@ -1,9 +1,18 @@
 <div class="form-group">
-    <label>Forma de envio:</label>
-    <select class="form-control" name="forma-envio" (change)="enviarFormaDeEnvio.emit(formaDeEnvio)" [(ngModel)]="formaDeEnvio">
-        <option value="0" disabled selected hidden>Forma de envio</option>
-        <option [ngValue]="10">Econômica - R$ 10,00 - receber em até 15 dias</option>
-        <option [ngValue]="20">Normal - R$ 20,00 - receber em até 7 dias</option>
-        <option [ngValue]="30">Rápida - R$ 30,00 - receber em até 3 dias</option>
-    </select>
+  <label for="forma-envio" class="font-weight-bold">Forma de envio:</label>
+  
+  <select 
+    id="forma-envio"
+    class="form-control shadow-sm" 
+    name="forma-envio" 
+    [(ngModel)]="formaDeEnvio"
+    (ngModelChange)="aoMudarEnvio()">
+    
+    <option [value]="0" disabled hidden>Selecione a forma de envio</option>
+    
+    <option [ngValue]="10">Econômica - R$ 10,00 - receber em até 15 dias</option>
+    <option [ngValue]="20">Normal - R$ 20,00 - receber em até 7 dias</option>
+    <option [ngValue]="30">Rápida - R$ 30,00 - receber em até 3 dias</option>
+    
+  </select>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 
@@ -9,8 +9,9 @@ import { Router } from '@angular/router';
     standalone: true
 })
 export class NavRelatoriosComponent implements OnInit {
+  private storage = inject(StorageService);
+  private route = inject(Router);
 
-  constructor(private storage: StorageService, private route: Router) { }
 
   ngOnInit(): void {
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Cupom } from 'src/app/model/cupom';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
@@ -15,6 +15,11 @@ import { MessageService } from 'primeng/api';
     standalone: true
 })
 export class CuponsComponent {
+  private formBuilder = inject(UntypedFormBuilder);
+  private requisicoes = inject(RequisicoesService);
+  private cadastro = inject(CadastrosService);
+  private messageService = inject(MessageService);
+
   
   
   Desativar: false
@@ -29,10 +34,7 @@ export class CuponsComponent {
   formCupom: UntypedFormGroup;
 
 
-  constructor(private formBuilder: UntypedFormBuilder,
-    private requisicoes: RequisicoesService,
-    private cadastro: CadastrosService,
-    private messageService: MessageService) {
+  constructor() {
 
     this.requisicoes.todosCupons().subscribe(
       data => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FaleConosco } from 'src/app/model/faleConosco';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
@@ -9,10 +9,10 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
     standalone: true
 })
 export class PainelFaleConoscoComponent implements OnInit {
+  private requisicoes = inject(RequisicoesService);
+
 
   mensagens: FaleConosco[] =[];
-
-  constructor(private requisicoes: RequisicoesService) { }
 
   ngOnInit(): void {
     this.requisicoes.buscarMensagens().subscribe(

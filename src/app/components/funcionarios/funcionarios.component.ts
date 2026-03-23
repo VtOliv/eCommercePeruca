@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { Validacoes } from 'src/app/model/validacoes';
 import { Funcionario } from 'src/app/model/funcionario';
@@ -14,12 +14,15 @@ import { Router } from '@angular/router';
     standalone: true
 })
 export class FuncionariosComponent implements OnInit {
+  private route = inject(Router);
+  private formBuilder = inject(UntypedFormBuilder);
+  private requisicoes = inject(RequisicoesService);
+  private storage = inject(StorageService);
+
   formFunc: UntypedFormGroup;
   validacoes: Validacoes = new Validacoes();
   matricula: string;
   senha: string;
-
-  constructor(private route: Router, private formBuilder: UntypedFormBuilder, private requisicoes: RequisicoesService, private storage: StorageService) { }
 
 
   ngOnInit(): void {

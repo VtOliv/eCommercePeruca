@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { Carrinho } from 'src/app/model/carrinho';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
@@ -9,14 +9,14 @@ import { RequisicoesService } from 'src/app/services/requisicoes.service';
     standalone: true
 })
 export class DetalhesPedidoComponent implements OnInit {
+  private requisicoes = inject(RequisicoesService);
+
 
   @Input() pedido;
   produtos: Carrinho[] = [];
   dataEntrega: Date;
   formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
   desconto: number = 0;
-
-  constructor(private requisicoes: RequisicoesService) { }
 
   ngOnInit(): void {
     this.pedido.itens.forEach(item => {

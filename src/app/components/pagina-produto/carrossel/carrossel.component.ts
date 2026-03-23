@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, inject } from '@angular/core';
 import { Imagem } from 'src/app/model/Imagem';
 import { RequisicoesService } from '../.././../services/requisicoes.service'
 
@@ -9,14 +9,12 @@ import { RequisicoesService } from '../.././../services/requisicoes.service'
     standalone: true
 })
 export class CarrosselComponent implements OnChanges {
+  private requisicoes = inject(RequisicoesService);
+
 
   @Input() idProduto;
   imagens: Imagem[];
   primeiraImagem: Imagem = new Imagem("");
-
-  constructor( private requisicoes: RequisicoesService) { 
-    
-  }
 
   ngOnChanges(): void {
     this.requisicoes.buscarProduto(this.idProduto).subscribe(

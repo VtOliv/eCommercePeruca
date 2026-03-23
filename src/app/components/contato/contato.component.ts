@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Validacoes } from 'src/app/model/validacoes';
 import  {  UntypedFormBuilder,  UntypedFormGroup  }  from  '@angular/forms';
 import { FaleConosco } from 'src/app/model/faleConosco';
@@ -16,16 +16,14 @@ import { StatusFaleConosco } from 'src/app/model/statusFaleConosco';
 })
 
 export class ContatoComponent implements OnInit {
+  private formBuilder = inject(UntypedFormBuilder);
+  private cadastro = inject(CadastrosService);
+  private storage = inject(StorageService);
+  private requisicao = inject(RequisicoesService);
+
   formFaleConosco: UntypedFormGroup;
   validacoes: Validacoes = new Validacoes;
   status: StatusFaleConosco[] = []
-  
-
-
-  constructor(private formBuilder: UntypedFormBuilder, 
-    private cadastro: CadastrosService, 
-    private storage: StorageService,
-    private requisicao: RequisicoesService) {}
 
   ngOnInit(): void {
     this.createForm(new FaleConosco("", "","","", null));

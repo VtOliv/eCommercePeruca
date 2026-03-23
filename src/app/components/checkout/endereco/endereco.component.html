@@ -1,11 +1,20 @@
-<div class="ng-scope mt-2 ">
-    <div class="card">
-        <h5 class="card-header">Endereço de entrega</h5>
-        <div class="card-body">
-            <dt class="ng-binding ng-scope">{{endereco.destinatario}}</dt>
-            <dd class="ng-binding">{{endereco.logradouro}}, {{endereco.numero}} - {{endereco.bairro}}</dd>
-            <dd class="ng-binding">{{endereco.cidade}}, {{endereco.estado}}</dd>
-            <dd>CEP: {{endereco.cep | mask:"00000-000"}}</dd>
-        </div>
+<div class="mt-2">
+  <div class="card shadow-sm">
+    <h5 class="card-header bg-light">Endereço de entrega</h5>
+    <div class="card-body">
+      <dt class="font-weight-bold">{{ endereco?.destinatario }}</dt>
+      
+      <dd class="mb-1">
+        {{ endereco?.logradouro }}, {{ endereco?.numero }} - {{ endereco?.bairro }}
+      </dd>
+      
+      <dd class="mb-1">
+        {{ endereco?.cidade }} / {{ endereco?.estado }}
+      </dd>
+      
+      <dd class="mb-0 text-muted">
+        <strong>CEP:</strong> {{ endereco?.cep | mask: "00000-000" }}
+      </dd>
     </div>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Produto } from 'src/app/model/produto';
 import { Router } from '@angular/router';
@@ -10,11 +10,14 @@ import { Router } from '@angular/router';
     standalone: true
 })
 export class MaisVendidosComponent implements OnInit {
+  private requisicoes = inject(RequisicoesService);
+  private route = inject(Router);
+
 
   produtosVisiveis: Produto[] = [];
   formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
-  constructor(private requisicoes: RequisicoesService, private route: Router) { 
+  constructor() { 
     this.requisicoes.getProdutosMaisVendidos().subscribe(
       data => this.produtosVisiveis = data
     )

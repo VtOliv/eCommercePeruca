@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import { Carrinho } from 'src/app/model/carrinho';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
     standalone: true
 })
 export class CardComponent implements OnInit {
+  private storage = inject(StorageService);
+  private route = inject(Router);
+
 
   carrinho: Carrinho[] = [];
   user;
@@ -18,7 +21,9 @@ export class CardComponent implements OnInit {
   formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
 
-  constructor(private storage: StorageService, private route: Router) {
+  constructor() {
+    const storage = this.storage;
+
     this.carrinho = storage.recuperarCarrinho();
     this.user = storage.recuperarUsuario();
     if (this.carrinho) {

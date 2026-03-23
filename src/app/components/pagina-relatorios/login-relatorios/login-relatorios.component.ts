@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Router } from '@angular/router';
@@ -11,15 +11,15 @@ import { StorageService } from 'src/app/services/storage.service';
     standalone: true
 })
 export class LoginRelatoriosComponent implements OnInit {
+  private formBuilder = inject(UntypedFormBuilder);
+  private requisicoes = inject(RequisicoesService);
+  private route = inject(Router);
+  private storage = inject(StorageService);
+
 
   formFunc;
   matricula: string;
   senha: string;
-
-  constructor(private formBuilder: UntypedFormBuilder,
-    private requisicoes: RequisicoesService,
-    private route: Router,
-    private storage: StorageService) { }
 
   ngOnInit(): void {
     this.formFunc = this.formBuilder.group({

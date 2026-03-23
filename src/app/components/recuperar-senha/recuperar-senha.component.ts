@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -11,17 +11,17 @@ import { Router } from '@angular/router';
     standalone: true
 })
 export class RecuperarSenhaComponent implements OnInit {
+  private formBuilder = inject(UntypedFormBuilder);
+  private requisicoes = inject(RequisicoesService);
+  private storage = inject(StorageService);
+  private route = inject(Router);
+
 
   botaoRecuperarClicado = false;
   formRecuperarSenha: UntypedFormGroup;
   email: string;
   codigoRedefinicao: string;
   senha: string;
-
-  constructor(private formBuilder: UntypedFormBuilder,
-    private requisicoes: RequisicoesService,
-    private storage: StorageService,
-    private route: Router) { }
 
   ngOnInit(): void {
     this.formRecuperarSenha = this.formBuilder.group({

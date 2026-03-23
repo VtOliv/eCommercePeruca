@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -8,12 +8,11 @@ import { ActivatedRoute } from '@angular/router';
     standalone: true
 })
 export class PaginaProdutoComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+
 
   id;
   atualizarCarrinho = false;
-
-  constructor(private route: ActivatedRoute) { 
-  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');

@@ -1,70 +1,90 @@
-import { Component, OnInit, Input, TemplateRef, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, Output, EventEmitter, OnChanges, inject, SimpleChanges, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// Services & Models
 import { StorageService } from 'src/app/services/storage.service';
 import { Carrinho } from 'src/app/model/carrinho';
 import { Cupom } from 'src/app/model/cupom';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 
+// NGX-Bootstrap
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { Subject, takeUntil } from 'rxjs';
+
 @Component({
-    selector: 'app-carrinho',
-    templateUrl: './carrinho.component.html',
-    styleUrls: ['./carrinho.component.css'],
-    standalone: true
+  selector: 'app-carrinho',
+  standalone: true,
+  imports: [CommonModule, ModalModule],
+  templateUrl: './carrinho.component.html',
+  styleUrls: ['./carrinho.component.css']
 })
-export class CarrinhoComponent implements OnChanges {
+export class CarrinhoComponent implements OnInit, OnChanges, OnDestroy {
+  private storage = inject(StorageService);
+  private modalService = inject(BsModalService);
+  private requisicoes = inject(RequisicoesService);
+  private destroy$ = new Subject<void>();
 
-  carrinho: Carrinho[] = [];
-  subTotal: number = 0;
-  cupomAtivo: Cupom = null;
-  cupons: Cupom[] = [];
-  descontos: number[] = [];
-  valorCupom: number = 0;
-  formato = { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' };
+  // Propriedades com Tipagem Estrita
+  public carrinho: Carrinho[] = [];
+  public subTotal: number = 0;
+  public cupomAtivo: Cupom | null = null;
+  public cupons: Cupom[] = [];
+  public valorCupom: number = 0;
+  public modalRef?: BsModalRef;
+
   @Input() frete: number = 0;
-  modalRef: BsModalRef;
-  @Output() enviarCupom = new EventEmitter;
+  @Output() enviarCupom = new EventEmitter<Cupom>();
 
-  constructor(private storage: StorageService, private modalService: BsModalService, private requisicoes: RequisicoesService) { 
-    this.carrinho = this.storage.recuperarCarrinho();
-    if(this.carrinho != null){
-      this.carrinho.forEach(item => {
-        this.subTotal += item.quantidade * item.produto.valorProduto;
-      })
-    }else{
-      this.carrinho = [];
+  ngOnInit(): void {
+    this.atualizarDadosCarrinho();
+    this.carregarCupons();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Se o frete mudar, ou se precisarmos forçar um recálculo
+    if (changes['frete']) {
+      this.atualizarDadosCarrinho();
     }
-    
-    this.requisicoes.getCupons().subscribe(
-      data => {
-        this.cupons = data;
-      }
-    )
   }
 
-  ngOnChanges(): void {
-    setInterval(() =>{
-      this.carrinho = this.storage.recuperarCarrinho();
-      if(this.carrinho != null){
-        this.subTotal = 0;
-        this.carrinho.forEach(item => {
-          this.subTotal += item.quantidade * item.produto.valorProduto;
-        })
-      }else{
-        this.carrinho = [];
-      }
-    }, 10)
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  abrirModal(template: TemplateRef<any>){
+  private carregarCupons(): void {
+    this.requisicoes.getCupons()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => this.cupons = data,
+        error: (err) => console.error('Erro ao carregar cupons', err)
+      });
+  }
+
+  public atualizarDadosCarrinho(): void {
+    const dados = this.storage.recuperarCarrinho();
+    this.carrinho = dados ?? [];
+    this.calcularSubTotal();
+  }
+
+  private calcularSubTotal(): void {
+    this.subTotal = this.carrinho.reduce((acc, item) => {
+      // O "?" garante que se o produto ou valor for nulo, o app não trave
+      const valor = item.produto?.valorProduto ?? 0;
+      return acc + (item.quantidade * valor);
+    }, 0);
+  }
+
+  public abrirModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
   }
 
-  adicionarCupom(cupom){
+  public adicionarCupom(cupom: Cupom): void {
     this.cupomAtivo = cupom;
   }
 
-  mandarCupom(cupom){
-    this.modalRef.hide();
+  public mandarCupom(cupom: Cupom): void {
+    this.modalRef?.hide();
     this.enviarCupom.emit(cupom);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, inject } from '@angular/core';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { Produto } from 'src/app/model/produto';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -10,13 +10,15 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
     standalone: true
 })
 export class ProdutosRecomendadosComponent implements OnChanges {
+  private requisicoes = inject(RequisicoesService);
+  private route = inject(Router);
+  private Act = inject(ActivatedRoute);
+
 
   @Input() idProduto;
   produtos: Produto[] = [];
   produtosCategoria: Produto[] = [];
   formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
-
-  constructor(private requisicoes: RequisicoesService, private route: Router, private Act: ActivatedRoute) { }
 
   ngOnChanges(): void {
     this.requisicoes.produtosRecomendados(this.idProduto).subscribe(

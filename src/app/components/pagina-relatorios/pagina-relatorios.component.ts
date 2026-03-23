@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { StorageService } from 'src/app/services/storage.service';
 
 
@@ -9,10 +9,12 @@ import { StorageService } from 'src/app/services/storage.service';
     standalone: true
 })
 export class PaginaRelatoriosComponent implements OnInit {
+  private storage = inject(StorageService);
+
 
   funcionario;
 
-  constructor(private storage: StorageService) { 
+  constructor() { 
     this.funcionario = this.storage.recuperarFuncionario();
     console.log(this.funcionario)
   }

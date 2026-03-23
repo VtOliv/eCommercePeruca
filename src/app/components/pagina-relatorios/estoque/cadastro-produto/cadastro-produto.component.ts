@@ -1,100 +1,118 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
-import { Validacoes } from 'src/app/model/validacoes';
-import { Produto } from 'src/app/model/produto';
-import { Categoria } from 'src/app/model/categoria';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+// PrimeNG & Layout
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+
+// Services & Models
 import { CadastrosService } from 'src/app/services/cadastros.service';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
-import { StorageService } from 'src/app/services/storage.service';
+import { Categoria } from 'src/app/model/categoria';
 import { ProdutoApi } from "src/app/model/produto-api";
-import { MessageService } from 'primeng/api';
-import { NgxSpinnerService } from "ngx-spinner";
 import { Imagem } from 'src/app/model/Imagem';
 
 @Component({
-    selector: 'app-cadastro-produto',
-    templateUrl: './cadastro-produto.component.html',
-    styleUrls: ['./cadastro-produto.component.css'],
-    providers: [MessageService, NgxSpinnerService],
-    standalone: true
+  selector: 'app-cadastro-produto',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FileUploadModule,
+    NgxSpinnerModule
+  ],
+  providers: [MessageService],
+  templateUrl: './cadastro-produto.component.html',
+  styleUrls: ['./cadastro-produto.component.css']
 })
 export class CadastroProdutoComponent implements OnInit {
+  // Injeção de dependências (Angular 21 style)
+  private fb = inject(FormBuilder);
+  private messageService = inject(MessageService);
+  private cadastro = inject(CadastrosService);
+  private requisicoes = inject(RequisicoesService);
+  private spinner = inject(NgxSpinnerService);
 
-  formCadProd: UntypedFormGroup;
-  validacoes: Validacoes = new Validacoes();
-  produto: Produto;
-  produtos: Produto[];
-  categorias: Categoria[];
-  imagensUpload: File[] = [];
-  @ViewChild("imagem")
-  inputImagem: ElementRef;
-  imagens: Imagem[] = [];
-  @Output() produtoCadastrado = new EventEmitter;
+  // Propriedades do template
+  public formCadProd!: FormGroup;
+  public categorias: Categoria[] = [];
+  public imagens: Imagem[] = [];
+  public imagensUpload: any[] = []; // Para a lista visual no p-fileUpload
 
+  @Output() produtoCadastrado = new EventEmitter<any>();
 
-  constructor(private formBuilder: UntypedFormBuilder,
-    private messageService: MessageService,
-    private cadastro: CadastrosService,
-    private requisicoes: RequisicoesService,
-    private storage: StorageService,
-    private spinner: NgxSpinnerService) {
-
-    this.requisicoes.getCategoria().subscribe(
-      data => {
-        this.categorias = data;
-      }
-    )
-    this.requisicoes.getProdutos().subscribe(
-      data => {
-        this.produtos = data;
-      }
-    )
+  ngOnInit(): void {
+    this.carregarCategorias();
+    this.initForm();
   }
 
-  ngOnInit(): void { this.createForm(new ProdutoApi) }
-  createForm(produto: ProdutoApi) {
-    produto.categoria = null;
-    this.formCadProd = this.formBuilder.group({
-      descProduto: [produto.descProduto],
-      categoria: [produto.categoria],
-      qtdProduto: [produto.qtdProduto],
-      valorProduto: [produto.valorProduto]
+  private carregarCategorias() {
+    this.requisicoes.getCategoria().subscribe({
+      next: (data) => this.categorias = data,
+      error: (err) => console.error('Erro ao carregar categorias', err)
     });
   }
 
-  permitirNumeros() {
-    this.validacoes.cancelarLetras;
+  private initForm() {
+    this.formCadProd = this.fb.group({
+      descProduto: ['', [Validators.required]],
+      categoria: [null, [Validators.required]],
+      qtdProduto: [1, [Validators.required, Validators.min(1)]],
+      valorProduto: [null, [Validators.required, Validators.min(0.01)]]
+    });
   }
 
-  permitirLetras() {
-    this.validacoes.cancelarNumeros;
+  async uploadImagens(event: any) {
+    this.spinner.show();
+    this.imagensUpload = event.files; // Atualiza a lista visual do @if no HTML
+    this.imagens = []; 
+
+    try {
+      // Faz o upload de todas as imagens em paralelo
+      const uploadPromises = event.files.map((file: File) => 
+        this.cadastro.cadastrarImagem(file).then(res => {
+          this.imagens.push(new Imagem(res.data.link));
+        })
+      );
+
+      await Promise.all(uploadPromises);
+      this.spinner.hide();
+      this.messageService.add({ severity: 'success', summary: 'Upload concluído', detail: 'Imagens processadas com sucesso.' });
+    } catch (error) {
+      this.spinner.hide();
+      console.error('Erro no upload', error);
+      alert("Falha ao carregar imagens. Tente novamente.");
+    }
   }
 
   onSubmit() {
-    if (this.imagens.length == 0) {
-      return alert("Faça upload das imagens antes de prosseguir");
+    if (this.imagens.length === 0) {
+      alert("Faça upload das imagens antes de prosseguir");
+      return;
     }
-    if (this.formCadProd.value != null && this.formCadProd.value.descProduto != null) {
-      this.cadastro.cadastrarProduto(this.formCadProd.value, this.imagens).subscribe(data => {
-        this.formCadProd.reset();
-        this.imagensUpload = [];
-        this.produtoCadastrado.emit(data);
-      })
-    } else {
-      alert("Erro ao cadastrar pedido")
-    }
-  }
 
-
-  async uploadImagens(event) {
-    this.spinner.show();
-    await event.files.forEach(file => {
-      this.cadastro.cadastrarImagem(file).then(
-        data => {
-          this.imagens.push(new Imagem(data.data.link))
-          this.imagens.length == event.files.length ? this.spinner.hide() : ''
+    if (this.formCadProd.valid) {
+      this.spinner.show();
+      
+      // Mapeia os dados do formulário para o formato que seu backend espera
+      this.cadastro.cadastrarProduto(this.formCadProd.value, this.imagens).subscribe({
+        next: (data) => {
+          this.spinner.hide();
+          this.formCadProd.reset();
+          this.imagensUpload = [];
+          this.imagens = [];
+          this.produtoCadastrado.emit(data); // Notifica o EstoqueComponent pai
+        },
+        error: (err) => {
+          this.spinner.hide();
+          console.error('Erro no cadastro', err);
+          alert("Erro ao cadastrar produto. Verifique os dados.");
         }
-      )
-    });
+      });
+    } else {
+      alert("Preencha todos os campos obrigatórios.");
+    }
   }
 }

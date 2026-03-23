@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, inject } from '@angular/core';
 import { Compra } from 'src/app/model/compra';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -14,6 +14,11 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
     standalone: true
 })
 export class ListaPedidosComponent implements OnInit {
+  private requisicoes = inject(RequisicoesService);
+  private modalService = inject(BsModalService);
+  private storage = inject(StorageService);
+  private route = inject(Router);
+
 
   pedidos: Compra[] = [];
   formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
@@ -23,10 +28,9 @@ export class ListaPedidosComponent implements OnInit {
   detPedido: Compra;
   carrinho: Carrinho[] = [];
 
-  constructor(private requisicoes: RequisicoesService,
-    private modalService: BsModalService,
-    private storage: StorageService,
-    private route: Router) {
+  constructor() {
+    const requisicoes = this.requisicoes;
+
     requisicoes.getPedidos().subscribe(
       dados => {
         this.pedidos = dados;

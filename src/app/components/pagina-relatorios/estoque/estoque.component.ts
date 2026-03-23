@@ -1,83 +1,115 @@
-import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
-import { Produto } from 'src/app/model/produto';
-import { RequisicoesService } from 'src/app/services/requisicoes.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Validacoes } from 'src/app/model/validacoes';
-import { UntypedFormGroup } from '@angular/forms';
-import { Categoria } from 'src/app/model/categoria';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+// PrimeNG
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
+
+// Services & Models
+import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { ProdutoApi } from 'src/app/model/produto-api';
 
+// Layout e Sub-Componentes
+import { NavRelatoriosComponent } from '../nav-relatorios/nav-relatorios.component';
+import { MenuRelatoriosComponent } from '../menu-relatorios/menu-relatorios.component';
+import { CadastroProdutoComponent } from './estoque/cadastro-produto/cadastro-produto.component';
+import { AlterarProdutoComponent } from './estoque/alterar-produto/alterar-produto.component';
+
 @Component({
-    selector: 'app-estoque',
-    templateUrl: './estoque.component.html',
-    styleUrls: ['./estoque.component.css'],
-    providers: [MessageService],
-    standalone: true
+  selector: 'app-estoque',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    TableModule,
+    DialogModule,
+    ToastModule,
+    ButtonModule,
+    InputTextModule,
+    NavRelatoriosComponent, // Importante adicionar aqui
+    MenuRelatoriosComponent,
+    CadastroProdutoComponent,
+    AlterarProdutoComponent
+  ],
+  providers: [MessageService],
+  templateUrl: './estoque.component.html',
+  styleUrls: ['./estoque.component.css']
 })
 export class EstoqueComponent implements OnInit {
-  formCadProd: UntypedFormGroup;
-  validacoes: Validacoes = new Validacoes();
-  produto: Produto;
-  categorias: Categoria[];
-  produtoAlt: ProdutoApi = new ProdutoApi();
+  private requisicoes = inject(RequisicoesService);
+  private messageService = inject(MessageService);
+
+  // Propriedades vinculadas ao HTML
+  public produtos: any[] = [];
+  public cols: any[] = [];
+  public produtoAlt: ProdutoApi = new ProdutoApi();
   
-  formato = { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' };
-
-  produtos: any[] = [];
-  first: number = 0;
-  cols: any[];
-  display: boolean = false;
-  displayDialog: boolean;
-  displayDialogAlt: boolean;
-
-  constructor(private requisicoes: RequisicoesService,
-    private modalService: BsModalService,
-    private messageService: MessageService) { }
+  public displayDialog: boolean = false;
+  public displayDialogAlt: boolean = false;
+  
+  // Formatação usada no template: {{produtos.valorProduto.toLocaleString('pt-BR', formato)}}
+  public formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
   ngOnInit(): void {
-    this.requisicoes.getProdutos().subscribe(
-      data => {
-        this.produtos = data
-      }
-    )
+    this.carregarProdutos();
 
     this.cols = [
-      { field: 'imagem', header: 'Produto' },
       { field: 'codProduto', header: 'Código' },
       { field: 'descricao', header: 'Nome' },
       { field: 'valorProduto', header: 'Preço' },
-      { field: 'categoria', header: 'Categoria' },
+      { field: 'categoria.descricao', header: 'Categoria' },
       { field: 'qtdProduto', header: 'Quantidade' }
     ];
   }
 
+  carregarProdutos() {
+    this.requisicoes.getProdutos().subscribe({
+      next: (data) => this.produtos = data,
+      error: (err) => console.error('Erro ao carregar estoque', err)
+    });
+  }
+
+  // Abre diálogo de adição
   showDialogToAdd() {
     this.displayDialog = true;
   }
-  showDialogToAlt(produto){
-    this.produtoAlt = produto;
+
+  // Abre diálogo de alteração passando o produto selecionado
+  showDialogToAlt(produto: any) {
+    // Criamos uma cópia para o diálogo não alterar a tabela antes de salvar
+    this.produtoAlt = JSON.parse(JSON.stringify(produto));
     this.displayDialogAlt = true;
-    }
-  
-  receberProdutoAlterado(produto){
-    let index = this.produtos.indexOf(this.produtoAlt);
-    this.produtos[index] = produto;
-    this.displayDialogAlt = false;
-    this.showSuccessAlt();
-  }
-  
-  receberProduto(produto){
-    this.produtos.push(produto);
-    this.displayDialog = false;
-    this.showSuccess();
   }
 
-  showSuccess() {
-    this.messageService.add({ severity: 'success', summary: 'Cadastro realizado', detail: 'O produto foi cadastrado com sucesso.' });
+  // Recebe o evento (produtoCadastrado) do <app-cadastro-produto>
+  receberProduto(novoProduto: any) {
+    this.produtos = [...this.produtos, novoProduto];
+    this.displayDialog = false;
+    this.messageService.add({ 
+      severity: 'success', 
+      summary: 'Cadastro realizado', 
+      detail: 'O produto foi cadastrado com sucesso.' 
+    });
   }
-  showSuccessAlt() {
-    this.messageService.add({ severity: 'info', summary: 'Produto atualizado', detail: 'O produto foi atualizado com sucesso.' });
+
+  // Recebe o evento (produtoAlterado) do <app-alterar-produto>
+  receberProdutoAlterado(produtoEditado: any) {
+    const index = this.produtos.findIndex(p => p.codProduto === produtoEditado.codProduto);
+    if (index !== -1) {
+      const novaLista = [...this.produtos];
+      novaLista[index] = produtoEditado;
+      this.produtos = novaLista;
+    }
+    this.displayDialogAlt = false;
+    this.messageService.add({ 
+      severity: 'info', 
+      summary: 'Produto atualizado', 
+      detail: 'O produto foi atualizado com sucesso.' 
+    });
   }
- 
 }

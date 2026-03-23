@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, TemplateRef, inject } from '@angular/core';
 import { Carrinho } from 'src/app/model/carrinho';
 import { Cupom } from 'src/app/model/cupom';
 import { StorageService } from 'src/app/services/storage.service';
@@ -14,6 +14,9 @@ import { Locais } from 'src/app/model/locais';
     standalone: true
 })
 export class CarrinhoDoacaoComponent implements OnInit {
+  private storage = inject(StorageService);
+  private requisicoes = inject(RequisicoesService);
+
 
   locais = Locais
   carrinho: Carrinho[] = [];
@@ -27,7 +30,7 @@ export class CarrinhoDoacaoComponent implements OnInit {
   // modalRef: BsModalRef;
   @Output() enviarCupom = new EventEmitter;
 
-  constructor(private storage: StorageService, private requisicoes: RequisicoesService) { 
+  constructor() { 
     this.carrinho = this.storage.recuperarCarrinho();
     if(this.carrinho != null){
       this.carrinho.forEach(item => {

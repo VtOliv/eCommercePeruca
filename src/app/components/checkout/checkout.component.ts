@@ -1,150 +1,157 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Endereco } from 'src/app/model/endereco';
-import { Validacoes } from 'src/app/model/validacoes';
-import { StorageService } from 'src/app/services/storage.service';
-import { Carrinho } from 'src/app/model/carrinho';
-import { RequisicoesService } from 'src/app/services/requisicoes.service';
-import { CadastrosService } from 'src/app/services/cadastros.service';
+import { Component, OnInit, TemplateRef, inject, OnDestroy } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+
+// Ngx-Bootstrap
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+
+// Services & Models
+import { RequisicoesService } from 'src/app/services/requisicoes.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { CadastrosService } from 'src/app/services/cadastros.service';
+import { Endereco } from 'src/app/model/endereco';
+import { Carrinho } from 'src/app/model/carrinho';
 import { Cupom } from 'src/app/model/cupom';
-import { timeInterval } from 'rxjs/operators';
+
+// Componentes Standalone (Certifique-se de que os nomes batem com seus arquivos)
+import { NavCheckoutComponent } from '../nav-checkout/nav-checkout.component';
+import { EnderecoComponent } from '../endereco/endereco.component';
+import { FormaEnvioComponent } from '../forma-envio/forma-envio.component';
+import { DadosPagamentoComponent } from '../dados-pagamento/dados-pagamento.component';
+import { CarrinhoComponent } from '../carrinho/carrinho.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
-    selector: 'app-checkout',
-    templateUrl: './checkout.component.html',
-    styleUrls: ['./checkout.component.css'],
-    standalone: true
+  selector: 'app-checkout',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    CurrencyPipe, 
+    ModalModule,
+    NavCheckoutComponent,
+    EnderecoComponent,
+    FormaEnvioComponent,
+    DadosPagamentoComponent,
+    CarrinhoComponent,
+    FooterComponent
+  ],
+  templateUrl: './checkout.component.html',
+  styleUrls: ['./checkout.component.css']
 })
+export class CheckoutComponent implements OnInit, OnDestroy {
+  private requisicoes = inject(RequisicoesService);
+  private modalService = inject(BsModalService);
+  private storage = inject(StorageService);
+  private cadastros = inject(CadastrosService);
+  private route = inject(Router);
 
-export class CheckoutComponent implements OnInit {
+  private destroy$ = new Subject<void>();
 
-  modalRef: BsModalRef;
-  enderecos = [];
-  enderecoPrincipal = null;
-  validacoes: Validacoes = new Validacoes();
-  formaEnvio: number = 0;
-  total: number = 0;
-  dadosDePagamento: boolean = false;
-  formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
-  carrinho: Carrinho[];
-  user;
-  subTotal: number = 0;
-  cupomAtivo: Cupom = null;
-
-  constructor(private requisicoes: RequisicoesService,
-              private modalService: BsModalService,
-              private storage: StorageService,
-              private cadastros: CadastrosService,
-              private route: Router) {
-
-    this.atualizar();
-    this.requisicoes.buscarEndereco(this.user.codCliente).subscribe(
-      dados => {
-        this.enderecos = dados
-
-        if (this.enderecos.length > 0) {
-          this.enderecoPrincipal = this.enderecos[0];
-        }
-      }
-    );
-  }
-
-  atualizar(){
-    this.carrinho = this.storage.recuperarCarrinho();
-    this.user = this.storage.recuperarUsuario();
-    this.total = 0;
-    if(this.user != null){
-      if (this.carrinho != null && this.carrinho.length != 0) {
-        this.carrinho.forEach(item => {
-          this.total += (item.produto.valorProduto * item.quantidade);
-        });
-        this.total += this.formaEnvio;
-        this.subTotal = this.total;
-      }
-    } else {
-      alert("Você não esta logado ou não possui cadastro");
-      this.route.navigate(["/cadastre-se"]);
-    }
-      if (this.cupomAtivo != null)
-        this.total -= this.subTotal * (this.cupomAtivo.desconto / 100);
-  }
+  public modalRef?: BsModalRef;
+  public enderecos: Endereco[] = [];
+  public enderecoPrincipal: Endereco | null = null;
+  public formaEnvio = 0;
+  public total = 0;
+  public subTotal = 0;
+  public dadosDePagamento = false;
+  public carrinho: Carrinho[] = [];
+  public user: any;
+  public cupomAtivo: Cupom | null = null;
 
   ngOnInit(): void {
-    setInterval(() =>{
-      this.atualizar();
-    }, 10)
+    this.user = this.storage.recuperarUsuario();
+    this.carrinho = this.storage.recuperarCarrinho() ?? [];
+
+    if (!this.user) {
+      alert("Você não está logado!");
+      this.route.navigate(["/cadastre-se"]);
+      return;
+    }
+
+    this.carregarEnderecos();
+    this.atualizarTotais();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private carregarEnderecos() {
+    this.requisicoes.buscarEndereco(this.user.codCliente)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(dados => {
+        this.enderecos = dados;
+        if (this.enderecos.length > 0) this.enderecoPrincipal = this.enderecos[0];
+      });
+  }
+
+  // Substitui o setInterval: chamamos apenas quando algo muda
+  private atualizarTotais() {
+    this.subTotal = this.carrinho.reduce((acc, item) => 
+      acc + (item.produto.valorProduto * item.quantidade), 0);
+    
+    const desconto = this.cupomAtivo ? (this.subTotal * (this.cupomAtivo.desconto / 100)) : 0;
+    this.total = this.subTotal + this.formaEnvio - desconto;
+  }
+
+  receberFormaDeEnvio(valorFrete: number) {
+    this.formaEnvio = valorFrete;
+    this.atualizarTotais();
+  }
+
+  receberCupom(cupom: Cupom) {
+    this.cupomAtivo = cupom;
+    this.atualizarTotais();
   }
 
   abrirModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template)
-  }
-
-  receberFormaDeEnvio(envio) {
-    if (envio != this.formaEnvio) {
-      this.total -= this.formaEnvio;
-      this.formaEnvio = envio;
-      this.total += this.formaEnvio;
-    }
-  }
-
-  receberCupom(cupom) {
-    if (cupom != this.cupomAtivo) {
-      if (this.cupomAtivo != null)
-        this.total += this.subTotal * (this.cupomAtivo.desconto / 100);
-      this.cupomAtivo = cupom;
-      this.total -= this.subTotal * (this.cupomAtivo.desconto / 100)
-    }
-  }
-
-  cadastrarEndereco(endereco: Endereco) {
-    if (this.validacoes.verificarEndereco(endereco)) {
-      alert("Dados não preenchidos corretamente");
-    } else {
-      this.cadastros.cadastrarEndereco(endereco, this.storage.recuperarUsuario().codCliente).subscribe(
-        dados => {
-          if (this.enderecos.length == 0) {
-            this.enderecoPrincipal = dados;
-          }
-          this.enderecos.push(dados)
-        }
-      )
-    }
-    this.modalRef.hide();
+    this.modalRef = this.modalService.show(template);
   }
 
   mudarEndereco(endereco: Endereco) {
     this.enderecoPrincipal = endereco;
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  validarCampos(template: TemplateRef<any>) {
-    if (this.enderecoPrincipal != null && this.formaEnvio != 0 && this.storage.recuperarCarrinho().length != 0) {
-      this.dadosDePagamento = true
+  validarCampos(templateErro: TemplateRef<any>) {
+    if (this.enderecoPrincipal && this.formaEnvio !== 0 && this.carrinho.length > 0) {
+      this.dadosDePagamento = true;
+      // Aqui o Angular detectará a mudança e passará o true para o app-dados-pagamento
     } else {
-      this.abrirModal(template)
+      this.abrirModal(templateErro);
     }
   }
 
-  finalizarCompra(valido, template: TemplateRef<any>) {
-    if (valido) {
-      this.cadastros.cadastrarCompra(this.enderecoPrincipal, this.formaEnvio, this.total, this.cupomAtivo).subscribe(
-        dados => {
-          if (dados != null) {
-            let cliente = this.storage.recuperarUsuario();
-            if (cliente.pedidos == null) {
-              cliente.pedidos = [];
-            }
-            cliente.pedidos.push(dados);
-            this.storage.salvarUsuario(cliente);
-            this.storage.removerCarrinho();
-            this.route.navigate(['/finalizar-compra'])
+  finalizarCompra(pagamentoValido: boolean, templateErro: TemplateRef<any>) {
+    if (pagamentoValido) {
+      this.cadastros.cadastrarCompra(this.enderecoPrincipal, this.formaEnvio, this.total, this.cupomAtivo)
+        .subscribe(dados => {
+          if (dados) {
+            this.finalizarProcesso(dados);
           }
-        }
-      )
+        });
     } else {
       this.dadosDePagamento = false;
-      this.abrirModal(template);
+      this.abrirModal(templateErro);
     }
+  }
+
+  private finalizarProcesso(dadosCompra: any) {
+    let cliente = this.storage.recuperarUsuario();
+    if (!cliente.pedidos) cliente.pedidos = [];
+    cliente.pedidos.push(dadosCompra);
+    this.storage.salvarUsuario(cliente);
+    this.storage.removerCarrinho();
+    this.route.navigate(['/finalizar-compra']);
+  }
+
+  cadastrarEndereco(endereco: any) {
+    this.cadastros.cadastrarEndereco(endereco, this.user.codCliente).subscribe(dados => {
+      this.enderecos.push(dados);
+      if (!this.enderecoPrincipal) this.enderecoPrincipal = dados;
+      this.modalRef?.hide();
+    });
   }
 }
