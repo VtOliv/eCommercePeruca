@@ -1,16 +1,251 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Loja Peruca - Sua beleza começa aqui</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div>
-qualquer coisa ai mano
 
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="header__logo">
+                <span class="logo-icon">💇</span> Loja Peruca
+            </a>
 
-    </div>
+            <nav class="nav" id="nav">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link nav__link--active">Início</a></li>
+                    <li><a href="products.html" class="nav__link">Produtos</a></li>
+                    <li><a href="#sobre" class="nav__link">Sobre</a></li>
+                    <li><a href="#contato" class="nav__link">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="header__actions">
+                <a href="login.html" class="btn btn--outline btn--sm">Entrar</a>
+                <button class="cart-btn" id="cartBtn" aria-label="Abrir carrinho">
+                    🛒 <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="nav__toggle" id="navToggle" aria-label="Abrir menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Sidebar -->
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-sidebar__header">
+            <h3>Meu Carrinho</h3>
+            <button class="cart-sidebar__close" id="cartClose">✕</button>
+        </div>
+        <div class="cart-sidebar__body" id="cartItems">
+            <p class="cart-empty">Seu carrinho está vazio.</p>
+        </div>
+        <div class="cart-sidebar__footer" id="cartFooter">
+            <div class="cart-total">
+                Total: <strong id="cartTotal">R$ 0,00</strong>
+            </div>
+            <a href="login.html" class="btn btn--primary btn--block">Finalizar Compra</a>
+        </div>
+    </aside>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero__inner">
+            <div class="hero__content">
+                <span class="hero__tag">Nova Coleção 2024</span>
+                <h1 class="hero__title">Descubra sua<br><em>nova beleza</em></h1>
+                <p class="hero__subtitle">
+                    As mais lindas perucas, apliques e acessórios capilares para você
+                    arrasar em qualquer ocasião.
+                </p>
+                <div class="hero__actions">
+                    <a href="products.html" class="btn btn--primary btn--lg">Ver Produtos</a>
+                    <a href="#sobre" class="btn btn--ghost btn--lg">Saiba Mais</a>
+                </div>
+            </div>
+            <div class="hero__image">
+                <div class="hero__image-placeholder">💇‍♀️</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Bar -->
+    <section class="features-bar">
+        <div class="container features-bar__grid">
+            <div class="feature-item">
+                <span class="feature-item__icon">🚚</span>
+                <div>
+                    <strong>Frete Grátis</strong>
+                    <span>Pedidos acima de R$ 150</span>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-item__icon">🔒</span>
+                <div>
+                    <strong>Compra Segura</strong>
+                    <span>Pagamento 100% protegido</span>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-item__icon">↩️</span>
+                <div>
+                    <strong>Troca Fácil</strong>
+                    <span>Até 30 dias após a compra</span>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-item__icon">⭐</span>
+                <div>
+                    <strong>Qualidade Premium</strong>
+                    <span>Produtos selecionados</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section" id="produtos">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Produtos em Destaque</h2>
+                <p class="section__subtitle">Conheça nossos produtos mais amados</p>
+            </div>
+            <div class="products-grid" id="featuredProducts"></div>
+            <div class="section__footer">
+                <a href="products.html" class="btn btn--outline btn--lg">Ver Todos os Produtos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section section--gray">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Categorias</h2>
+            </div>
+            <div class="categories-grid">
+                <a href="products.html?categoria=perucas-naturais" class="category-card">
+                    <span class="category-card__icon">🌿</span>
+                    <span class="category-card__name">Perucas Naturais</span>
+                </a>
+                <a href="products.html?categoria=perucas-sinteticas" class="category-card">
+                    <span class="category-card__icon">✨</span>
+                    <span class="category-card__name">Perucas Sintéticas</span>
+                </a>
+                <a href="products.html?categoria=apliques" class="category-card">
+                    <span class="category-card__icon">💁‍♀️</span>
+                    <span class="category-card__name">Apliques</span>
+                </a>
+                <a href="products.html?categoria=acessorios" class="category-card">
+                    <span class="category-card__icon">🎀</span>
+                    <span class="category-card__name">Acessórios</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="sobre">
+        <div class="container about">
+            <div class="about__image">
+                <div class="about__image-placeholder">🏪</div>
+            </div>
+            <div class="about__content">
+                <span class="hero__tag">Sobre Nós</span>
+                <h2 class="section__title">Por que escolher a Loja Peruca?</h2>
+                <p>
+                    Somos especialistas em beleza capilar há mais de 10 anos, oferecendo perucas,
+                    apliques e acessórios de alta qualidade para mulheres que querem se sentir
+                    lindas e confiantes todos os dias.
+                </p>
+                <ul class="about__list">
+                    <li>✅ Mais de 500 modelos disponíveis</li>
+                    <li>✅ Cabelos 100% naturais e sintéticos de qualidade</li>
+                    <li>✅ Consultoras especializadas para te ajudar</li>
+                    <li>✅ Entrega para todo o Brasil</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section section--gray" id="contato">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Entre em Contato</h2>
+                <p class="section__subtitle">Ficou com dúvidas? Nossa equipe está pronta para te atender.</p>
+            </div>
+            <form class="contact-form" id="contactForm" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contactNome">Nome</label>
+                        <input type="text" id="contactNome" name="nome" placeholder="Seu nome" required>
+                        <span class="form-error" id="contactNomeError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">E-mail</label>
+                        <input type="email" id="contactEmail" name="email" placeholder="seu@email.com" required>
+                        <span class="form-error" id="contactEmailError"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contactMsg">Mensagem</label>
+                    <textarea id="contactMsg" name="mensagem" rows="4" placeholder="Como podemos ajudar?" required></textarea>
+                    <span class="form-error" id="contactMsgError"></span>
+                </div>
+                <button type="submit" class="btn btn--primary">Enviar Mensagem</button>
+                <p class="form-success" id="contactSuccess" hidden>
+                    ✅ Mensagem enviada com sucesso! Entraremos em contato em breve.
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <a href="index.html" class="header__logo">
+                    <span class="logo-icon">💇</span> Loja Peruca
+                </a>
+                <p>Sua beleza começa aqui. Perucas e apliques de qualidade para todas as mulheres.</p>
+            </div>
+            <div class="footer__links">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="products.html">Produtos</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4>Minha Conta</h4>
+                <ul>
+                    <li><a href="login.html">Entrar</a></li>
+                    <li><a href="login.html#cadastro">Cadastrar</a></li>
+                    <li><a href="#">Meus Pedidos</a></li>
+                </ul>
+            </div>
+            <div class="footer__contact">
+                <h4>Contato</h4>
+                <p>📧 contato@lojaperuca.com.br</p>
+                <p>📞 (11) 9 9999-9999</p>
+                <p>📍 São Paulo, SP - Brasil</p>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>© 2024 Loja Peruca. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>

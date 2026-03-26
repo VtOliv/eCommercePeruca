@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos - Loja Peruca</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="header__logo">
+                <span class="logo-icon">💇</span> Loja Peruca
+            </a>
+
+            <nav class="nav" id="nav">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">Início</a></li>
+                    <li><a href="products.html" class="nav__link nav__link--active">Produtos</a></li>
+                    <li><a href="index.html#sobre" class="nav__link">Sobre</a></li>
+                    <li><a href="index.html#contato" class="nav__link">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="header__actions">
+                <a href="login.html" class="btn btn--outline btn--sm">Entrar</a>
+                <button class="cart-btn" id="cartBtn" aria-label="Abrir carrinho">
+                    🛒 <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="nav__toggle" id="navToggle" aria-label="Abrir menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Sidebar -->
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-sidebar__header">
+            <h3>Meu Carrinho</h3>
+            <button class="cart-sidebar__close" id="cartClose">✕</button>
+        </div>
+        <div class="cart-sidebar__body" id="cartItems">
+            <p class="cart-empty">Seu carrinho está vazio.</p>
+        </div>
+        <div class="cart-sidebar__footer" id="cartFooter">
+            <div class="cart-total">
+                Total: <strong id="cartTotal">R$ 0,00</strong>
+            </div>
+            <a href="login.html" class="btn btn--primary btn--block">Finalizar Compra</a>
+        </div>
+    </aside>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Nossos Produtos</h1>
+            <p>Encontre a peruca perfeita para você</p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section">
+        <div class="container">
+            <div class="products-toolbar">
+                <!-- Search -->
+                <div class="search-box">
+                    <input type="search" id="searchInput" placeholder="Buscar produto..." aria-label="Buscar produto">
+                    <span class="search-icon">🔍</span>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <label for="categoryFilter">Categoria:</label>
+                    <select id="categoryFilter">
+                        <option value="">Todas</option>
+                        <option value="Perucas Naturais">Perucas Naturais</option>
+                        <option value="Perucas Sintéticas">Perucas Sintéticas</option>
+                        <option value="Apliques">Apliques</option>
+                        <option value="Acessórios">Acessórios</option>
+                    </select>
+                </div>
+
+                <!-- Sort -->
+                <div class="filter-group">
+                    <label for="sortSelect">Ordenar por:</label>
+                    <select id="sortSelect">
+                        <option value="default">Relevância</option>
+                        <option value="price-asc">Menor Preço</option>
+                        <option value="price-desc">Maior Preço</option>
+                        <option value="name-asc">A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <p class="products-count" id="productsCount"></p>
+
+            <div class="products-grid" id="productsGrid"></div>
+
+            <p class="no-results" id="noResults" hidden>
+                Nenhum produto encontrado para sua busca.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <a href="index.html" class="header__logo">
+                    <span class="logo-icon">💇</span> Loja Peruca
+                </a>
+                <p>Sua beleza começa aqui. Perucas e apliques de qualidade para todas as mulheres.</p>
+            </div>
+            <div class="footer__links">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="products.html">Produtos</a></li>
+                    <li><a href="index.html#sobre">Sobre</a></li>
+                    <li><a href="index.html#contato">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4>Minha Conta</h4>
+                <ul>
+                    <li><a href="login.html">Entrar</a></li>
+                    <li><a href="login.html#cadastro">Cadastrar</a></li>
+                    <li><a href="#">Meus Pedidos</a></li>
+                </ul>
+            </div>
+            <div class="footer__contact">
+                <h4>Contato</h4>
+                <p>📧 contato@lojaperuca.com.br</p>
+                <p>📞 (11) 9 9999-9999</p>
+                <p>📍 São Paulo, SP - Brasil</p>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>© 2024 Loja Peruca. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
