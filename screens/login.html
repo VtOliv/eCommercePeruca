@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar / Cadastrar - Loja Peruca</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="header__logo">
+                <span class="logo-icon">💇</span> Loja Peruca
+            </a>
+            <nav class="nav" id="nav">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">Início</a></li>
+                    <li><a href="products.html" class="nav__link">Produtos</a></li>
+                </ul>
+            </nav>
+            <div class="header__actions">
+                <button class="nav__toggle" id="navToggle" aria-label="Abrir menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Auth Section -->
+    <section class="auth-section">
+        <div class="auth-card">
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab auth-tab--active" id="tabLogin" data-tab="login">Entrar</button>
+                <button class="auth-tab" id="tabCadastro" data-tab="cadastro">Cadastrar</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form" id="formLogin">
+                <h2>Bem-vinda de volta! 👋</h2>
+                <p class="auth-subtitle">Acesse sua conta para continuar comprando.</p>
+
+                <form id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="seu@email.com" required>
+                        <span class="form-error" id="loginEmailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginSenha">Senha</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="loginSenha" name="senha" placeholder="Sua senha" required>
+                            <button type="button" class="toggle-password" data-target="loginSenha" aria-label="Mostrar senha">👁️</button>
+                        </div>
+                        <span class="form-error" id="loginSenhaError"></span>
+                    </div>
+                    <div class="form-group form-group--inline">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="lembrarMe"> Lembrar de mim
+                        </label>
+                        <a href="#" class="link-forgot">Esqueci minha senha</a>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--block">Entrar</button>
+                    <p class="form-success" id="loginSuccess" hidden>
+                        ✅ Login realizado com sucesso! Redirecionando...
+                    </p>
+                </form>
+
+                <p class="auth-switch">
+                    Não tem conta?
+                    <button class="link-btn" id="goToCadastro">Cadastre-se</button>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form auth-form--hidden" id="formCadastro">
+                <h2>Crie sua conta 🎉</h2>
+                <p class="auth-subtitle">Cadastre-se e aproveite nossas ofertas exclusivas.</p>
+
+                <form id="cadastroForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cadNome">Nome Completo</label>
+                            <input type="text" id="cadNome" name="nome" placeholder="Seu nome completo" required>
+                            <span class="form-error" id="cadNomeError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="cadCPF">CPF</label>
+                            <input type="text" id="cadCPF" name="cpf" placeholder="000.000.000-00" maxlength="14" required>
+                            <span class="form-error" id="cadCPFError"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cadEmail">E-mail</label>
+                            <input type="email" id="cadEmail" name="email" placeholder="seu@email.com" required>
+                            <span class="form-error" id="cadEmailError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="cadDataNasc">Data de Nascimento</label>
+                            <input type="date" id="cadDataNasc" name="dataNasc" required>
+                            <span class="form-error" id="cadDataNascError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="sexo" value="Feminino" required> Feminino
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="sexo" value="Masculino"> Masculino
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="sexo" value="Outro"> Outro
+                            </label>
+                        </div>
+                        <span class="form-error" id="cadSexoError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="cadEndereco">Endereço</label>
+                        <input type="text" id="cadEndereco" name="endereco" placeholder="Rua, número, bairro, cidade - UF" required>
+                        <span class="form-error" id="cadEnderecoError"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cadSenha">Senha</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="cadSenha" name="senha" placeholder="Mínimo 6 caracteres" required minlength="6">
+                                <button type="button" class="toggle-password" data-target="cadSenha" aria-label="Mostrar senha">👁️</button>
+                            </div>
+                            <span class="form-error" id="cadSenhaError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="cadSenhaConf">Confirmar Senha</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="cadSenhaConf" name="senhaConf" placeholder="Repita a senha" required>
+                                <button type="button" class="toggle-password" data-target="cadSenhaConf" aria-label="Mostrar senha">👁️</button>
+                            </div>
+                            <span class="form-error" id="cadSenhaConfError"></span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--block">Criar Conta</button>
+                    <p class="form-success" id="cadastroSuccess" hidden>
+                        ✅ Conta criada com sucesso! Faça login para continuar.
+                    </p>
+                </form>
+
+                <p class="auth-switch">
+                    Já tem conta?
+                    <button class="link-btn" id="goToLogin">Entrar</button>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__bottom">
+            <p>© 2024 Loja Peruca. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
