@@ -1,82 +1,88 @@
 import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
-import { Carrinho } from 'src/app/model/carrinho';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+
+// Services & Models
 import { StorageService } from 'src/app/services/storage.service';
-import { Router } from '@angular/router';
+import { Carrinho } from 'src/app/model/carrinho';
 
 @Component({
-    selector: 'app-card',
-    templateUrl: './card.component.html',
-    styleUrls: ['./card.component.css'],
-    standalone: true
+  selector: 'app-card',
+  standalone: true,
+  imports: [CommonModule, CurrencyPipe, RouterModule],
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.css']
 })
 export class CardComponent implements OnInit {
   private storage = inject(StorageService);
   private route = inject(Router);
 
+  public carrinho: Carrinho[] = [];
 
-  carrinho: Carrinho[] = [];
-  user;
-  total: number = 0;
-  @Output() atualizarCarrinho: EventEmitter<any> = new EventEmitter();
-  formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
-
-
-  constructor() {
-    const storage = this.storage;
-
-    this.carrinho = storage.recuperarCarrinho();
-    this.user = storage.recuperarUsuario();
-    if (this.carrinho) {
-      this.carrinho.forEach(
-        item => {
-          this.total += (item.produto.valorProduto * item.quantidade);
-        }
-      )
-    }
-  }
+  @Output() atualizarCarrinho = new EventEmitter<void>();
 
   ngOnInit(): void {
+    this.carregarCarrinho();
   }
 
-  mudarQuantidade(valor, item) {
-    if (item.quantidade == 1 && valor < 0) {
-      this.carrinho = this.carrinho.filter(produto => produto != item);
-      this.storage.salvarCarrinho(this.carrinho);
-      this.total -= item.produto.valorProduto;
-    } else if (valor > 0 && item.quantidade < 6) {
-      item.quantidade++;
-      this.storage.salvarCarrinho(this.carrinho);
-      this.total += item.produto.valorProduto;
-    } else if (valor < 0) {
-      item.quantidade--;
-      this.storage.salvarCarrinho(this.carrinho);
-      this.total -= item.produto.valorProduto;
+  private carregarCarrinho(): void {
+    // Garante que o carrinho comece como um array vazio se o storage retornar null
+    this.carrinho = this.storage.recuperarCarrinho() ?? [];
+  }
+
+  // Getter reativo: O total sempre estará certo se o carrinho mudar
+  get total(): number {
+    return this.carrinho.reduce((acc, item) => {
+      const preco = item.produto?.valorProduto ?? 0;
+      const qtd = item.quantidade ?? 0;
+      return acc + (preco * qtd);
+    }, 0);
+  }
+
+  public mudarQuantidade(valor: number, item: Carrinho): void {
+    const index = this.carrinho.indexOf(item);
+    if (index === -1) return;
+
+    if (item.quantidade === 1 && valor < 0) {
+      this.removerProduto(item);
+      return;
     }
 
-    this.atualizarCarrinho.emit();
+    const quantidadeAtual = item.quantidade ?? 0;
+
+    if (valor > 0 && quantidadeAtual < 6) {
+      // 2. Incrementamos usando o valor garantido
+      item.quantidade = quantidadeAtual + 1;
+    } else if (valor < 0 && quantidadeAtual > 0) {
+      // 3. Decrementamos garantindo que não fique negativo
+      item.quantidade = quantidadeAtual - 1;
+    }
+    this.salvarEAtualizar();
   }
 
-  removerProduto(item) {
-    this.total -= item.produto.valorProduto * item.quantidade;
-    this.carrinho = this.carrinho.filter(
-      produto => produto != item
-    )
+  public removerProduto(item: Carrinho): void {
+    this.carrinho = this.carrinho.filter(p => p !== item);
+    this.salvarEAtualizar();
+  }
+
+  private salvarEAtualizar(): void {
     this.storage.salvarCarrinho(this.carrinho);
     this.atualizarCarrinho.emit();
   }
 
+  public irCheckout(): void {
+    const user = this.storage.recuperarUsuario();
 
-  irCheckout() {
-    this.user = this.storage.recuperarUsuario();
-    if (this.user != null) {
-      if (this.carrinho.length > 0) {
-        this.route.navigate(["/checkout"])
-      } else {
-        this.route.navigate(["/catalogo"])
-        alert("Para continuar, escolha um produto!")
-      }
+    if (!user) {
+      alert("Você não está logado!");
+      return;
+    }
+
+    if (this.carrinho.length > 0) {
+      this.route.navigate(["/checkout"]);
     } else {
-      alert("Você não esta logado");
+      alert("Para continuar, escolha um produto!");
+      this.route.navigate(["/catalogo"]);
     }
   }
 }

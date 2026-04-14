@@ -72,7 +72,7 @@ export class CadastroProdutoComponent implements OnInit {
     try {
       // Faz o upload de todas as imagens em paralelo
       const uploadPromises = event.files.map((file: File) => 
-        this.cadastro.cadastrarImagem(file).then(res => {
+        this.cadastro.cadastrarImagem(file).then((res: any) => {
           this.imagens.push(new Imagem(res.data.link));
         })
       );

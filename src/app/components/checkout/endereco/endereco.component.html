@@ -2,18 +2,14 @@
   <div class="card shadow-sm">
     <h5 class="card-header bg-light">Endereço de entrega</h5>
     <div class="card-body">
-      <dt class="font-weight-bold">{{ endereco?.destinatario }}</dt>
+      <dt class="font-weight-bold">{{ endereco.destinatario }}</dt>
       
       <dd class="mb-1">
-        {{ endereco?.logradouro }}, {{ endereco?.numero }} - {{ endereco?.bairro }}
-      </dd>
-      
-      <dd class="mb-1">
-        {{ endereco?.cidade }} / {{ endereco?.estado }}
+        {{ endereco.logradouro }}, {{ endereco.numero }} - {{ endereco.bairro }}
       </dd>
       
       <dd class="mb-0 text-muted">
-        <strong>CEP:</strong> {{ endereco?.cep | mask: "00000-000" }}
+        <strong>CEP:</strong> {{ endereco.cep | mask: "00000-000" }}
       </dd>
     </div>
   </div>

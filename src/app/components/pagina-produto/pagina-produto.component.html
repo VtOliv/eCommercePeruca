@@ -1,12 +1,12 @@
 <app-header [atualizarQuantidade]="atualizarCarrinho" (atualizarCarrinho)="atualizar()"></app-header>
 
-<div class="container-fluid row container-compra mb-5">
-        <div class="col-md-6 foto"><app-carrossel [idProduto]="id"></app-carrossel></div>
-        <div class="col-md-6"><app-comprar (atualizarCarrinho)="atualizar()" [idProduto]="id"></app-comprar></div>
+<div class="container-fluid row container-compra mb-5" *ngIf="id !== null">
+        <div class="col-md-6 foto"><app-carrossel [idProduto]="id!"></app-carrossel></div>
+        <div class="col-md-6"><app-comprar (atualizarCarrinho)="atualizar()" [idProduto]="id!"></app-comprar></div>
 </div>
 
-<div class="mb-5">
-        <app-produtos-recomendados [idProduto]="id"></app-produtos-recomendados>
+<div class="mb-5" *ngIf="id !== null">
+        <app-produtos-recomendados [idProduto]="id!"></app-produtos-recomendados>
 </div>
 
 <app-footer></app-footer>

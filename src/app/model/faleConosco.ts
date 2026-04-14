@@ -7,6 +7,7 @@ export class FaleConosco {
     public email: string,
     public mensagem: string,
     public statusFL: StatusFaleConosco,
-    public codCliente?: number, 
-    public codFaleConosco?: number){}
+    public codCliente?: number,
+    public codFaleConosco?: number,
+    public respondido?: boolean){}
 }

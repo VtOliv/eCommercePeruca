@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Status } from 'src/app/model/status';
 
 @Component({
     selector: 'app-progresso-pedido',
@@ -8,10 +9,12 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProgressoPedidoComponent implements OnInit {
 
-  @Input() status;
+  @Input() status: Status;
   statusPedido: boolean[] = [false, false, false, false];
 
-  constructor() { }
+  constructor(status: Status) {
+    this.status = status;
+   }
 
   ngOnInit(): void {
     switch(this.status.cod_status){

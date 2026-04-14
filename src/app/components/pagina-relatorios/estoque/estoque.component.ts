@@ -17,8 +17,8 @@ import { ProdutoApi } from 'src/app/model/produto-api';
 // Layout e Sub-Componentes
 import { NavRelatoriosComponent } from '../nav-relatorios/nav-relatorios.component';
 import { MenuRelatoriosComponent } from '../menu-relatorios/menu-relatorios.component';
-import { CadastroProdutoComponent } from './estoque/cadastro-produto/cadastro-produto.component';
-import { AlterarProdutoComponent } from './estoque/alterar-produto/alterar-produto.component';
+import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.component';
+import { AlterarProdutoComponent } from './alterar-produto/alterar-produto.component';
 
 @Component({
   selector: 'app-estoque',
@@ -53,7 +53,7 @@ export class EstoqueComponent implements OnInit {
   public displayDialogAlt: boolean = false;
   
   // Formatação usada no template: {{produtos.valorProduto.toLocaleString('pt-BR', formato)}}
-  public formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
+  public formato: Intl.NumberFormatOptions = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
   ngOnInit(): void {
     this.carregarProdutos();
@@ -67,11 +67,16 @@ export class EstoqueComponent implements OnInit {
     ];
   }
 
-  carregarProdutos() {
+  carregarProdutos(): void {
     this.requisicoes.getProdutos().subscribe({
       next: (data) => this.produtos = data,
       error: (err) => console.error('Erro ao carregar estoque', err)
     });
+  }
+
+  filterTable(table: { filterGlobal: (v: string, m: string) => void }, event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    table.filterGlobal(value, 'contains');
   }
 
   // Abre diálogo de adição

@@ -25,12 +25,11 @@
               <td class="pt-3-half" contenteditable="true">{{mensagem.telefone}}</td>
               <td class="pt-3-half" contenteditable="true">{{mensagem.email}}</td>
               <td class="pt-3-half" contenteditable="true">{{mensagem.mensagem}}</td>
-              <td class="pt-3-half" contenteditable="true">{{mensagem.statusFL.status}}</td>
-              @if (!mensagem.respondido) {
-                <td class="pt-3-half">Não</td>
-              }
+              <td class="pt-3-half" contenteditable="true">{{mensagem.statusFL.descricaoStatus}}</td>
               @if (mensagem.respondido) {
                 <td class="pt-3-half">Sim</td>
+              } @else {
+                <td class="pt-3-half">Não</td>
               }
             </tr>
           }

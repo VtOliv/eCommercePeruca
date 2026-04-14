@@ -72,11 +72,11 @@ export class ProdutoComponent implements OnInit, OnChanges {
       .toLowerCase();
 
     this.produtosFiltrados = this.produtos.filter(p => {
-      const matchCategoria = this.categoria === 0 || p.categoria.codigo === this.categoria;
-      const descNormalizada = p.descricao.normalize('NFD')
+      const matchCategoria = this.categoria === 0 || p.categoria?.codigo === this.categoria;
+      const descNormalizada = p.descricao?.normalize('NFD')
         .replace(/([\u0300-\u036f]|[^0-9a-zA-Z ])/g, '')
         .toLowerCase();
-      const matchTexto = descNormalizada.includes(termoBusca) || termoBusca === "";
+      const matchTexto = descNormalizada?.includes(termoBusca) || termoBusca === "";
       
       return matchCategoria && matchTexto;
     });
@@ -92,10 +92,10 @@ export class ProdutoComponent implements OnInit, OnChanges {
   ordenarPor(): void {
     const ordenacoes: Record<string, () => void> = {
       "1": () => this.ordenarPadrao(),
-      "2": () => this.produtosFiltrados.sort((a, b) => a.valorProduto - b.valorProduto),
-      "3": () => this.produtosFiltrados.sort((a, b) => b.valorProduto - a.valorProduto),
-      "4": () => this.produtosFiltrados.sort((a, b) => a.descricao.localeCompare(b.descricao)),
-      "5": () => this.produtosFiltrados.sort((a, b) => b.descricao.localeCompare(a.descricao))
+      "2": () => this.produtosFiltrados.sort((a, b) => (a.valorProduto ?? 0) - (b.valorProduto ?? 0)),
+      "3": () => this.produtosFiltrados.sort((a, b) => (b.valorProduto ?? 0) - (a.valorProduto ?? 0)),
+      "4": () => this.produtosFiltrados.sort((a, b) => (a.descricao ?? '').localeCompare(b.descricao ?? '')),
+      "5": () => this.produtosFiltrados.sort((a, b) => (b.descricao ?? '').localeCompare(a.descricao ?? ''))
     };
 
     const acao = ordenacoes[this.ordenacao];

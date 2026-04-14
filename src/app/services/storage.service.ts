@@ -12,12 +12,13 @@ export class StorageService {
 
   constructor() { }
 
-  salvarCarrinho(carrinho) {
+  salvarCarrinho(carrinho: Carrinho[]): void {
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
   }
 
-  recuperarCarrinho() {
-    return JSON.parse(localStorage.getItem('carrinho'));
+  recuperarCarrinho(): Carrinho[] | null {
+    const raw = localStorage.getItem('carrinho');
+    return raw ? JSON.parse(raw) : null;
   }
 
   salvarUsuario(cliente: Cliente) {
@@ -29,34 +30,24 @@ export class StorageService {
   }
 
   nomeCliente(): string {
-    let cliente = this.recuperarUsuario();
-
-    if (cliente != null) {
-      return cliente.nome;
-    }
-    return "";
+    const cliente = this.recuperarUsuario();
+    return cliente?.nome ?? '';
   }
 
   sexoCliente(): string {
-    let cliente = this.recuperarUsuario();
-
-    if (cliente != null) {
-      return cliente.sexo;
-    }
-    return "";
+    const cliente = this.recuperarUsuario();
+    return cliente?.sexo ?? '';
   }
-  recuperarUsuario() {
-    let cliente = localStorage.getItem('cliente');
-    if(cliente != null)
-      cliente = atob(cliente);
-    return JSON.parse(cliente);
+  recuperarUsuario(): Cliente | null {
+    const raw = localStorage.getItem('cliente');
+    if (raw == null) return null;
+    return JSON.parse(atob(raw));
   }
 
-  recuperarFuncionario() {
-    let funcionario = localStorage.getItem('funcionario');
-    if(funcionario != null)
-    funcionario = atob(funcionario);
-    return JSON.parse(funcionario);
+  recuperarFuncionario(): Funcionario | null {
+    const raw = localStorage.getItem('funcionario');
+    if (raw == null) return null;
+    return JSON.parse(atob(raw));
   }
 
   removerFuncionario() {

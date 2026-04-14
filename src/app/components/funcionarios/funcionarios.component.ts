@@ -1,64 +1,77 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
-import { Validacoes } from 'src/app/model/validacoes';
-import { Funcionario } from 'src/app/model/funcionario';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+
+// Services & Models
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Router } from '@angular/router';
-
+import { Validacoes } from 'src/app/model/validacoes';
+import { Funcionario } from 'src/app/model/funcionario';
 
 @Component({
-    selector: 'app-funcionarios',
-    templateUrl: './funcionarios.component.html',
-    styleUrls: ['./funcionarios.component.css'],
-    standalone: true
+  selector: 'app-funcionarios',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
+  templateUrl: './funcionarios.component.html',
+  styleUrls: ['./funcionarios.component.css']
 })
 export class FuncionariosComponent implements OnInit {
-  private route = inject(Router);
-  private formBuilder = inject(UntypedFormBuilder);
+  // Injeções modernas via inject()
+  private fb = inject(FormBuilder);
   private requisicoes = inject(RequisicoesService);
   private storage = inject(StorageService);
+  private route = inject(Router);
 
-  formFunc: UntypedFormGroup;
-  validacoes: Validacoes = new Validacoes();
-  matricula: string;
-  senha: string;
-
+  // Propriedades tipadas
+  public formFunc!: FormGroup;
+  public validacoes = new Validacoes();
 
   ngOnInit(): void {
-    this.createForm(new Funcionario());
-
-    if (this.storage.recuperarFuncionario() != null) {
+    // Verifica se já está logado antes de inicializar o formulário
+    if (this.storage.recuperarFuncionario()) {
       this.route.navigate(["pg-relatorios"]);
+      return;
     }
-  }
-  createForm(funcionario: Funcionario) {
-    this.formFunc = this.formBuilder.group({
-      matricula: [this.matricula],
-      senha: [this.senha]
-    })
+
+    this.initForm();
   }
 
-  permitirLetrasFunc(evento: any) {
-    this.validacoes.cancelarNumeros(evento);
+  private initForm(): void {
+    this.formFunc = this.fb.group({
+      matricula: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
+      senha: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]]
+    });
   }
-  permitirNumerosFunc(evento: any) {
+
+  public permitirNumerosFunc(evento: Event): void {
     this.validacoes.cancelarLetras(evento);
   }
 
-  entrar() {
-    this.requisicoes.loginFunc(this.formFunc.value).subscribe(
-      funcionario => {
-        if (funcionario != null) {
-          this.storage.salvarFunc(funcionario);
-          this.formFunc.reset();
-          this.route.navigate(["pg-relatorios"])
-          alert("Login correto");
-        } else {
-          alert("Funcionario nao cadastro!");
+  public entrar(): void {
+    if (this.formFunc.valid) {
+      this.requisicoes.loginFunc(this.formFunc.value).subscribe({
+        next: (funcionario) => {
+          if (funcionario) {
+            this.storage.salvarFunc(funcionario);
+            this.formFunc.reset();
+            alert("Login correto");
+            this.route.navigate(["pg-relatorios"]);
+          } else {
+            alert("Funcionário não cadastrado ou dados incorretos!");
+          }
+        },
+        error: (err) => {
+          console.error('Erro no login:', err);
+          alert("Erro na conexão com o servidor.");
         }
-      }
-    )
+      });
+    } else {
+      alert("Preencha a matrícula e a senha corretamente.");
+    }
   }
-  
 }

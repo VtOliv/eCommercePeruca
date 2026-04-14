@@ -1,86 +1,104 @@
 <app-header></app-header>
 
-<div id="form1" class="d-flex justify-content-center centro">
-  <div class="container-fluid row ">
+<div id="form1" class="d-flex justify-content-center centro py-4">
+  <div class="container-fluid row">
+    
     <div class="col-md-6">
-      <form id="formulario" [formGroup]="formFaleConosco" (ngSubmit)="onSubmit()">
-
+      <form id="formulario" [formGroup]="formFaleConosco" (ngSubmit)="onSubmit()" class="bg-light p-3 rounded shadow-sm">
+        
         <div id="texto">
           <div class="p-2">
 
-            <div class="form-group">
-              <div class="enviemsg">
-                <strong>Envie uma Mensagem</strong>
-                <img src="../../../assets/images/enviar (1).png" alt="enviar" class="enviar">
+            <div class="form-group mb-4">
+              <div class="enviemsg d-flex align-items-center">
+                <h4 class="mb-0 mr-2"><strong>Envie uma Mensagem</strong></h4>
+                <img src="assets/images/enviar (1).png" alt="ícone enviar" class="enviar" width="30">
               </div>
             </div>
 
             <div class="form-group">
-              <label for="nomeUsuário">Nome Completo:</label>
-              <input id="nome" class="form-control" (keypress)="permitirLetrasCont($event)" type="text" id="validationTextarea" name="nomeUsuario"
-                formControlName="nomeCompleto" placeholder="Nome completo" required>
-              </div>
-
-              <div class="form-group">
-                <label for="telusuario">Seu Telefone</label>
-                <input class="form-control" (keypress)="permitirNumerosCont($event)" type="text" id="validationTextarea" type="text" name="telusuario"
-                  formControlName="telefone"  placeholder="(00) 00000-0000" mask="(00) 00000-0000">
-                </div>
-
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Endereço de email</label>
-                  <input class="form-control" type="text" id="validationTextarea" formControlName="email" placeholder="Email">
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Escreva sua Mensagem </label>
-                  <textarea class="form-control" id="validationTextarea" formControlName="mensagem" placeholder="Escreva aqui sua mensagem"
-                  required> Escreva sua Mensagem</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="assunto">Assunto da mensagem :</label>
-                  <select id="assunto" formControlName="statusFL" class="custom-select" required>
-                    <option value="null" selected disabled hidden>Selecione Mensagem</option>
-                    @for (s of status; track s) {
-                      <option [ngValue]="s">{{s.status}}</option>
-                    }
-                  </select>
-                  <div class="invalid-feedback"></div>
-                </div>
-                <div class="custom-control custom-checkbox mb-4">
-                  <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-                  <label class="custom-control-label" for="customControlValidation1">Receber promoções via
-                  e-mail?</label>
-                  <div class="invalid-feedback">Receber newsletter semanal.</div>
-                </div>
-                <div id="btn">
-                  <button class="btn btn-lg btn-dark btn-block" type="submit">
-                    Enviar mensagem
-                  </button>
-                  <p class="mt-5 mb-3 text-muted"></p>
-                </div>
-              </div>
+              <label for="nome">Nome Completo:</label>
+              <input id="nome" class="form-control" type="text" 
+                     formControlName="nomeCompleto" placeholder="Nome completo"
+                     (keypress)="permitirLetrasCont($event)">
             </div>
-          </form>
-        </div>
-        <div class="col-md-6">
-          <div class="p-2 mb-4 text-light">
-            <div class="enviemsg">
-              <strong>Contato</strong>
-              <img src="../../../assets/images/reclamar.png" alt="reclamar" class="reclamar">
+
+            <div class="form-group">
+              <label for="tel">Seu Telefone:</label>
+              <input id="tel" class="form-control" type="text" 
+                     formControlName="telefone" placeholder="(00) 00000-0000" 
+                     mask="(00) 00000-0000" (keypress)="permitirNumerosCont($event)">
             </div>
+
+            <div class="form-group">
+              <label for="email">Endereço de e-mail:</label>
+              <input id="email" class="form-control" type="email" 
+                     formControlName="email" placeholder="Email">
+            </div>
+
+            <div class="form-group">
+              <label for="msg">Escreva sua Mensagem:</label>
+              <textarea id="msg" class="form-control" formControlName="mensagem" 
+                        rows="4" placeholder="Escreva aqui sua mensagem"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="assunto">Assunto da mensagem:</label>
+              <select id="assunto" formControlName="statusFL" class="custom-select">
+                <option [ngValue]="null" selected disabled hidden>Selecione o Assunto</option>
+                @for (s of status; track s) {
+                  <option [ngValue]="s">{{ s.descricaoStatus }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-4">
+              <input type="checkbox" class="custom-control-input" id="newsletterCheck">
+              <label class="custom-control-label" for="newsletterCheck">
+                Receber promoções via e-mail?
+              </label>
+            </div>
+
+            <div id="btn">
+              <button class="btn btn-lg btn-dark btn-block shadow-sm" type="submit" 
+                      [disabled]="formFaleConosco.invalid">
+                Enviar mensagem
+              </button>
+            </div>
+
           </div>
-          <div id="redes" class="jumbotron form-group">
-            <div>
-              <p> E-mail: Wigs-house&#64;gmail.com</p>
-              <p> Televendas (11) 3746-6913</p>
-              <p> SAC (11) 0800 777 700 </p>
-              <p> Endereço Central: </p>
-              <p>R. Minas Gerais, 316 - Higienópolis, São Paulo - SP, 01244-010</p>
-              <iframe class="maps" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.381160458082!2d-46.66689008549178!3d-23.5547502672322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce582c15c3a563%3A0x3b6fcfa8f24b066f!2sR.%20Minas%20Gerais%2C%20316%20-%20Higien%C3%B3polis%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001244-010!5e0!3m2!1spt-BR!2sbr!4v1583954919522!5m2!1spt-BR!2sbr" frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-            </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <div class="p-2 mb-4">
+        <div class="enviemsg d-flex align-items-center text-dark">
+          <h4 class="mb-0 mr-2"><strong>Informações de Contato</strong></h4>
+          <img src="assets/images/reclamar.png" alt="ícone contato" class="reclamar" width="30">
+        </div>
+      </div>
+
+      <div id="redes" class="jumbotron bg-dark text-light p-4 shadow">
+        <div class="contact-info">
+          <p><i class="pi pi-envelope mr-2"></i> E-mail: <strong>Wigs-house@gmail.com</strong></p>
+          <p><i class="pi pi-phone mr-2"></i> Televendas: (11) 3746-6913</p>
+          <p><i class="pi pi-headphones mr-2"></i> SAC: (11) 0800 777 700</p>
+          <hr class="bg-secondary">
+          <p><strong>Endereço Central:</strong></p>
+          <p class="small">R. Minas Gerais, 316 - Higienópolis, São Paulo - SP, 01244-010</p>
+          
+          <div class="embed-responsive embed-responsive-16by9 mt-3 rounded overflow-hidden">
+            <iframe class="embed-responsive-item" 
+                    [src]="mapaUrl" 
+                    allowfullscreen="" 
+                    loading="lazy"></iframe>
           </div>
         </div>
       </div>
     </div>
 
-    <app-footer></app-footer>
+  </div>
+</div>
+
+<app-footer></app-footer>

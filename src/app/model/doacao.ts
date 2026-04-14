@@ -1,8 +1,8 @@
 export class Doacao {
-    codDoacao: number;
+    codDoacao: number = 0;
     dtDoacao?: Date;
-    localDoacao: string;
-    vlDoacao: number;
-    dsFormaPagto: string;
-    codCliente: number;
+    localDoacao: string = '';
+    vlDoacao: number = 0;
+    dsFormaPagto: string = '';
+    codCliente: number = 0;
 }

@@ -1,44 +1,85 @@
-<div class="ng-scope mt-2 ">
-  <div class="card">
-    <h5 class="card-header">Produtos do pedido</h5>
-    <table class="table table-striped text-center">
-      <thead>
-        <tr>
-          <th scope="col">foto</th>
-          <th scope="col">Produto</th>
-          <th scope="col">Preço uni.</th>
-          <th scope="col">Qtd</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of produtos; track item) {
+<div class="mt-2 container-fluid">
+
+  <div class="card shadow-sm mb-4">
+    <h5 class="card-header bg-dark text-white">Produtos do pedido</h5>
+    <div class="table-responsive">
+      <table class="table table-hover text-center align-middle mb-0">
+        <thead class="bg-light">
           <tr>
-            <th><img [src]="item.produto.imagens[0].local" width="20px"></th>
-            <td scope="row">{{item.produto.descricao}}</td>
-            <td> {{item.produto.valorProduto.toLocaleString('pt-BR', formato)}}</td>
+            <th scope="col">Foto</th>
+            <th scope="col">Produto</th>
+            <th scope="col">Preço uni.</th>
+            <th scope="col">Qtd</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of produtos; track item.produto?.codProduto ?? $index) {
+          <tr>
             <td>
-              {{item.quantidade}}
+              <img [src]="item.produto?.imagens?.[0]?.local ?? 'assets/images/placeholder.png'" alt="Produto" width="40"
+                class="rounded border shadow-sm">
+            </td>
+            <td class="font-weight-bold">
+              {{ item.produto?.descricao ?? 'Produto Indisponível' }}
+            </td>
+            <td>
+              {{ (item.produto?.valorProduto ?? 0) | currency:'BRL' }}
+            </td>
+            <td>
+              <span class="badge badge-secondary px-3">{{ item.quantidade }}</span>
             </td>
           </tr>
-        }
-      </tbody>
-    </table>
+          } @empty {
+          <tr>
+            <td colspan="4" class="p-4 text-muted">
+              <div class="spinner-border spinner-border-sm mr-2" role="status"></div>
+              Carregando itens...
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="card">
-    <h5 class="card-header">Detalhes do pedido</h5>
+
+  <div class="card shadow-sm border-info">
+    <h5 class="card-header bg-info text-white">Resumo do Pedido</h5>
     <div class="card-body">
-      <dd class="ng-binding ng-scope">Realizado em: {{pedido.dtPedido | date:"dd/MM/yyyy"}}</dd>
-      @if (pedido.dataEntrega == null && pedido.status.cod_status != 3) {
-        <dd class="ng-binding ng-scope">Entrega prevista: {{dataEntrega | date:"dd/MM/yyyy"}}</dd>
-      }
-      @if (pedido.dataEntrega != null) {
-        <dd class="ng-binding ng-scope">Entregue em: {{pedido.dataEntrega | date:"dd/MM/yyyy"}}</dd>
-      }
-      <dd class="ng-binding ng-scope">Valor do frete: {{pedido.vlFrete.toLocaleString('pt-BR', formato)}}</dd>
-      @if (pedido.cupom != null) {
-        <dd class="ng-binding ng-scope">Cupom de desconto: {{(desconto * (pedido.cupom.desconto / 100)).toLocaleString('pt-BR', formato)}}</dd>
-      }
-      <dd class="ng-binding ng-scope">Valor total: {{pedido.vlPedido.toLocaleString('pt-BR', formato)}}</dd>
+      <dl class="row mb-0">
+        <dt class="col-sm-4 text-muted">Realizado em:</dt>
+        <dd class="col-sm-8">{{ pedido?.dtPedido | date:"dd/MM/yyyy" }}</dd>
+
+        @if (!pedido?.dataEntrega && pedido?.status?.cod_status !== 3) {
+        <dt class="col-sm-4 text-muted">Previsão de Entrega:</dt>
+        <dd class="col-sm-8 text-primary font-weight-bold">
+          {{ dataEntrega | date:"dd/MM/yyyy" }}
+        </dd>
+        }
+
+        @if (pedido?.dataEntrega) {
+        <dt class="col-sm-4 text-muted">Entregue em:</dt>
+        <dd class="col-sm-8 text-success font-weight-bold">
+          {{ pedido.dataEntrega | date:"dd/MM/yyyy" }}
+        </dd>
+        }
+
+        <dt class="col-sm-4 text-muted">Valor do frete:</dt>
+        <dd class="col-sm-8">{{ (pedido?.vlFrete ?? 0) | currency:'BRL' }}</dd>
+
+        @if (pedido?.cupom) {
+        <dt class="col-sm-4 text-muted text-danger">Cupom ({{ pedido.cupom.nome ?? 'Ativo' }}):</dt>
+        <dd class="col-sm-8 text-danger font-weight-bold">- {{ desconto | currency:'BRL' }}</dd>
+        }
+
+        <div class="col-12">
+          <hr>
+        </div>
+
+        <dt class="col-sm-4 h5">Valor total:</dt>
+        <dd class="col-sm-8 h5 text-dark font-weight-bolder">
+          {{ (pedido?.vlPedido ?? 0) | currency:'BRL' }}
+        </dd>
+      </dl>
     </div>
   </div>
 </div>

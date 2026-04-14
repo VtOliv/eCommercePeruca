@@ -1,116 +1,118 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter, inject } from '@angular/core';
-import { FormBuilder, UntypedFormGroup, UntypedFormControl, FormsModule } from "@angular/forms";
-import { Router, ActivatedRoute, RouterModule } from "@angular/router";
+import { Component, OnChanges, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from "@angular/forms";
+import { Router, RouterModule } from "@angular/router";
+import { CommonModule } from "@angular/common";
+
+// Services & Models
 import { RequisicoesService } from "../../services/requisicoes.service";
 import { StorageService } from "../../services/storage.service";
 import { Login } from 'src/app/model/login';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.css'],
-    standalone: true,
-    imports: [RouterModule, FormsModule, RouterModule]
+  selector: 'app-header',
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnChanges {
+export class HeaderComponent implements OnInit, OnChanges {
   private requisicoes = inject(RequisicoesService);
   private route = inject(Router);
   private storage = inject(StorageService);
+  private fb = inject(FormBuilder);
 
+  // Propriedades de Estado
+  public formLogin!: FormGroup;
+  public logado = false;
+  public nome: string = "";
+  public sexo: string = "";
+  public quantidade: number = 0;
+  public filtro: string = "";
+  public isSidebarOpen = false; // Controle do menu lateral
 
-  formLogin: UntypedFormGroup;
-  email: string;
-  senha: string;
-  nome: string;
-  sexo: string;
-  logado: boolean;
-  quantidade: number;
-  filtro: string = "";
-  @Input() atualizarQuantidade: boolean;
-  @Output() atualizarCarrinho: EventEmitter<any> = new EventEmitter();
+  @Input() atualizarQuantidade: boolean = false;
+  @Output() atualizarCarrinho = new EventEmitter<void>();
 
-  constructor() {
-    this.formLogin = this.createForm(new Login("", ""));
-    this.verificar();
-    if (this.storage.recuperarCarrinho() != null) {
-      this.quantidade = this.storage.recuperarCarrinho().length;
-    } else {
-      this.quantidade = 0;
-    }
-  }
-
-  private createForm(login: Login): UntypedFormGroup {
-    return new UntypedFormGroup({
-      email: new UntypedFormControl(login.email),
-      senha: new UntypedFormControl(login.senha)
-    })
+  ngOnInit(): void {
+    this.initForm();
+    this.verificarUsuario();
+    this.atualizarStatusCarrinho();
   }
 
   ngOnChanges(): void {
     if (this.atualizarQuantidade) {
-      this.quantidade = this.storage.recuperarCarrinho().length;
-
-      setTimeout(() => {
-        this.atualizarCarrinho.emit();
-      })
+      this.atualizarStatusCarrinho();
+      // Emitir evento para o pai após a atualização
+      setTimeout(() => this.atualizarCarrinho.emit());
     }
-
-    this.verificar();
+    this.verificarUsuario();
   }
 
-  verificar() {
-    if (this.storage.recuperarUsuario() == null) {
-      this.logado = false;
-      this.nome = "";
-    } else {
+  private initForm(): void {
+    this.formLogin = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required]]
+    });
+  }
+
+  public verificarUsuario(): void {
+    const usuario = this.storage.recuperarUsuario();
+    if (usuario) {
       this.logado = true;
       this.nome = this.storage.nomeCliente();
       this.sexo = this.storage.sexoCliente();
-    }
-  }
-
-  login() {
-    if (this.formLogin.value.email != "" && this.formLogin.value.senha != "") {
-      this.requisicoes.realizarLogin(this.formLogin.value).subscribe(
-        data => {
-          if (data != null) {
-            this.storage.salvarUsuario(data);
-            this.verificar();
-            alert("Login efetuado com sucesso")
-            this.formLogin.reset();
-            this.formLogin.value.senha = "";
-          } else {
-            alert("Usuario e/ou senha inválidos");
-          }
-        }, error => {
-          alert("Usuario e/ou senha inválidos");
-        }
-      )
     } else {
-      alert("Campos invalidos, verifique os campos e tente novamente");
+      this.logado = false;
+      this.nome = "";
     }
   }
 
-  deslogarCliente() {
+  public atualizarStatusCarrinho(): void {
+    const carrinho = this.storage.recuperarCarrinho();
+    this.quantidade = carrinho ? carrinho.length : 0;
+  }
+
+  public login(): void {
+    if (this.formLogin.valid) {
+      this.requisicoes.realizarLogin(this.formLogin.value).subscribe({
+        next: (data) => {
+          if (data) {
+            this.storage.salvarUsuario(data);
+            this.verificarUsuario();
+            alert("Login efetuado com sucesso");
+            this.formLogin.reset();
+          } else {
+            alert("Usuário e/ou senha inválidos");
+          }
+        },
+        error: () => alert("Erro ao realizar login. Tente novamente.")
+      });
+    } else {
+      alert("Preencha os campos corretamente.");
+    }
+  }
+
+  public deslogarCliente(): void {
     this.storage.removerUsuario();
     this.storage.removerCarrinho();
     this.logado = false;
-    this.route.navigate(['/login']);
+    this.atualizarStatusCarrinho();
+    this.route.navigate(['/home']);
   }
 
-
-  openNav() {
-    document.getElementById("mySidebar").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
+  // Controle de Sidebar via Angular (sem mexer no document)
+  public toggleNav(state: boolean): void {
+    this.isSidebarOpen = state;
   }
 
-  closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
-  }
-
-  buscar() {
-    this.filtro = this.filtro.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z ])/g, '').toLowerCase()
-    this.route.navigate(["/catalogo"], { queryParams: { filtro: this.filtro } });
+  public buscar(): void {
+    if (!this.filtro.trim()) return;
+    
+    const filtroLimpo = this.filtro
+      .normalize('NFD')
+      .replace(/([\u0300-\u036f]|[^0-9a-zA-Z ])/g, '')
+      .toLowerCase();
+      
+    this.route.navigate(["/catalogo"], { queryParams: { filtro: filtroLimpo } });
   }
 }

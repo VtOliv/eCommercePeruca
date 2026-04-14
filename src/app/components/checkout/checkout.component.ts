@@ -10,17 +10,19 @@ import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { CadastrosService } from 'src/app/services/cadastros.service';
+import { Cliente } from 'src/app/model/cliente';
 import { Endereco } from 'src/app/model/endereco';
 import { Carrinho } from 'src/app/model/carrinho';
 import { Cupom } from 'src/app/model/cupom';
 
 // Componentes Standalone (Certifique-se de que os nomes batem com seus arquivos)
-import { NavCheckoutComponent } from '../nav-checkout/nav-checkout.component';
-import { EnderecoComponent } from '../endereco/endereco.component';
-import { FormaEnvioComponent } from '../forma-envio/forma-envio.component';
-import { DadosPagamentoComponent } from '../dados-pagamento/dados-pagamento.component';
-import { CarrinhoComponent } from '../carrinho/carrinho.component';
+import { NavCheckoutComponent } from './nav-checkout/nav-checkout.component';
+import { EnderecoComponent } from './endereco/endereco.component';
+import { FormaEnvioComponent } from './forma-envio/forma-envio.component';
+import { DadosPagamentoComponent } from './dados-pagamento/dados-pagamento.component';
+import { CarrinhoComponent } from './carrinho/carrinho.component';
 import { FooterComponent } from '../footer/footer.component';
+import { CadastroEnderecoComponent } from '../cadastro-endereco/cadastro-endereco.component';
 
 @Component({
   selector: 'app-checkout',
@@ -34,7 +36,8 @@ import { FooterComponent } from '../footer/footer.component';
     FormaEnvioComponent,
     DadosPagamentoComponent,
     CarrinhoComponent,
-    FooterComponent
+    FooterComponent,
+    CadastroEnderecoComponent
   ],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
@@ -56,7 +59,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public subTotal = 0;
   public dadosDePagamento = false;
   public carrinho: Carrinho[] = [];
-  public user: any;
+  public user: Cliente | null = null;
   public cupomAtivo: Cupom | null = null;
 
   ngOnInit(): void {
@@ -79,6 +82,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   private carregarEnderecos() {
+    if (!this.user) return;
     this.requisicoes.buscarEndereco(this.user.codCliente)
       .pipe(takeUntil(this.destroy$))
       .subscribe(dados => {
@@ -89,8 +93,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Substitui o setInterval: chamamos apenas quando algo muda
   private atualizarTotais() {
-    this.subTotal = this.carrinho.reduce((acc, item) => 
-      acc + (item.produto.valorProduto * item.quantidade), 0);
+    this.subTotal = this.carrinho.reduce((acc, item) =>
+      acc + (item.produto?.valorProduto ?? 0) * (item.quantidade ?? 0), 0);
     
     const desconto = this.cupomAtivo ? (this.subTotal * (this.cupomAtivo.desconto / 100)) : 0;
     this.total = this.subTotal + this.formaEnvio - desconto;
@@ -106,7 +110,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.atualizarTotais();
   }
 
-  abrirModal(template: TemplateRef<any>) {
+  abrirModal(template: TemplateRef<unknown>) {
     this.modalRef = this.modalService.show(template);
   }
 
@@ -115,7 +119,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.modalRef?.hide();
   }
 
-  validarCampos(templateErro: TemplateRef<any>) {
+  validarCampos(templateErro: TemplateRef<unknown>) {
     if (this.enderecoPrincipal && this.formaEnvio !== 0 && this.carrinho.length > 0) {
       this.dadosDePagamento = true;
       // Aqui o Angular detectará a mudança e passará o true para o app-dados-pagamento
@@ -124,12 +128,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  finalizarCompra(pagamentoValido: boolean, templateErro: TemplateRef<any>) {
-    if (pagamentoValido) {
-      this.cadastros.cadastrarCompra(this.enderecoPrincipal, this.formaEnvio, this.total, this.cupomAtivo)
+  finalizarCompra(pagamentoValido: boolean, templateErro: TemplateRef<unknown>) {
+    if (pagamentoValido && this.enderecoPrincipal) {
+      const enderecoCompleto = {
+        ...this.enderecoPrincipal,
+        codCliente: this.user!.codCliente,
+        codEndereco: (this.enderecoPrincipal as Endereco & { codEndereco?: number }).codEndereco ?? 0
+      } as Endereco & { codCliente: number; codEndereco: number };
+
+      this.cadastros.cadastrarCompra(enderecoCompleto, this.formaEnvio, this.total, this.cupomAtivo ?? new Cupom())
         .subscribe(dados => {
           if (dados) {
-            this.finalizarProcesso(dados);
+            this.finalizarProcesso();
           }
         });
     } else {
@@ -138,19 +148,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  private finalizarProcesso(dadosCompra: any) {
-    let cliente = this.storage.recuperarUsuario();
-    if (!cliente.pedidos) cliente.pedidos = [];
-    cliente.pedidos.push(dadosCompra);
-    this.storage.salvarUsuario(cliente);
+  private finalizarProcesso(): void {
     this.storage.removerCarrinho();
     this.route.navigate(['/finalizar-compra']);
   }
 
-  cadastrarEndereco(endereco: any) {
+  cadastrarEndereco(endereco: Endereco): void {
+    if (!this.user) return;
     this.cadastros.cadastrarEndereco(endereco, this.user.codCliente).subscribe(dados => {
-      this.enderecos.push(dados);
-      if (!this.enderecoPrincipal) this.enderecoPrincipal = dados;
+      const novoEndereco = dados as Endereco;
+      this.enderecos.push(novoEndereco);
+      if (!this.enderecoPrincipal) this.enderecoPrincipal = novoEndereco;
       this.modalRef?.hide();
     });
   }

@@ -1,21 +1,20 @@
-import { Component, inject, OnInit, SafeResourceUrl } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-// Ngx-Mask para os inputs de Cartão e CPF
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 // Models e Services
 import { Locais } from 'src/app/model/locais';
 import { Validacoes } from 'src/app/model/validacoes';
-import { DadosPagamento } from 'src/app/model/dados-pagamento';
 import { CadastrosService } from 'src/app/services/cadastros.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 // Sub-componente
-import { CarrinhoDoacaoComponent } from '../carrinho-doacao/carrinho-doacao.component';
+import { FinalizarDoacaoComponent } from './finalizar-doacao/finalizar-doacao.component';
+import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-checkout-doacao',
@@ -24,9 +23,9 @@ import { CarrinhoDoacaoComponent } from '../carrinho-doacao/carrinho-doacao.comp
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxMaskDirective,
-    NgxMaskPipe,
-    CarrinhoDoacaoComponent
+    FinalizarDoacaoComponent,
+    FooterComponent,
+    HeaderComponent
   ],
   providers: [provideNgxMask()],
   templateUrl: './checkout-doacao.component.html',
@@ -92,11 +91,6 @@ export class CheckoutDoacaoComponent implements OnInit {
       this.cadastros.cadastrarDoacao(this.localEscolhido, this.vlDoacao).subscribe({
         next: (dados) => {
           if (dados) {
-            const cliente = this.storage.recuperarUsuario();
-            if (!cliente.doacao) cliente.doacao = [];
-            
-            cliente.doacao.push(dados);
-            this.storage.salvarUsuario(cliente);
             this.route.navigate(['/finalizar-compra']);
           }
         },
@@ -133,4 +127,8 @@ export class CheckoutDoacaoComponent implements OnInit {
       });
     }
   }
+}
+
+function provideNgxMask(): import("@angular/core").Provider {
+  throw new Error('Function not implemented.');
 }

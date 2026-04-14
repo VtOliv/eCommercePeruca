@@ -1,17 +1,36 @@
 import { Component, OnInit, TemplateRef, inject } from '@angular/core';
-import { Compra } from 'src/app/model/compra';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { forkJoin, map } from 'rxjs';
+
+// Ngx-Bootstrap
+import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+
+// Services & Models
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Endereco } from 'src/app/model/endereco';
-import { Carrinho } from 'src/app/model/carrinho';
 import { StorageService } from 'src/app/services/storage.service';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Compra } from 'src/app/model/compra';
+import { Carrinho } from 'src/app/model/carrinho';
+
+// Sub-componentes
+import { DetalhesPedidoComponent } from '../detalhes-pedido/detalhes-pedido.component';
+import { EnderecoComponent } from '../../checkout/endereco/endereco.component';
+import { ProgressoPedidoComponent } from '../progresso-pedido/progresso-pedido.component';
 
 @Component({
-    selector: 'app-lista-pedidos',
-    templateUrl: './lista-pedidos.component.html',
-    styleUrls: ['./lista-pedidos.component.css'],
-    standalone: true
+  selector: 'app-lista-pedidos',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    DatePipe,
+    ModalModule,
+    DetalhesPedidoComponent,
+    EnderecoComponent,
+    ProgressoPedidoComponent
+  ],
+  templateUrl: './lista-pedidos.component.html',
+  styleUrls: ['./lista-pedidos.component.css']
 })
 export class ListaPedidosComponent implements OnInit {
   private requisicoes = inject(RequisicoesService);
@@ -19,83 +38,72 @@ export class ListaPedidosComponent implements OnInit {
   private storage = inject(StorageService);
   private route = inject(Router);
 
-
-  pedidos: Compra[] = [];
-  formato = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
-  modalRef: BsModalRef;
-  cancPedido: Compra;
-  enderecoPedido;
-  detPedido: Compra;
-  carrinho: Carrinho[] = [];
-
-  constructor() {
-    const requisicoes = this.requisicoes;
-
-    requisicoes.getPedidos().subscribe(
-      dados => {
-        this.pedidos = dados;
-      },
-      error => {
-        alert("Erro ao acessar pedidos");
-      }
-    )
-  }
+  public pedidos: Compra[] = [];
+  public modalRef?: BsModalRef;
+  public cancPedido?: Compra;
+  public detPedido?: Compra;
+  public enderecoPedido: any;
 
   ngOnInit(): void {
+    this.carregarPedidos();
   }
 
-  dataEntrega(pedido: Compra) {
-    let dataEntrega = new Date(pedido.dtPedido);
-    if (pedido.vlFrete == 10)
-      dataEntrega.setDate(dataEntrega.getDate() + 15);
-    if (pedido.vlFrete == 20)
-      dataEntrega.setDate(dataEntrega.getDate() + 7);
-    if (pedido.vlFrete == 30)
-      dataEntrega.setDate(dataEntrega.getDate() + 3);
-    return dataEntrega;
+  private carregarPedidos(): void {
+    this.requisicoes.getPedidos().subscribe({
+      next: (dados) => this.pedidos = dados ?? [],
+      error: () => alert("Erro ao acessar pedidos")
+    });
   }
 
-  abrirModal(template: TemplateRef<any>, pedido: Compra) {
-    this.modalRef = this.modalService.show(template)
+  public calcularPrevisao(pedido: Compra): Date {
+    const data = new Date(pedido.dtPedido ?? '');
+    const freteMap: Record<number, number> = { 10: 15, 20: 7, 30: 3 };
+    const dias = freteMap[pedido.vlFrete ?? 0] ?? 0;
+    data.setDate(data.getDate() + dias);
+    return data;
+  }
+
+  public abrirModalCancelamento(template: TemplateRef<any>, pedido: Compra): void {
     this.cancPedido = pedido;
+    this.modalRef = this.modalService.show(template);
   }
 
-  abrirModalDetalhes(template: TemplateRef<any>, pedido: Compra) {
-    this.requisicoes.endereco(pedido.codEndereco).subscribe(
-      endereco => this.enderecoPedido = endereco
-    )
+  public abrirModalDetalhes(template: TemplateRef<any>, pedido: Compra): void {
     this.detPedido = pedido;
-    setTimeout(() => { this.modalRef = this.modalService.show(template) }, 500);
+    // Buscamos o endereço e abrimos o modal somente quando tivermos o dado
+    this.requisicoes.endereco(pedido.codEndereco).subscribe(endereco => {
+      this.enderecoPedido = endereco;
+      this.modalRef = this.modalService.show(template);
+    });
   }
 
-  cancelarPedidoFuncao() {
-    this.requisicoes.cancelarPedido(this.cancPedido.codPedido).subscribe(
-      dados => {
-        let posPedido = this.pedidos.indexOf(this.cancPedido);
-        this.pedidos[posPedido] = dados;
-      }
+  public cancelarPedidoFuncao(): void {
+    const idPedido = this.cancPedido?.codPedido;
+
+    if (!idPedido) return;
+
+    this.requisicoes.cancelarPedido(idPedido).subscribe(dados => {
+      const index = this.pedidos.findIndex(p => p.codPedido === idPedido);
+      if (index !== -1) this.pedidos[index] = dados;
+      this.modalRef?.hide();
+    });
+  }
+
+  public refazerPedido(pedido: Compra): void {
+    if (!pedido.itensPedido) return;
+
+    // Usamos forkJoin para garantir que todos os produtos sejam carregados antes de ir para o checkout
+    const buscas = pedido.itensPedido.map(item =>
+      this.requisicoes.buscarProduto(item.codProduto).pipe(
+        map(produto => new Carrinho(produto, item.quantidade ?? 1))
+      )
     );
 
-    this.modalRef.hide();
-  }
-
-  refazerPedido(pedido) {
-    pedido.itens.forEach(item => {
-      this.requisicoes.buscarProduto(item.codProduto).subscribe(produto => {
-        this.carrinho.push(new Carrinho(produto, item.quantidade));
-        this.storage.salvarCarrinho(this.carrinho);
-      })
-    });
-    this.route.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    }
-
-    this.route.events.subscribe((evt) => {
-      if (evt instanceof NavigationEnd) {
-        this.route.navigated = false;
+    forkJoin(buscas).subscribe(carrinhoNovo => {
+      this.storage.salvarCarrinho(carrinhoNovo);
+      this.route.navigate(['/checkout']).then(() => {
         window.scrollTo(0, 0);
-      }
+      });
     });
-    this.route.navigate(['/checkout']);
   }
 }

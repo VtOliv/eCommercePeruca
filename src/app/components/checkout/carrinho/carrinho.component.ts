@@ -71,7 +71,7 @@ export class CarrinhoComponent implements OnInit, OnChanges, OnDestroy {
     this.subTotal = this.carrinho.reduce((acc, item) => {
       // O "?" garante que se o produto ou valor for nulo, o app não trave
       const valor = item.produto?.valorProduto ?? 0;
-      return acc + (item.quantidade * valor);
+      return acc + ((item.quantidade ?? 0) * valor);
     }, 0);
   }
 

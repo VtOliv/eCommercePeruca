@@ -6,13 +6,15 @@ import { Router } from '@angular/router';
 // Services
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { Checkbox } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule // Necessário para usar [formGroup] no HTML
+    ReactiveFormsModule,
+    Checkbox
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']

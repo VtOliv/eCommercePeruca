@@ -1,28 +1,57 @@
-<section id="desc" class="container-fluid">
-  <div class="row justify-content-center mt-2">
-    <em id="textoOfex"> Confira nossos produtos mais vendidos :</em>
+<section id="desc" class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <h3 id="textoOfex" class="text-secondary font-italic">
+      Confira nossos produtos mais vendidos:
+    </h3>
   </div>
 </section>
+
 <div id="cardsHolder" class="container-fluid">
-  @for (produto of produtosVisiveis; track produto) {
-    <div class="d-inline col-md-3 col-xs-8 mt-3">
-      <div class="card">
-        <div class="text-center">
-          <img [src]="produto.imagens[0].local" class="imagem-produto">
-        </div>
-        <div class="card-body">
-          <h5>{{produto.descricao}}</h5>
-          <p class="card-text"> {{produto.categoria.descricao}} <br>
-            {{produto.valorProduto.toLocaleString('pt-BR', formato)}} <br>
-          </p>
-          <a (click)="abrirPaginaProduto(produto.codProduto)" class="btn btn-dark btn-block text-white">Comprar</a>
+  <div class="row justify-content-center">
+    
+    @for (produto of produtosVisiveis; track produto.codProduto) {
+      <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          
+          <div class="text-center p-3">
+            <img [src]="produto.imagens?.[0]?.local ?? 'assets/images/placeholder.png'" 
+                 class="img-fluid rounded" 
+                 alt="Imagem do produto"
+                 style="max-height: 200px; object-fit: contain;">
+          </div>
+          
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-truncate">{{ produto.descricao }}</h5>
+            
+            <p class="card-text">
+              <small class="text-muted d-block mb-1">
+                {{ produto.categoria?.descricao }}
+              </small>
+              <strong class="h5 text-dark">
+                {{ (produto.valorProduto ?? 0) | currency:'BRL' }}
+              </strong>
+            </p>
+
+            <button 
+              (click)="abrirPaginaProduto(produto.codProduto)" 
+              class="btn btn-dark btn-block mt-auto text-white shadow-sm">
+              Comprar
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  }
+    } @empty {
+      <div class="col-12 text-center p-5">
+        <div class="spinner-border text-dark" role="status"></div>
+        <p class="mt-2 text-muted">Buscando as melhores ofertas...</p>
+      </div>
+    }
+
+  </div>
 </div>
-<div id="todos" class="col-12 mt-3 justify-content-center">
-  <button routerLink="/catalogo" class="btn btn-dark btn-block">
-    Ver Todos
+
+<div id="todos" class="container text-center mt-3 mb-5">
+  <button routerLink="/catalogo" class="btn btn-outline-dark px-5 font-weight-bold">
+    Ver Todos os Produtos
   </button>
 </div>

@@ -30,7 +30,7 @@ export class CadastroEnderecoComponent implements OnInit {
 
   ngOnInit(): void {
     // Inicializa o formulário
-    this.createForm(new Endereco("", "", null, "", "", "", ""));
+    this.createForm(new Endereco("", "", 0, "", "", "", ""));
 
     // Busca os estados
     this.http.getEstados().subscribe(dados => {

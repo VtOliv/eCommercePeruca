@@ -1,94 +1,78 @@
-<nav class="d-flex justify-content-between row nav-header fixed-top">
+<nav class="d-flex justify-content-between row nav-header fixed-top px-3">
+  
   <div class="d-flex align-items-center col-md-4 col-xs-12" id="div-menu">
-    <div id="mySidebar" class="sidebar">
-      <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-      <a href="#" routerLink="/home">Home</a>
-      <a href="#" routerLink="/catalogo">Produtos</a>
-      <a href="#" routerLink="/quem-somos">Quem Somos</a>
-      <a href="#" routerLink="/contato">Contato</a>
+    <div id="mySidebar" class="sidebar" [style.width]="isSidebarOpen ? '250px' : '0'">
+      <a href="javascript:void(0)" class="closebtn" (click)="toggleNav(false)">&times;</a>
+      <a routerLink="/home" (click)="toggleNav(false)">Home</a>
+      <a routerLink="/catalogo" (click)="toggleNav(false)">Produtos</a>
+      <a routerLink="/quem-somos" (click)="toggleNav(false)">Quem Somos</a>
+      <a routerLink="/contato" (click)="toggleNav(false)">Contato</a>
     </div>
 
-    <div id="main">
-      <button class="openbtn" (click)="openNav()">&#9776;</button>
+    <div id="main" [style.marginLeft]="isSidebarOpen ? '250px' : '0'">
+      <button class="openbtn" (click)="toggleNav(true)">&#9776;</button>
     </div>
   </div>
 
   <div id="imgLogo" class="d-flex align-items-center justify-content-center col-md-4 col-xs-12">
-    <div class="row imgLogo">
-      <a class="navbar-brand" routerLink="/home">
-        <img src="../../../assets/images/logoWig.png" alt="LogoPrincipal" width="200px">
-      </a>
-    </div>
+    <a class="navbar-brand" routerLink="/home">
+      <img src="assets/images/logoWig.png" alt="Logo Wigs House" width="180px">
+    </a>
   </div>
 
-  <div class="d-flex align-items-center justify-content-between col-md-4 col-xs-12 carrinho-login">
-    <div id="buscaResp">
-      <form class="form-inline my-2 my-lg-0">
-        <div id="divBusca" class="col-xs-12">
-          <input type="text" class="txtBusca" placeholder="Pesquisar" [(ngModel)]="filtro" name="filtro" />
-          <button class="btn rounded" (click)="buscar()"><img src="../../../assets/images/find.png"
-          width="20px" id="btnBusca" alt="Buscar" /></button>
-        </div>
-      </form>
+  <div class="d-flex align-items-center justify-content-end col-md-4 col-xs-12 carrinho-login">
+    
+    <div id="buscaResp" class="mr-3">
+      <div id="divBusca" class="d-flex border rounded bg-white px-2">
+        <input type="text" class="txtBusca border-0" placeholder="Pesquisar" 
+               [(ngModel)]="filtro" (keyup.enter)="buscar()" />
+        <button class="btn p-1" (click)="buscar()">
+          <img src="assets/images/find.png" width="18px" alt="Buscar" />
+        </button>
+      </div>
     </div>
 
-    <div class="acessar-carrinho pointer" routerLink="/carrinho" data-display="static" aria-haspopup="true"
-      aria-expanded="false">
-      <div class="quantidade-itens-carrinho rounded-circle alert-dark text-center">
-        <span class="font-weight-bolder">{{quantidade}}</span>
+    <div class="acessar-carrinho pointer mr-3 position-relative" routerLink="/carrinho">
+      <div class="quantidade-itens-carrinho rounded-circle alert-dark text-center position-absolute" 
+           style="top: -10px; right: -10px; width: 20px; height: 20px; font-size: 12px;">
+        <span class="font-weight-bolder">{{ quantidade }}</span>
       </div>
-      <img src="../../../assets/images/carrinho-de-compras.png" width="35px">
+      <img src="assets/images/carrinho-de-compras.png" width="30px" alt="Carrinho">
     </div>
-    <div class="acessar dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true"
-      aria-expanded="false">
-      <img src="../../../assets/images/conta.svg" width="35px">
-    </div>
-    <div class="dropdown-menu dropdown-menu-right">
-      <div [ngClass]="logado ? 'aparecer': 'esconder'">
-        <form class="px-4 py-3">
-          <div class="text-center">
-            @if (sexo == 'Masculino') {
-              <img src="../../../assets/images/man.png" width="100px">
-            }
-            @if (sexo == 'Feminino') {
-              <img src="../../../assets/images/woman.png" width="100px">
-            }
-            @if (sexo == 'Prefiro não informar') {
-              <img src="../../../assets/images/suspect.png"
-                width="100px">
-            }
 
-            <p>{{nome}}</p>
-          </div>
-        </form>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" routerLink="/historico-pedidos">Meus Pedidos</a>
-        <a class="dropdown-item pointer" (click)="deslogarCliente()">Sair</a>
+    <div class="dropdown">
+      <div class="acessar pointer dropdown-toggle" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img src="assets/images/conta.svg" width="30px" alt="Conta">
       </div>
-      <div [ngClass]="!logado ? 'aparecer': 'esconder'">
-        <form class="px-4 py-3 " (ngSubmit)="login()" [formGroup]="formLogin">
-          <div class="form-group">
-            <label for="exampleDropdownFormEmail1">Endereço de email:</label>
-            <input type="email" class="form-control" formControlName="email" placeholder="Email">
+
+      <div class="dropdown-menu dropdown-menu-right shadow-lg mt-2" aria-labelledby="userMenu">
+        
+        @if (logado) {
+          <div class="px-4 py-3 text-center">
+            @if (sexo === 'Masculino') { <img src="assets/images/man.png" width="80px"> }
+            @else if (sexo === 'Feminino') { <img src="assets/images/woman.png" width="80px"> }
+            @else { <img src="assets/images/suspect.png" width="80px"> }
+            
+            <p class="mt-2 font-weight-bold mb-0">{{ nome }}</p>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLink="/historico-pedidos">Meus Pedidos</a>
+            <a class="dropdown-item text-danger pointer" (click)="deslogarCliente()">Sair</a>
           </div>
-          <div class="form-group">
-            <label for="exampleDropdownFormPassword1">Senha:</label>
-            <input type="password" class="form-control" placeholder="Senha" formControlName="senha">
-          </div>
-          <div class="form-group">
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="dropdownCheck">
-              <label class="form-check-label" for="dropdownCheck">
-                Lembre de mim
-              </label>
+        } @else {
+          <form class="px-4 py-3" (ngSubmit)="login()" [formGroup]="formLogin">
+            <div class="form-group">
+              <label>E-mail:</label>
+              <input type="email" class="form-control form-control-sm" formControlName="email" placeholder="email@exemplo.com">
             </div>
-          </div>
-          <button type="submit" class="btn btn-dark">Entrar</button>
-        </form>
-        <div class="dropdown-divider"></div>
-        <div class="pointer">
-          <a class="dropdown-item" routerLink="/cadastre-se">Não é cadastrado ? Cadastre-se agora</a>
-        </div>
+            <div class="form-group">
+              <label>Senha:</label>
+              <input type="password" class="form-control form-control-sm" formControlName="senha" placeholder="Senha">
+            </div>
+            <button type="submit" class="btn btn-dark btn-sm btn-block" [disabled]="formLogin.invalid">Entrar</button>
+          </form>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item small text-center" routerLink="/cadastre-se">Não é cadastrado? Clique aqui</a>
+        }
       </div>
     </div>
   </div>

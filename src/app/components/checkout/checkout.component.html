@@ -71,7 +71,7 @@
     <button type="button" class="close" (click)="modalRef?.hide()">&times;</button>
   </div>
   <div class="modal-body overflow-auto" style="max-height: 400px;">
-    @for (item of enderecos; track item.id) {
+    @for (item of enderecos; track item) {
       <div class="cursor-pointer mb-2 border rounded p-1" (click)="mudarEndereco(item)" style="cursor: pointer">
         <app-endereco [endereco]="item"></app-endereco>
       </div>

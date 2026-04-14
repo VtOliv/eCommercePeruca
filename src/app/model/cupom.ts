@@ -1,3 +1,8 @@
 export class Cupom {
-    constructor(public codCupom: number, public desconto: number, public nome: string, public ativo: boolean){}
+    constructor(
+        public codCupom: number = 0,
+        public desconto: number = 0,
+        public nome: string = '',
+        public ativo: boolean = false
+    ) {}
 }

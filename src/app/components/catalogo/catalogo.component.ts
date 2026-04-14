@@ -20,7 +20,7 @@ export class CatalogoComponent implements OnInit {
   constructor () { }
 
   filtrarCategoria(categ: Categoria) {
-    this.categoria = categ.codigo;
+    this.categoria = categ?.codigo ?? 0;
   }
 
   ngOnInit() {

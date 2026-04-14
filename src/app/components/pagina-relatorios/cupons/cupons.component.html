@@ -26,8 +26,8 @@
     <td class="text-center">{{cupons.nome}}</td>
     <td class="text-center">{{cupons.desconto}}%</td>
     <td>
-      <p-inputSwitch [(ngModel)]='cupons.ativo' (click)="ativarCupom(cupons)">
-      </p-inputSwitch>
+      <p-toggleswitch [(ngModel)]='cupons.ativo' (click)="ativarCupom(cupons)">
+      </p-toggleswitch>
     </td>
   </tr>
 </ng-template>
@@ -40,7 +40,7 @@
 </p-table>
 </div>
 </div>
-<p-dialog header="Adicionar Cupom" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true"
+<p-dialog header="Adicionar Cupom" [(visible)]="displayDialog" [focusOnShow]="false"
   showEffect="fade" [modal]="true" [style]="{width: '300px'}">
   @if (cupom) {
     <div class="ui-g ui-fluid">
@@ -62,10 +62,10 @@
       </div>
     </div>
   }
-  <p-footer>
+  <ng-template pTemplate="footer">
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton (click)="cadastrarCupom()" label="Cadastrar"></button>
     </div>
-  </p-footer>
+  </ng-template>
 </p-dialog>
 <p-toast [style]="{marginTop: '80px'}"></p-toast>

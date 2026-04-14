@@ -1,6 +1,7 @@
 import { Endereco } from './endereco';
 import { Cliente } from './cliente';
 import { Alertas } from './alertas';
+import { DadosPagamento } from './dados-pagamento';
 
 export class Validacoes {
     cancelarLetras(event: any) {
@@ -32,7 +33,7 @@ export class Validacoes {
         return false;
     }
 
-    verificarDadosPagamento(dadosPagamento) {
+    verificarDadosPagamento(dadosPagamento: DadosPagamento) {
         if (dadosPagamento.numeroCartao.length == 16 && (dadosPagamento.mesValidade != "" &&
             dadosPagamento.anoValidade != "") && dadosPagamento.cvv.length == 3 &&
             dadosPagamento.nomeTitular.replace(/\ /g, '').length > 8 && this.validarCpf(dadosPagamento.cpf)) {
@@ -41,7 +42,7 @@ export class Validacoes {
         return false;
     }
 
-    validarCpf(cpf) {
+    validarCpf(cpf: string) {
         let soma;
         let resto;
         soma = 0;
@@ -70,22 +71,22 @@ export class Validacoes {
     }
 
     verificarDadosCliente(cliente: Cliente) {
-        if (this.validarCpf(cliente.cpf) && cliente.email.replace(/\ /g, '').length > 12 &&
-            cliente.nome.replace(/\ /g, '').length > 8 && this.validarSenha(cliente.senha) &&
-            cliente.telefone.length > 9 && cliente.sexo != null) {
+        if (this.validarCpf(cliente.cpf ?? '') && (cliente.email ?? '').replace(/\ /g, '').length > 12 &&
+            (cliente.nome ?? '').replace(/\ /g, '').length > 8 && this.validarSenha(cliente.senha ?? '') &&
+            (cliente.telefone ?? '').length > 9 && cliente.sexo != null) {
             return true;
         }
 
-        if (!this.validarCpf(cliente.cpf)) {
+        if (!this.validarCpf(cliente.cpf ?? '')) {
             alert("O cpf digitado é invalido!")
         }
 
         let alerta = new Alertas();
-        alerta.alertaEmail(cliente.email);
-        alerta.alertaNome(cliente.nome);
-        alerta.alertaSenha(cliente.senha);
-        alerta.alertaTelefone(cliente.telefone);
-        alerta.alertaSexo(cliente.sexo);
+        alerta.alertaEmail(cliente.email ?? '');
+        alerta.alertaNome(cliente.nome ?? '');
+        alerta.alertaSenha(cliente.senha ?? '');
+        alerta.alertaTelefone(cliente.telefone ?? '');
+        alerta.alertaSexo(cliente.sexo ?? null);
         return false;
     }
 }

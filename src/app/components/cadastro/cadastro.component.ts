@@ -31,7 +31,7 @@ export class CadastroComponent implements OnInit {
       return;
     }
 
-    this.createForm(new Cliente("", "", "", "", "", "", null), "");
+    this.createForm(new Cliente("", "", "", "", "", "", 0), "");
   }
 
   createForm(cliente: Cliente, segundaSenha: string) {
@@ -57,7 +57,7 @@ export class CadastroComponent implements OnInit {
           } else if (data === 2) {
             alert("Esse CPF já está vinculado a um cadastro!");
           } else {
-            this.storage.salvarUsuario(data);
+            this.storage.salvarUsuario(data as Cliente);
             this.route.navigate(['home']);
           }
         },

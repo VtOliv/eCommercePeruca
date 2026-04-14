@@ -6,5 +6,5 @@ export class Endereco {
                 public localidade: string,
                 public uf: string,
                 public destinatario?: string,
-                public complemento: string = null){}
+                public complemento: string = ''){}                
 }

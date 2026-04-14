@@ -11,7 +11,7 @@
                 Gerenciamento de estoque
                 <div class="ui-table-globalfilter-container">
                     <input type="text" pInputText placeholder="O que procura?"
-                        (input)="dt.filterGlobal($event.target.value, 'contains')">
+                        (input)="filterTable(dt, $event)">
                 </div>
             </ng-template>
             <ng-template pTemplate="header">

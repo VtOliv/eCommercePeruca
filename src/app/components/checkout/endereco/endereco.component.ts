@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Importe o módulo de máscara que você está usando (ex: ngx-mask)
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 // Model
 import { Endereco } from 'src/app/model/endereco';
@@ -11,8 +11,7 @@ import { Endereco } from 'src/app/model/endereco';
   standalone: true,
   imports: [
     CommonModule,
-    NgxMaskPipe,
-    NgxMaskDirective
+    NgxMaskPipe
   ],
   providers: [
     provideNgxMask()

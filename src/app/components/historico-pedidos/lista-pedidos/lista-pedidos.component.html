@@ -22,32 +22,34 @@
                 <ul class="linha-do-tempo">
                   <div class="marcador"></div>
                   <li class="ano">
-                    <p>{{pedido.status.descricao}}</p>
+                    <p>{{pedido.status?.descricaoStatus}}</p>
                   </li>
                   <li class='item' href="#">
                     <p><Strong>N° Pedido {{pedido.codPedido}}</Strong> </p>
                     <p><strong>Realizado em: {{pedido.dtPedido | date:"dd/MM/yyyy"}}</strong></p>
                   </li>
                   <li class='item' href="#">
-                    <p><strong>Total: {{pedido.vlPedido.toLocaleString('pt-BR', formato)}}</strong></p>
-                    @if (pedido.status.cod_status != 5 && pedido.status.cod_status != 3) {
-                      <p><strong>Previsão de entrega: {{dataEntrega(pedido) | date:"dd/MM/yyyy"}} </strong></p>
+                    <p><strong>Total: {{pedido.vlPedido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}}</strong></p>
+                    @if (pedido.status?.cod_status != 5 && pedido.status?.cod_status != 3) {
+                      <p><strong>Previsão de entrega: {{calcularPrevisao(pedido) | date:"dd/MM/yyyy"}} </strong></p>
                     }
-                    @if (pedido.status.cod_status == 5) {
+                    @if (pedido.status?.cod_status == 5) {
                       <p><strong>Produto entregue em: {{pedido.dataEntrega | date:"dd/MM/yyyy"}} </strong></p>
                     }
                   </li>
                 </ul>
                 <div class="progresso-pedido">
-                  <app-progresso-pedido [status]="pedido.status"></app-progresso-pedido>
+                  @if (pedido.status) {
+                    <app-progresso-pedido [status]="pedido.status"></app-progresso-pedido>
+                  }
                 </div>
                 <a class="row botao">
                   <button class="entrega" type="button" class="btn btn-info" data-toggle="modal"
                     data-target="#modalExemplo" (click)="abrirModalDetalhes(detalhesPedidos, pedido)">
                     Detalhes do pedido
                   </button>
-                  @if (pedido.status.cod_status != 4 && pedido.status.cod_status != 3) {
-                    <button type="button" (click)="abrirModal(cancelarPedido, pedido)" class="btn btn-danger mr-1 ml-1">Cancelar Pedido</button>
+                  @if (pedido.status?.cod_status != 4 && pedido.status?.cod_status != 3) {
+                    <button type="button" (click)="abrirModalCancelamento(cancelarPedido, pedido)" class="btn btn-danger mr-1 ml-1">Cancelar Pedido</button>
                   }
                   <button type="button" class="btn btn-success" (click)="refazerPedido(pedido)">Refazer pedido</button>
                 </a>
@@ -65,13 +67,13 @@
       <div class="card ng-scope text-center sticky-top">
         <h5 class="card-header">Cancelar Pedido</h5>
       </div>
-      <button id="fecharModal" type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <button id="fecharModal" type="button" class="close pull-right" aria-label="Close" (click)="modalRef?.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
       <span> Deseja realmente cancelar seu pedido? </span>
       <div class="text-center mt-2 mb-3">
         <button class="btn btn-danger" (click)="cancelarPedidoFuncao()">Sim</button>
-        <button class="btn btn-success" (click)="modalRef.hide();">Não</button>
+        <button class="btn btn-success" (click)="modalRef?.hide();">Não</button>
       </div>
     </div>
   </ng-template>
@@ -79,8 +81,8 @@
   <ng-template #detalhesPedidos>
     <div class="detalhes-pedido">
       <div class="modal-header">
-        <h5 >Pedido nº {{detPedido.codPedido}}</h5>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <h5 >Pedido nº {{detPedido?.codPedido}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef?.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

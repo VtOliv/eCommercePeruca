@@ -1,10 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Cupom } from 'src/app/model/cupom';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { RequisicoesService } from 'src/app/services/requisicoes.service';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { CadastrosService } from 'src/app/services/cadastros.service';
 import { MessageService } from 'primeng/api';
+import { NavRelatoriosComponent } from '../nav-relatorios/nav-relatorios.component';
+import { MenuRelatoriosComponent } from '../menu-relatorios/menu-relatorios.component';
+import { TableModule } from 'primeng/table';
+import { Dialog } from 'primeng/dialog';
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { Toast } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -12,93 +18,83 @@ import { MessageService } from 'primeng/api';
     templateUrl: './cupons.component.html',
     styleUrls: ['./cupons.component.css'],
     providers: [MessageService],
-    standalone: true
+    standalone: true,
+    imports: [
+      FormsModule,
+      NavRelatoriosComponent,
+      MenuRelatoriosComponent,
+      TableModule,
+      Dialog,
+      ToggleSwitch,
+      Toast,
+      ButtonModule
+    ]
 })
 export class CuponsComponent {
-  private formBuilder = inject(UntypedFormBuilder);
   private requisicoes = inject(RequisicoesService);
   private cadastro = inject(CadastrosService);
   private messageService = inject(MessageService);
 
-  
-  
-  Desativar: false
-  
-
   cupons: Cupom[] = [];
-  modalRef: BsModalRef;
-  checked: boolean;
-  cols: any[];
-  cupom: Cupom;
-  displayDialog: boolean;
-  formCupom: UntypedFormGroup;
-
+  cupom: Cupom = new Cupom();
+  displayDialog = false;
 
   constructor() {
-
     this.requisicoes.todosCupons().subscribe(
       data => {
         this.cupons = data;
       }
-    )
+    );
   }
 
-  desativarCupom() {
-    let desativar = false;
-    for(let i = 0;i < this.cupons.length;i++) {
-      if(this.cupons[i].ativo == true) {
-        return this.cupons[i].ativo = desativar;
+  desativarCupom(): void {
+    for (let i = 0; i < this.cupons.length; i++) {
+      if (this.cupons[i].ativo === true) {
+        this.cupons[i].ativo = false;
+        return;
       }
     }
   }
 
-  createForm(cupom: Cupom) {
-    this.formCupom = this.formBuilder.group({
-      nome: [cupom.nome],
-      desconto: [cupom.desconto]
+  ativarCupom(cupom: Cupom): void {
+    this.requisicoes.atualizarCupom(cupom.codCupom, cupom).subscribe({
+      next: () => {
+        this.showSucessAlter();
+      },
+      error: () => {
+        this.showErrorAlter();
+      }
     });
   }
 
-  ativarCupom(cupom: Cupom) {
-    this.requisicoes.atualizarCupom(cupom.codCupom, cupom).subscribe(
-      cupomApi => {
-        this.showSucessAlter();
-      }, error => {
-        this.showErrorAlter();
-      }
-    )
+  onRowSelect(event: unknown): void {
+    // handle row selection
   }
 
-  onRowSelect(event) {
-
-  }
-
-  showDialogToAdd() {
-    this.cupom = new Cupom(null, null, null, null);
+  showDialogToAdd(): void {
+    this.cupom = new Cupom();
     this.displayDialog = true;
-
   }
 
-  cadastrarCupom() {
+  cadastrarCupom(): void {
     this.cadastro.addCupom(this.cupom).subscribe(
       cupom => {
-        this.cupons.push(cupom);
+        this.cupons.push(cupom as Cupom);
         this.showSuccess();
         this.displayDialog = false;
-
       }
-    )
+    );
   }
 
-  showSuccess() {
+  showSuccess(): void {
     this.messageService.add({ severity: 'success', summary: 'Cadastro', detail: 'O cupom foi cadastrado com sucesso.' });
   }
 
-  showSucessAlter() {
+  showSucessAlter(): void {
     this.messageService.add({ severity: 'info', summary: 'Alteração', detail: 'Cupom alterado com sucesso!' });
   }
 
-  showErrorAlter() {
+  showErrorAlter(): void {
     this.messageService.add({ severity: 'error', summary: 'Alteração', detail: 'Erro ao alterar cupom!' });
   }
 }

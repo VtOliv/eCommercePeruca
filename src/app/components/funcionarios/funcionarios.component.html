@@ -1,24 +1,47 @@
-<div class="container-fluid">
-  <div class="col">
-    <div class="row" id="loginFunc">
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="col-md-4">
+    <div class="row shadow p-4 bg-white rounded" id="loginFunc">
 
-      <form id="form-loginFunc" [formGroup]="formFunc" (ngSubmit)="entrar()">
-
-        <a href="/home"><img src="../../../assets/images/logoWig.png" alt="LogoPrincipal" width="350px"></a>
-        <h1 class="h3 mb-3 font-weight-normal text-center">Faça seu login</h1>
-
-        <div class="form-group">
-          <input type="text" class="form-control" (keypress)="permitirNumerosFunc($event)" placeholder="Matricula"
-            required minlength="4" maxlength="8" formControlName="matricula" autofocus>
+      <form id="form-loginFunc" [formGroup]="formFunc" (ngSubmit)="entrar()" class="w-100">
+        
+        <div class="text-center mb-4">
+          <a routerLink="/home">
+            <img src="../../../assets/images/logoWig.png" alt="Logo Wigs House" class="img-fluid" style="max-width: 250px;">
+          </a>
         </div>
 
-        <div class="form-group">
-          <input type="password" class="form-control" placeholder="Senha" required minlength="4" maxlength="8"
+        <h1 class="h4 mb-4 font-weight-normal text-center text-secondary">Acesso Administrativo</h1>
+
+        <div class="form-group mb-3">
+          <label class="sr-only">Matrícula</label>
+          <input 
+            type="text" 
+            class="form-control form-control-lg" 
+            placeholder="Matrícula"
+            formControlName="matricula" 
+            (keypress)="permitirNumerosFunc($event)"
+            autofocus>
+        </div>
+
+        <div class="form-group mb-4">
+          <label class="sr-only">Senha</label>
+          <input 
+            type="password" 
+            class="form-control form-control-lg" 
+            placeholder="Senha"
             formControlName="senha">
         </div>
 
-        <button class="btn btn-lg btn-info btn-block" type="submit">Entrar</button>
+        <button 
+          class="btn btn-lg btn-info btn-block shadow-sm" 
+          type="submit"
+          [disabled]="formFunc.invalid">
+          Entrar
+        </button>
+
+        <p class="mt-4 text-center text-muted small">&copy; 2026 Wigs House - Interno</p>
       </form>
+
     </div>
   </div>
 </div>

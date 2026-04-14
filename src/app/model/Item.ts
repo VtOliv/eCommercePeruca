@@ -1,4 +1,4 @@
 export class Item {
-    codProduto: number;
-    quantidade: number;
+    codProduto!: number;
+    quantidade!: number;
 }

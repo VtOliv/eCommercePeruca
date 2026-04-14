@@ -1,55 +1,87 @@
-<div class="container-fluid d-flex row mb-3">
-  <div id="productTable" class="row col-md-8 col-sm-12">
-    <table class="table table-hover text-center p-3 overflow-auto">
-      <thead id="headerTable" class="col-8">
-        <tr>
-          <th scope="col">Produto</th>
-          <th scope="col">Qtd</th>
-          <th scope="col">Preço Uni.</th>
-          <th scope="col">
-            <img class="icon-lixeira" src="../../../../assets/images/lixeira_2.png" alt="remover item">
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (carrinho == null) {
-          <div class="alert alert-success m-2 p-1">
-            <h5 class="text-center">Você não selecionou nenhum produto até o momento!</h5>
-          </div>
-        }
-        @for (item of carrinho; track item) {
-          <tr>
-            <td id="conteudoProduto" class="d-flex">
-              <img class="peruca" [src]="item.produto.imagens[0].local" width="50px" alt="produto">
-              <p>{{item.produto.descricao}}</p>
-            </td>
-            <td>
-              <button id="btnMenosMais" (click)="mudarQuantidade(-1, item)"><img
-              src="../../../../assets/images/menos.png" id="iconBtn" alt="Menos"></button>
-              {{item.quantidade}}
-              <button id="btnMenosMais" (click)="mudarQuantidade(1, item)"><img
-              src="../../../../assets/images/mais.png" id="iconBtn" alt="Mais"></button>
-            </td>
-            <td>
-              <strong>{{ item.produto.valorProduto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</strong>
-            </td>
-            <td class="remover-produto" (click)="removerProduto(item)">
-              <img class="icon-lixeira" src="../../../../assets/images/remover-x_1.svg">
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-
-  <div class="col-md-4 col-xs-12">
-      <div id="card" class="jumbotron jumbotron-fluid p-3">
-        <h2 id="subtotal">Resumo do Pedido:</h2>
-        <hr>
-        <strong>TOTAL:</strong>
-        <p>{{total.toLocaleString('pt-BR', formato)}}</p>
-        <button (click)="irCheckout()" class="btn btn-success btn-block">Continuar</button>
+<div class="container-fluid">
+  <div class="row mb-3">
+    
+    <div id="productTable" class="col-md-8 col-sm-12">
+      <div class="table-responsive">
+        <table class="table table-hover text-center align-middle bg-white shadow-sm rounded">
+          <thead id="headerTable" class="thead-light">
+            <tr>
+              <th scope="col" class="text-left pl-4">Produto</th>
+              <th scope="col">Qtd</th>
+              <th scope="col">Preço Uni.</th>
+              <th scope="col">
+                <img src="assets/images/lixeira_2.png" alt="remover" width="20">
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of carrinho; track item.produto?.codProduto ?? $index) {
+              <tr>
+                <td class="text-left d-flex align-items-center">
+                  <img [src]="item.produto?.imagens?.[0]?.local ?? 'assets/images/placeholder.png'" 
+                       width="50" class="rounded mr-3 border" alt="produto">
+                  <span class="text-truncate" style="max-width: 200px;">
+                    {{ item.produto?.descricao }}
+                  </span>
+                </td>
+                
+                <td>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <button class="btn btn-sm btn-outline-secondary p-1" 
+                            type="button" (click)="mudarQuantidade(-1, item)">
+                      <img src="assets/images/menos.png" width="15" alt="Menos">
+                    </button>
+                    
+                    <span class="mx-3 font-weight-bold">{{ item.quantidade }}</span>
+                    
+                    <button class="btn btn-sm btn-outline-secondary p-1" 
+                            type="button" (click)="mudarQuantidade(1, item)">
+                      <img src="assets/images/mais.png" width="15" alt="Mais">
+                    </button>
+                  </div>
+                </td>
+                
+                <td>
+                  <strong class="text-dark">
+                    {{ (item.produto?.valorProduto ?? 0) | currency:'BRL' }}
+                  </strong>
+                </td>
+                
+                <td class="remover-produto pointer" (click)="removerProduto(item)">
+                  <img src="assets/images/remover-x_1.svg" width="20" alt="remover">
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="py-5">
+                  <div class="alert alert-info d-inline-block">
+                    Você não selecionou nenhum produto até o momento!
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
+
+    <div class="col-md-4 col-sm-12">
+      <div id="card" class="jumbotron bg-dark text-white p-4 shadow-sm">
+        <h3 id="subtotal" class="h4">Resumo do Pedido</h3>
+        <hr class="bg-secondary">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <span class="h5 mb-0">TOTAL:</span>
+          <span class="h4 mb-0 text-success font-weight-bold">
+            {{ total | currency:'BRL' }}
+          </span>
+        </div>
+        
+        <button (click)="irCheckout()" class="btn btn-success btn-lg btn-block shadow">
+          Continuar para Checkout
+        </button>
+      </div>
+    </div>
+
   </div>
+</div>

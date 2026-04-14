@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
-import { CardComponent } from '../card/card.component';
+import { CardComponent } from './card/card.component';
 
 @Component({
     selector: 'app-pagina-carrinho',

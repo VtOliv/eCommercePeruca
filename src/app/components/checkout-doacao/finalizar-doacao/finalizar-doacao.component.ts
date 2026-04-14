@@ -1,13 +1,12 @@
-import { Component, ViewChild, ElementRef, inject, OnInit, SafeResourceUrl } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from "@angular/forms";
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 // Services & Models
 import { Locais } from 'src/app/model/locais';
 import { Validacoes } from 'src/app/model/validacoes';
-import { DadosPagamento } from 'src/app/model/dados-pagamento';
 import { CadastrosService } from 'src/app/services/cadastros.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -15,7 +14,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { CarrinhoDoacaoComponent } from '../carrinho-doacao/carrinho-doacao.component';
 
 // Diretivas de Máscara (Ngx-Mask)
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-finalizar-doacao',
@@ -25,7 +24,6 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     ReactiveFormsModule,
     FormsModule,
     NgxMaskDirective,
-    NgxMaskPipe,
     CarrinhoDoacaoComponent
   ],
   providers: [provideNgxMask()],
@@ -94,11 +92,6 @@ export class FinalizarDoacaoComponent implements OnInit {
       this.cadastros.cadastrarDoacao(this.localEscolhido, this.vlDoacao).subscribe({
         next: (dados) => {
           if (dados) {
-            const cliente = this.storage.recuperarUsuario();
-            if (!cliente.doacao) cliente.doacao = [];
-            
-            cliente.doacao.push(dados);
-            this.storage.salvarUsuario(cliente);
             this.route.navigate(['/finalizar-compra']);
           }
         },
